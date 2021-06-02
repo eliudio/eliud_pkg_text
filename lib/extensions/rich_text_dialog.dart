@@ -85,7 +85,7 @@ class _RichTextDialogState extends State<RichTextDialog> {
                 controller.toggleCodeView();
                 setState(() {});
               } : null,
-              child: Text('Wysisyg')),
+              child: Text('Visual')),
           TextButton(
               onPressed: !isHtml ? () {
                 isHtml = true;
