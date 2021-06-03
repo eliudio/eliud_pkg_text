@@ -49,7 +49,7 @@ class _RichTextDialogState extends State<RichTextDialog> {
 
   bool _shouldUseNativeGrid(BuildContext context) {
     double height = DialogStatefulWidgetHelper.height(context);
-    return  (height > 450) ;
+    return  (height > 820);
   }
 
   @override
@@ -93,6 +93,7 @@ class _RichTextDialogState extends State<RichTextDialog> {
                 setState(() {});
               } : null,
               child: Text('Html')),
+          Spacer(),
           TextButton(
             child: Text('Cancel'),
             onPressed: () {
