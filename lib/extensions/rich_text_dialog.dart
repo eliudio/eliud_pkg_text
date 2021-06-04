@@ -46,6 +46,7 @@ class _RichTextDialogState extends State<RichTextDialog> {
   final DialogStateHelper dialogHelper = DialogStateHelper();
   final HtmlEditorController controller = HtmlEditorController();
   bool isHtml = false;
+  double _progress = 1;
 
   bool _shouldUseNativeGrid(BuildContext context) {
     double height = DialogStatefulWidgetHelper.height(context);
@@ -78,6 +79,7 @@ class _RichTextDialogState extends State<RichTextDialog> {
                 height: DialogStatefulWidgetHelper.height(context) - 130),
           ),
         ),
+//      seperator: LinearProgressIndicator( value:  _progress),
         buttons: [
           TextButton(
               onPressed: isHtml ?  () {
@@ -111,7 +113,10 @@ class _RichTextDialogState extends State<RichTextDialog> {
   }
 
   void _feedbackProgress(double progress) {
-    // show some indicator somewhere to indicate uploading data
+/*
+    _progress = progress;
+    setState(() {});
+*/
   }
 
   Future<bool> _interceptUpload(PlatformFile platformFile, InsertFileType insertFileType) async {
@@ -131,9 +136,9 @@ class _RichTextDialogState extends State<RichTextDialog> {
 
     String htmlCode;
     if (insertFileType == InsertFileType.video) {
-      htmlCode = "<img src=" + memberMediumModel.urlThumbnail! + "/>";
+      htmlCode = "<img src='" + memberMediumModel.urlThumbnail! + "'/>";
     } else {
-      htmlCode = "<img src=" + memberMediumModel.url! + "/>";
+      htmlCode = "<img src='" + memberMediumModel.url! + "'/>";
     }
     controller.insertHtml(htmlCode);
     return false;
