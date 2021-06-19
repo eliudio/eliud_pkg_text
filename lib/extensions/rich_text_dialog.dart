@@ -1,4 +1,6 @@
+import 'package:eliud_core/style/style_registry.dart';
 import 'package:eliud_core/tools/widgets/dialog_helper.dart';
+import 'package:eliud_core/tools/widgets/simple_dialog_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -21,14 +23,23 @@ class RichTextDialog extends StatefulWidget {
     Key? key,
     required this.title,
     required this.richTextFeedback,
-    required this.initialValue, required this.appId, required this.ownerId, required this.readAccess,
+    required this.initialValue,
+    required this.appId,
+    required this.ownerId,
+    required this.readAccess,
   }) : super(key: key);
 
   @override
   _RichTextDialogState createState() => _RichTextDialogState();
 
-  static void open(BuildContext context, String appId, String ownerId, List<String> readAccess, String title,
-      RichTextFeedback richTextFeedback, String initialValue) {
+  static void open(
+      BuildContext context,
+      String appId,
+      String ownerId,
+      List<String> readAccess,
+      String title,
+      RichTextFeedback richTextFeedback,
+      String initialValue) {
     DialogStatefulWidgetHelper.openIt(
         context,
         RichTextDialog(
@@ -43,73 +54,77 @@ class RichTextDialog extends StatefulWidget {
 }
 
 class _RichTextDialogState extends State<RichTextDialog> {
-  final DialogStateHelper dialogHelper = DialogStateHelper();
   final HtmlEditorController controller = HtmlEditorController();
   bool isHtml = false;
   double _progress = 1;
 
   bool _shouldUseNativeGrid(BuildContext context) {
     double height = DialogStatefulWidgetHelper.height(context);
-    return  (height > 820);
+    return (height > 820);
   }
 
   @override
   Widget build(BuildContext context) {
-    return dialogHelper.build(
-        dialogButtonPosition: DialogButtonPosition.TopRight,
-        title: widget.title,
-        contents: GestureDetector(
-          onTap: () {
-            if (!kIsWeb) {
-              controller.clearFocus();
-            }
-          },
-          child: HtmlEditor(
-            controller: controller,
-            htmlEditorOptions: HtmlEditorOptions(
-              shouldEnsureVisible: true,
-              initialText: widget.initialValue,
-            ),
-            htmlToolbarOptions: HtmlToolbarOptions(
-              toolbarPosition: ToolbarPosition.aboveEditor,
-              toolbarType: _shouldUseNativeGrid(context) ? ToolbarType.nativeGrid : ToolbarType.nativeScrollable,
-              mediaUploadInterceptor: (platformFile, insertFileType) => _interceptUpload(platformFile, insertFileType)
-            ),
-            otherOptions: OtherOptions(
-                height: DialogStatefulWidgetHelper.height(context) - 130),
-          ),
+    var frontEndStyle =
+        StyleRegistry.registry().styleWithContext(context).frontEndStyle();
+    return SimpleDialogApi.flexibleDialog(
+      context,
+      title: widget.title,
+      buttons: [
+        frontEndStyle.dialogButton(context,
+            onPressed: isHtml
+                ? () {
+                    isHtml = false;
+                    controller.toggleCodeView();
+                    setState(() {});
+                  }
+                : null,
+            label: 'Visual'),
+        frontEndStyle.dialogButton(
+          context,
+          label: 'Html',
+          onPressed: !isHtml
+              ? () {
+                  isHtml = true;
+                  controller.toggleCodeView();
+                  setState(() {});
+                }
+              : null,
         ),
+        Spacer(),
+        frontEndStyle.dialogButton(context, onPressed: () {
+          Navigator.pop(context);
+        }, label: 'Cancel'),
+        frontEndStyle.dialogButton(context, onPressed: () async {
+          Navigator.pop(context);
+          widget.richTextFeedback(await controller.getText());
+        }, label: 'Done'),
+      ],
+      child: GestureDetector(
+        onTap: () {
+          if (!kIsWeb) {
+            controller.clearFocus();
+          }
+        },
+        child: HtmlEditor(
+          controller: controller,
+          htmlEditorOptions: HtmlEditorOptions(
+            shouldEnsureVisible: true,
+            initialText: widget.initialValue,
+          ),
+          htmlToolbarOptions: HtmlToolbarOptions(
+              toolbarPosition: ToolbarPosition.aboveEditor,
+              toolbarType: _shouldUseNativeGrid(context)
+                  ? ToolbarType.nativeGrid
+                  : ToolbarType.nativeScrollable,
+              mediaUploadInterceptor: (platformFile, insertFileType) =>
+                  _interceptUpload(platformFile, insertFileType)),
+          otherOptions: OtherOptions(
+              height: DialogStatefulWidgetHelper.height(context) - 130),
+        ),
+      ),
 //      seperator: LinearProgressIndicator( value:  _progress),
-        buttons: [
-          TextButton(
-              onPressed: isHtml ?  () {
-                isHtml = false;
-                controller.toggleCodeView();
-                setState(() {});
-              } : null,
-              child: Text('Visual')),
-          TextButton(
-              onPressed: !isHtml ? () {
-                isHtml = true;
-                controller.toggleCodeView();
-                setState(() {});
-              } : null,
-              child: Text('Html')),
-          Spacer(),
-          TextButton(
-            child: Text('Cancel'),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-          TextButton(
-            child: Text('Done'),
-            onPressed: () async {
-              Navigator.pop(context);
-              widget.richTextFeedback(await controller.getText());
-            },
-          ),
-        ]);
+    );
   }
 
   void _feedbackProgress(double progress) {
@@ -119,7 +134,8 @@ class _RichTextDialogState extends State<RichTextDialog> {
 */
   }
 
-  Future<bool> _interceptUpload(PlatformFile platformFile, InsertFileType insertFileType) async {
+  Future<bool> _interceptUpload(
+      PlatformFile platformFile, InsertFileType insertFileType) async {
     if (insertFileType == InsertFileType.audio) return false;
     var bytes = platformFile.bytes;
 
@@ -131,8 +147,17 @@ class _RichTextDialogState extends State<RichTextDialog> {
 
     // All good
     var baseName = platformFile.name!;
-    var thumbnailBaseName = BaseNameHelper.baseNameExt(baseName, 'thumbnail.png');
-    var memberMediumModel = await MemberMediumHelper.createThumbnailUploadPhotoData(widget.appId, bytes, baseName, thumbnailBaseName, widget.ownerId, widget.readAccess, feedbackProgress: _feedbackProgress);
+    var thumbnailBaseName =
+        BaseNameHelper.baseNameExt(baseName, 'thumbnail.png');
+    var memberMediumModel =
+        await MemberMediumHelper.createThumbnailUploadPhotoData(
+            widget.appId,
+            bytes,
+            baseName,
+            thumbnailBaseName,
+            widget.ownerId,
+            widget.readAccess,
+            feedbackProgress: _feedbackProgress);
 
     String htmlCode;
     if (insertFileType == InsertFileType.video) {
