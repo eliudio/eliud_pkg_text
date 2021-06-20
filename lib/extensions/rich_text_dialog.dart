@@ -149,7 +149,7 @@ class _RichTextDialogState extends State<RichTextDialog> {
     if (insertFileType == InsertFileType.audio) return true;
 
     // All good
-    var baseName = platformFile.name!;
+    var baseName = platformFile.name;
     var thumbnailBaseName =
         BaseNameHelper.baseNameExt(baseName, 'thumbnail.png');
     var memberMediumModel =
