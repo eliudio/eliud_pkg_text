@@ -1,6 +1,4 @@
 import 'package:eliud_core/style/style_registry.dart';
-import 'package:eliud_core/tools/widgets/dialog_helper.dart';
-import 'package:eliud_core/tools/widgets/simple_dialog_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +10,12 @@ import 'package:eliud_core/tools/storage/member_medium_helper.dart';
 typedef RichTextFeedback(String value);
 
 class RichTextDialog extends StatefulWidget {
+  static double width(BuildContext context) =>
+      MediaQuery.of(context).size.width * 0.9;
+
+  static double height(BuildContext context) =>
+      MediaQuery.of(context).size.height * 0.9;
+
   final String appId;
   final String title;
   final RichTextFeedback richTextFeedback;
@@ -40,8 +44,7 @@ class RichTextDialog extends StatefulWidget {
       String title,
       RichTextFeedback richTextFeedback,
       String initialValue) {
-    DialogStatefulWidgetHelper.openIt(
-        context,
+    StyleRegistry.registry().styleWithContext(context).frontEndStyle().openWidgetDialog(context, child:
         RichTextDialog(
           title: title,
           richTextFeedback: richTextFeedback,
@@ -59,7 +62,7 @@ class _RichTextDialogState extends State<RichTextDialog> {
   double _progress = 1;
 
   bool _shouldUseNativeGrid(BuildContext context) {
-    double height = DialogStatefulWidgetHelper.height(context);
+    double height = RichTextDialog.height(context);
     return (height > 820);
   }
 
@@ -67,7 +70,7 @@ class _RichTextDialogState extends State<RichTextDialog> {
   Widget build(BuildContext context) {
     var frontEndStyle =
         StyleRegistry.registry().styleWithContext(context).frontEndStyle();
-    return SimpleDialogApi.flexibleDialog(
+    return  StyleRegistry.registry().styleWithContext(context).frontEndStyle().flexibleDialog(
       context,
       title: widget.title,
       buttons: [
@@ -120,7 +123,7 @@ class _RichTextDialogState extends State<RichTextDialog> {
               mediaUploadInterceptor: (platformFile, insertFileType) =>
                   _interceptUpload(platformFile, insertFileType)),
           otherOptions: OtherOptions(
-              height: DialogStatefulWidgetHelper.height(context) - 130),
+              height: RichTextDialog.height(context) - 130),
         ),
       ),
 //      seperator: LinearProgressIndicator( value:  _progress),
