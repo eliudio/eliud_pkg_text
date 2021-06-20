@@ -16,21 +16,21 @@ class RichTextView extends StatefulWidget {
   _RichTextViewState createState() => _RichTextViewState();
 
   static void open(BuildContext context, String value) {
-    StyleRegistry.registry().styleWithContext(context).frontEndStyle().openWidgetDialog(context, child: RichTextView(value: value));
+    StyleRegistry.registry().styleWithContext(context).frontEndStyle().dialogStyle().openWidgetDialog(context, child: RichTextView(value: value));
   }
 }
 
 class _RichTextViewState extends State<RichTextView> {
   @override
   Widget build(BuildContext context) {
-    return StyleRegistry.registry().styleWithContext(context).frontEndStyle().flexibleDialog(context,
+    return StyleRegistry.registry().styleWithContext(context).frontEndStyle().dialogWidgetStyle().flexibleDialog(context,
         title: "Test",
         child: HtmlWidget(widget.value),
         buttons: [
           StyleRegistry.registry()
               .styleWithContext(context)
               .frontEndStyle()
-              .dialogButton(
+              .buttonStyle().dialogButton(
             context,
             label: 'Done',
             onPressed: () async {

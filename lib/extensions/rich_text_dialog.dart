@@ -44,7 +44,7 @@ class RichTextDialog extends StatefulWidget {
       String title,
       RichTextFeedback richTextFeedback,
       String initialValue) {
-    StyleRegistry.registry().styleWithContext(context).frontEndStyle().openWidgetDialog(context, child:
+    StyleRegistry.registry().styleWithContext(context).frontEndStyle().dialogStyle().openWidgetDialog(context, child:
         RichTextDialog(
           title: title,
           richTextFeedback: richTextFeedback,
@@ -70,11 +70,11 @@ class _RichTextDialogState extends State<RichTextDialog> {
   Widget build(BuildContext context) {
     var frontEndStyle =
         StyleRegistry.registry().styleWithContext(context).frontEndStyle();
-    return  StyleRegistry.registry().styleWithContext(context).frontEndStyle().flexibleDialog(
+    return  StyleRegistry.registry().styleWithContext(context).frontEndStyle().dialogWidgetStyle().flexibleDialog(
       context,
       title: widget.title,
       buttons: [
-        frontEndStyle.dialogButton(context,
+        frontEndStyle.buttonStyle().dialogButton(context,
             onPressed: isHtml
                 ? () {
                     isHtml = false;
@@ -83,7 +83,7 @@ class _RichTextDialogState extends State<RichTextDialog> {
                   }
                 : null,
             label: 'Visual'),
-        frontEndStyle.dialogButton(
+        frontEndStyle.buttonStyle().dialogButton(
           context,
           label: 'Html',
           onPressed: !isHtml
@@ -95,10 +95,10 @@ class _RichTextDialogState extends State<RichTextDialog> {
               : null,
         ),
         Spacer(),
-        frontEndStyle.dialogButton(context, onPressed: () {
+        frontEndStyle.buttonStyle().dialogButton(context, onPressed: () {
           Navigator.pop(context);
         }, label: 'Cancel'),
-        frontEndStyle.dialogButton(context, onPressed: () async {
+        frontEndStyle.buttonStyle().dialogButton(context, onPressed: () async {
           Navigator.pop(context);
           widget.richTextFeedback(await controller.getText());
         }, label: 'Done'),
