@@ -24,7 +24,6 @@ class RichTextDialog extends StatefulWidget {
   final String initialValue;
   final String ownerId;
   final List<String> readAccess;
-  final FrontEndStyle frontEndStyle;
 
   RichTextDialog({
     Key? key,
@@ -34,7 +33,6 @@ class RichTextDialog extends StatefulWidget {
     required this.appId,
     required this.ownerId,
     required this.readAccess,
-    required this.frontEndStyle,
   }) : super(key: key);
 
   @override
@@ -47,9 +45,10 @@ class RichTextDialog extends StatefulWidget {
       List<String> readAccess,
       String title,
       RichTextFeedback richTextFeedback,
-      String initialValue,
-      FrontEndStyle frontEndStyle) {
-    frontEndStyle.dialogStyle().openWidgetDialog(context,
+      String initialValue) {
+    StyleRegistry.registry()
+        .styleWithContext(context)
+        .frontEndStyle().dialogStyle().openWidgetDialog(context,
         child:
         RichTextDialog(
           title: title,
@@ -58,7 +57,6 @@ class RichTextDialog extends StatefulWidget {
           appId: appId,
           ownerId: ownerId,
           readAccess: readAccess,
-          frontEndStyle: frontEndStyle,
         ));
   }
 }
@@ -76,7 +74,9 @@ class _RichTextDialogState extends State<RichTextDialog> {
   final DialogStateHelper dialogHelper = DialogStateHelper();
   @override
   Widget build(BuildContext context) {
-    return widget.frontEndStyle.dialogWidgetStyle().flexibleDialog(
+    return StyleRegistry.registry()
+        .styleWithContext(context)
+        .frontEndStyle().dialogWidgetStyle().flexibleDialog(
         context,
         title: widget.title,
         buttons: _buttons(),
@@ -87,7 +87,9 @@ class _RichTextDialogState extends State<RichTextDialog> {
 
   List<Widget> _buttons() {
     return [
-      widget.frontEndStyle.buttonStyle().dialogButton(context,
+      StyleRegistry.registry()
+          .styleWithContext(context)
+          .frontEndStyle().buttonStyle().dialogButton(context,
           onPressed: isHtml
               ? () {
                   isHtml = false;
@@ -96,7 +98,9 @@ class _RichTextDialogState extends State<RichTextDialog> {
                 }
               : null,
           label: 'Visual'),
-      widget.frontEndStyle.buttonStyle().dialogButton(
+      StyleRegistry.registry()
+          .styleWithContext(context)
+          .frontEndStyle().buttonStyle().dialogButton(
             context,
             label: 'Html',
             onPressed: !isHtml
@@ -108,10 +112,14 @@ class _RichTextDialogState extends State<RichTextDialog> {
                 : null,
           ),
       Spacer(),
-      widget.frontEndStyle.buttonStyle().dialogButton(context, onPressed: () {
+      StyleRegistry.registry()
+          .styleWithContext(context)
+          .frontEndStyle().buttonStyle().dialogButton(context, onPressed: () {
         Navigator.pop(context);
       }, label: 'Cancel'),
-      widget.frontEndStyle.buttonStyle().dialogButton(context,
+      StyleRegistry.registry()
+          .styleWithContext(context)
+          .frontEndStyle().buttonStyle().dialogButton(context,
           onPressed: () async {
         Navigator.pop(context);
         widget.richTextFeedback(await controller.getText());
