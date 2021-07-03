@@ -1,9 +1,7 @@
 import 'package:eliud_pkg_text/platform/text_platform.dart';
+import 'package:eliud_pkg_text/platform/widgets/html_text_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-import 'mobile/html_text_dialog.dart';
-import 'web/multiline_text_dialog.dart';
 
 class MobileTextPlatform extends AbstractTextPlatform {
   @override

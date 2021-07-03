@@ -1,6 +1,7 @@
 import 'package:eliud_core/default_style/frontend/impl/dialog/dialog_helper.dart';
 import 'package:eliud_core/style/frontend/frontend_style.dart';
 import 'package:eliud_core/style/style_registry.dart';
+import 'package:eliud_core/tools/tool_set.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -159,35 +160,61 @@ class _HtmlTextDialogState extends State<HtmlTextDialog> {
   Future<bool> _interceptUpload(
       PlatformFile platformFile, InsertFileType insertFileType) async {
     if (insertFileType == InsertFileType.audio) return false;
-    var bytes = platformFile.bytes;
+    var path = platformFile.path;
 
     // Conditions where we pass control to the internal html editor
-    if (bytes == null) return true;
-    // ignore: unnecessary_null_comparison
-    if (platformFile.name == null) return true;
+    if (path == null) return true;
     if (insertFileType == InsertFileType.audio) return true;
 
     // All good
-    var baseName = platformFile.name;
-    var thumbnailBaseName =
-    BaseNameHelper.baseNameExt(baseName, 'thumbnail.png');
-    var memberMediumModel =
-    await MemberMediumHelper.createThumbnailUploadPhotoData(
-        widget.appId,
-        bytes,
-        baseName,
-        thumbnailBaseName,
-        widget.ownerId,
-        widget.readAccess,
-        feedbackProgress: _feedbackProgress);
+    var memberMediumModel;
+    if (insertFileType == InsertFileType.video) {
+      memberMediumModel = await MemberMediumHelper.createThumbnailUploadVideoFile(
+          widget.appId, path, widget.ownerId, widget.readAccess,
+          feedbackProgress: _feedbackProgress);
+    } else {
+      memberMediumModel = await MemberMediumHelper.createThumbnailUploadPhotoFile(
+          widget.appId, path, widget.ownerId, widget.readAccess,
+          feedbackProgress: _feedbackProgress);
+    }
 
     String htmlCode;
     if (insertFileType == InsertFileType.video) {
-      htmlCode = "<img src='" + memberMediumModel.urlThumbnail! + "'/>";
+      htmlCode = process(kVideoHtml, parameters: <String, String>
+      {
+        '\${VIDEO_URL}': memberMediumModel.url!,
+        '\${IDENTIFIER}': memberMediumModel!.documentID!,
+      });
     } else {
-      htmlCode = "<img src='" + memberMediumModel.url! + "'/>";
+      htmlCode = process(kIngHtml, parameters: <String, String>
+      {
+        '\${IMG_URL}': memberMediumModel.url!,
+        '\${IDENTIFIER}': memberMediumModel!.documentID!,
+      });
     }
+
     controller.insertHtml(htmlCode);
     return false;
   }
 }
+
+const kVideoHtml = """
+<figure>
+  <!--  Member Medium with ID = '\${IDENTIFIER}'
+  -->
+  <video controls width="320" height="176">
+    <source src="\${VIDEO_URL}">
+    Your browser does not support HTML5 video.
+  </video>
+</figure>
+""";
+
+const kIngHtml = """
+<figure>
+  <!--  Member Medium with ID = '\${IDENTIFIER}'
+  -->
+  <img src="\${IMG_URL}" width="250" height="171" />
+    <source src="\${VIDEO_URL}">
+</figure>
+""";
+
