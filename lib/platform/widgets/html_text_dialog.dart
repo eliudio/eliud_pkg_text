@@ -160,21 +160,33 @@ class _HtmlTextDialogState extends State<HtmlTextDialog> {
   Future<bool> _interceptUpload(
       PlatformFile platformFile, InsertFileType insertFileType) async {
     if (insertFileType == InsertFileType.audio) return false;
-    var path = platformFile.path;
+    var bytes = platformFile.bytes;
 
     // Conditions where we pass control to the internal html editor
-    if (path == null) return true;
+    if (bytes == null) return true;
     if (insertFileType == InsertFileType.audio) return true;
 
     // All good
     var memberMediumModel;
+    var baseName = platformFile.name;
+    var thumbnailBaseName = BaseNameHelper.baseNameExt(baseName, 'thumbnail.png');
     if (insertFileType == InsertFileType.video) {
-      memberMediumModel = await MemberMediumHelper.createThumbnailUploadVideoFile(
-          widget.appId, path, widget.ownerId, widget.readAccess,
+      memberMediumModel = await MemberMediumHelper.createThumbnailUploadVideoData(
+          widget.appId,
+          bytes,
+          baseName,
+          thumbnailBaseName,
+          widget.ownerId,
+          widget.readAccess,
           feedbackProgress: _feedbackProgress);
     } else {
-      memberMediumModel = await MemberMediumHelper.createThumbnailUploadPhotoFile(
-          widget.appId, path, widget.ownerId, widget.readAccess,
+      memberMediumModel = await MemberMediumHelper.createThumbnailUploadPhotoData(
+          widget.appId,
+          bytes,
+          baseName,
+          thumbnailBaseName,
+          widget.ownerId,
+          widget.readAccess,
           feedbackProgress: _feedbackProgress);
     }
 
