@@ -9,9 +9,9 @@ import 'package:html_editor_enhanced/html_editor.dart';
 import 'package:eliud_core/tools/storage/basename_helper.dart';
 import 'package:eliud_core/tools/storage/member_medium_helper.dart';
 
-typedef RichTextFeedback(String value);
+import '../text_platform.dart';
 
-class RichTextDialog extends StatefulWidget {
+class HtmlTextDialog extends StatefulWidget {
   static double width(BuildContext context) =>
       MediaQuery.of(context).size.width * 0.9;
 
@@ -20,15 +20,15 @@ class RichTextDialog extends StatefulWidget {
 
   final String appId;
   final String title;
-  final RichTextFeedback richTextFeedback;
+  final UpdatedHtml updatedHtml;
   final String initialValue;
   final String ownerId;
   final List<String> readAccess;
 
-  RichTextDialog({
+  HtmlTextDialog({
     Key? key,
     required this.title,
-    required this.richTextFeedback,
+    required this.updatedHtml,
     required this.initialValue,
     required this.appId,
     required this.ownerId,
@@ -36,7 +36,7 @@ class RichTextDialog extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _RichTextDialogState createState() => _RichTextDialogState();
+  _HtmlTextDialogState createState() => _HtmlTextDialogState();
 
   static void open(
       BuildContext context,
@@ -44,15 +44,15 @@ class RichTextDialog extends StatefulWidget {
       String ownerId,
       List<String> readAccess,
       String title,
-      RichTextFeedback richTextFeedback,
+      UpdatedHtml updatedHtml,
       String initialValue) {
     StyleRegistry.registry()
         .styleWithContext(context)
         .frontEndStyle().dialogStyle().openWidgetDialog(context,
         child:
-        RichTextDialog(
+        HtmlTextDialog(
           title: title,
-          richTextFeedback: richTextFeedback,
+          updatedHtml: updatedHtml,
           initialValue: initialValue,
           appId: appId,
           ownerId: ownerId,
@@ -61,13 +61,13 @@ class RichTextDialog extends StatefulWidget {
   }
 }
 
-class _RichTextDialogState extends State<RichTextDialog> {
+class _HtmlTextDialogState extends State<HtmlTextDialog> {
   final HtmlEditorController controller = HtmlEditorController();
   bool isHtml = false;
   double _progress = 1;
 
   bool _shouldUseNativeGrid(BuildContext context) {
-    double height = RichTextDialog.height(context);
+    double height = HtmlTextDialog.height(context);
     return (height > 820);
   }
 
@@ -92,25 +92,25 @@ class _RichTextDialogState extends State<RichTextDialog> {
           .frontEndStyle().buttonStyle().dialogButton(context,
           onPressed: isHtml
               ? () {
-                  isHtml = false;
-                  controller.toggleCodeView();
-                  setState(() {});
-                }
+            isHtml = false;
+            controller.toggleCodeView();
+            setState(() {});
+          }
               : null,
           label: 'Visual'),
       StyleRegistry.registry()
           .styleWithContext(context)
           .frontEndStyle().buttonStyle().dialogButton(
-            context,
-            label: 'Html',
-            onPressed: !isHtml
-                ? () {
-                    isHtml = true;
-                    controller.toggleCodeView();
-                    setState(() {});
-                  }
-                : null,
-          ),
+        context,
+        label: 'Html',
+        onPressed: !isHtml
+            ? () {
+          isHtml = true;
+          controller.toggleCodeView();
+          setState(() {});
+        }
+            : null,
+      ),
       Spacer(),
       StyleRegistry.registry()
           .styleWithContext(context)
@@ -121,9 +121,9 @@ class _RichTextDialogState extends State<RichTextDialog> {
           .styleWithContext(context)
           .frontEndStyle().buttonStyle().dialogButton(context,
           onPressed: () async {
-        Navigator.pop(context);
-        widget.richTextFeedback(await controller.getText());
-      }, label: 'Done'),
+            Navigator.pop(context);
+            widget.updatedHtml(await controller.getText());
+          }, label: 'Done'),
     ];
   }
 
@@ -135,21 +135,21 @@ class _RichTextDialogState extends State<RichTextDialog> {
         }
       },
       child: */
-        HtmlEditor(
-      controller: controller,
-      htmlEditorOptions: HtmlEditorOptions(
-        shouldEnsureVisible: true,
-        initialText: widget.initialValue,
-      ),
-      htmlToolbarOptions: HtmlToolbarOptions(
-          toolbarPosition: ToolbarPosition.aboveEditor,
-          toolbarType: _shouldUseNativeGrid(context)
-              ? ToolbarType.nativeGrid
-              : ToolbarType.nativeScrollable,
-          mediaUploadInterceptor: (platformFile, insertFileType) =>
-              _interceptUpload(platformFile, insertFileType)),
-      otherOptions: OtherOptions(height: RichTextDialog.height(context) - 130),
-    );
+      HtmlEditor(
+        controller: controller,
+        htmlEditorOptions: HtmlEditorOptions(
+          shouldEnsureVisible: true,
+          initialText: widget.initialValue,
+        ),
+        htmlToolbarOptions: HtmlToolbarOptions(
+            toolbarPosition: ToolbarPosition.aboveEditor,
+            toolbarType: _shouldUseNativeGrid(context)
+                ? ToolbarType.nativeGrid
+                : ToolbarType.nativeScrollable,
+            mediaUploadInterceptor: (platformFile, insertFileType) =>
+                _interceptUpload(platformFile, insertFileType)),
+        otherOptions: OtherOptions(height: HtmlTextDialog.height(context) - 130),
+      );
 /*
       ,
     );
@@ -170,16 +170,16 @@ class _RichTextDialogState extends State<RichTextDialog> {
     // All good
     var baseName = platformFile.name;
     var thumbnailBaseName =
-        BaseNameHelper.baseNameExt(baseName, 'thumbnail.png');
+    BaseNameHelper.baseNameExt(baseName, 'thumbnail.png');
     var memberMediumModel =
-        await MemberMediumHelper.createThumbnailUploadPhotoData(
-            widget.appId,
-            bytes,
-            baseName,
-            thumbnailBaseName,
-            widget.ownerId,
-            widget.readAccess,
-            feedbackProgress: _feedbackProgress);
+    await MemberMediumHelper.createThumbnailUploadPhotoData(
+        widget.appId,
+        bytes,
+        baseName,
+        thumbnailBaseName,
+        widget.ownerId,
+        widget.readAccess,
+        feedbackProgress: _feedbackProgress);
 
     String htmlCode;
     if (insertFileType == InsertFileType.video) {
