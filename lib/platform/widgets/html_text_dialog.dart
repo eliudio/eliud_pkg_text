@@ -67,6 +67,11 @@ class _HtmlTextDialogState extends State<HtmlTextDialog> {
   bool isHtml = false;
   double _progress = 1;
 
+  @override
+  void initState() {
+    super.initState();
+  }
+
   bool _shouldUseNativeGrid(BuildContext context) {
     if (kIsWeb) return true; // the nativeScrollable doesn't seem to work
     double height = HtmlTextDialog.height(context);
@@ -139,13 +144,19 @@ class _HtmlTextDialogState extends State<HtmlTextDialog> {
       child: */
       HtmlEditor(
         controller: controller,
+        callbacks: Callbacks(
+          onInit: () {
+            controller.setFullScreen();
+          }
+        ),
         htmlEditorOptions: HtmlEditorOptions(
           shouldEnsureVisible: true,
+          autoAdjustHeight: false,
           initialText: widget.initialValue,
         ),
         htmlToolbarOptions: HtmlToolbarOptions(
-
             toolbarPosition: ToolbarPosition.aboveEditor,
+//            defaultToolbarButtons: null,
             toolbarType: _shouldUseNativeGrid(context)
                 ? ToolbarType.nativeGrid
                 : ToolbarType.nativeScrollable,
