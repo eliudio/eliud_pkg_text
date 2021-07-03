@@ -156,7 +156,16 @@ class _HtmlTextDialogState extends State<HtmlTextDialog> {
         ),
         htmlToolbarOptions: HtmlToolbarOptions(
             toolbarPosition: ToolbarPosition.aboveEditor,
-//            defaultToolbarButtons: null,
+            defaultToolbarButtons: [
+              StyleButtons(),
+              FontSettingButtons(),
+              FontButtons(),
+              ColorButtons(),
+              ListButtons(),
+              ParagraphButtons(),
+              InsertButtons(audio: false),
+              OtherButtons(codeview: false, fullscreen: false)
+            ],
             toolbarType: _shouldUseNativeGrid(context)
                 ? ToolbarType.nativeGrid
                 : ToolbarType.nativeScrollable,
