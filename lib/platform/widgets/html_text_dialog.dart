@@ -68,6 +68,7 @@ class _HtmlTextDialogState extends State<HtmlTextDialog> {
   double _progress = 1;
 
   bool _shouldUseNativeGrid(BuildContext context) {
+    if (kIsWeb) return true; // the nativeScrollable doesn't seem to work
     double height = HtmlTextDialog.height(context);
     return (height > 820);
   }
@@ -143,6 +144,7 @@ class _HtmlTextDialogState extends State<HtmlTextDialog> {
           initialText: widget.initialValue,
         ),
         htmlToolbarOptions: HtmlToolbarOptions(
+
             toolbarPosition: ToolbarPosition.aboveEditor,
             toolbarType: _shouldUseNativeGrid(context)
                 ? ToolbarType.nativeGrid
