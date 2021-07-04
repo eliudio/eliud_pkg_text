@@ -8,4 +8,6 @@ abstract class AbstractTextPlatform {
 
   void updateHtml(BuildContext context, String appId, String ownerId, List<String> readAccess, String title,
       UpdatedHtml updatedHtml, String initialValue);
+
+  Widget htmlWidget(String html);
 }

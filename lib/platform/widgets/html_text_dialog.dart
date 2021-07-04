@@ -1,4 +1,5 @@
 import 'package:eliud_core/default_style/frontend/impl/dialog/dialog_helper.dart';
+import 'package:eliud_core/model/member_medium_model.dart';
 import 'package:eliud_core/style/frontend/frontend_style.dart';
 import 'package:eliud_core/style/style_registry.dart';
 import 'package:eliud_core/tools/tool_set.dart';
@@ -26,6 +27,12 @@ class HtmlTextDialog extends StatefulWidget {
   final String ownerId;
   final List<String> readAccess;
 
+  // Unfortunately when uploading files on web, we can not rely on using the path to upload the files. So in that case we rely on the bytes, not the path.
+  // i.e. we use _interceptUploadWithBytes or _interceptUploadWithPath depending on this flag.
+  // It seems that after uploading video with bytes (on web, as well on mobile when tested) then the uploaded file is correct, so hence we disable uploading video
+  // for now.
+  final bool isWeb;
+
   HtmlTextDialog({
     Key? key,
     required this.title,
@@ -34,6 +41,7 @@ class HtmlTextDialog extends StatefulWidget {
     required this.appId,
     required this.ownerId,
     required this.readAccess,
+    required this.isWeb,
   }) : super(key: key);
 
   @override
@@ -46,19 +54,22 @@ class HtmlTextDialog extends StatefulWidget {
       List<String> readAccess,
       String title,
       UpdatedHtml updatedHtml,
-      String initialValue) {
+      String initialValue,
+      bool isWeb) {
     StyleRegistry.registry()
         .styleWithContext(context)
-        .frontEndStyle().dialogStyle().openWidgetDialog(context,
-        child:
-        HtmlTextDialog(
-          title: title,
-          updatedHtml: updatedHtml,
-          initialValue: initialValue,
-          appId: appId,
-          ownerId: ownerId,
-          readAccess: readAccess,
-        ));
+        .frontEndStyle()
+        .dialogStyle()
+        .openWidgetDialog(context,
+            child: HtmlTextDialog(
+              title: title,
+              updatedHtml: updatedHtml,
+              initialValue: initialValue,
+              appId: appId,
+              ownerId: ownerId,
+              readAccess: readAccess,
+              isWeb: isWeb
+            ));
   }
 }
 
@@ -83,54 +94,51 @@ class _HtmlTextDialogState extends State<HtmlTextDialog> {
   Widget build(BuildContext context) {
     return StyleRegistry.registry()
         .styleWithContext(context)
-        .frontEndStyle().dialogWidgetStyle().flexibleDialog(
-        context,
-        title: widget.title,
-        buttons: _buttons(),
-        child: _child());
+        .frontEndStyle()
+        .dialogWidgetStyle()
+        .flexibleDialog(context,
+            title: widget.title, buttons: _buttons(), child: _child());
   }
 
   void _feedbackProgress(double progress) {}
 
   List<Widget> _buttons() {
     return [
-      StyleRegistry.registry()
-          .styleWithContext(context)
-          .frontEndStyle().buttonStyle().dialogButton(context,
-          onPressed: isHtml
-              ? () {
-            isHtml = false;
-            controller.toggleCodeView();
-            setState(() {});
-          }
-              : null,
-          label: 'Visual'),
-      StyleRegistry.registry()
-          .styleWithContext(context)
-          .frontEndStyle().buttonStyle().dialogButton(
-        context,
-        label: 'Html',
-        onPressed: !isHtml
-            ? () {
-          isHtml = true;
-          controller.toggleCodeView();
-          setState(() {});
-        }
-            : null,
-      ),
+      isHtml
+          ? StyleRegistry.registry()
+              .styleWithContext(context)
+              .frontEndStyle()
+              .buttonStyle()
+              .dialogButton(context, onPressed: () {
+              isHtml = false;
+              controller.toggleCodeView();
+              setState(() {});
+            }, label: 'Visual')
+          : StyleRegistry.registry()
+              .styleWithContext(context)
+              .frontEndStyle()
+              .buttonStyle()
+              .dialogButton(context, label: 'Html', onPressed: () {
+              isHtml = true;
+              controller.toggleCodeView();
+              setState(() {});
+            }),
       Spacer(),
       StyleRegistry.registry()
           .styleWithContext(context)
-          .frontEndStyle().buttonStyle().dialogButton(context, onPressed: () {
+          .frontEndStyle()
+          .buttonStyle()
+          .dialogButton(context, onPressed: () {
         Navigator.pop(context);
       }, label: 'Cancel'),
       StyleRegistry.registry()
           .styleWithContext(context)
-          .frontEndStyle().buttonStyle().dialogButton(context,
-          onPressed: () async {
-            Navigator.pop(context);
-            widget.updatedHtml(await controller.getText());
-          }, label: 'Done'),
+          .frontEndStyle()
+          .buttonStyle()
+          .dialogButton(context, onPressed: () async {
+        Navigator.pop(context);
+        widget.updatedHtml(await controller.getText());
+      }, label: 'Done'),
     ];
   }
 
@@ -142,44 +150,57 @@ class _HtmlTextDialogState extends State<HtmlTextDialog> {
         }
       },
       child: */
-      HtmlEditor(
-        controller: controller,
-        callbacks: Callbacks(
-          onInit: () {
-            controller.setFullScreen();
-          }
-        ),
-        htmlEditorOptions: HtmlEditorOptions(
-          shouldEnsureVisible: true,
-          autoAdjustHeight: false,
-          initialText: widget.initialValue,
-        ),
-        htmlToolbarOptions: HtmlToolbarOptions(
-            toolbarPosition: ToolbarPosition.aboveEditor,
-            defaultToolbarButtons: [
-              StyleButtons(),
-              FontSettingButtons(),
-              FontButtons(),
-              ColorButtons(),
-              ListButtons(),
-              ParagraphButtons(),
-              InsertButtons(audio: false),
-              OtherButtons(codeview: false, fullscreen: false)
-            ],
-            toolbarType: _shouldUseNativeGrid(context)
-                ? ToolbarType.nativeGrid
-                : ToolbarType.nativeScrollable,
-            mediaUploadInterceptor: (platformFile, insertFileType) =>
-                _interceptUpload(platformFile, insertFileType)),
-        otherOptions: OtherOptions(height: HtmlTextDialog.height(context) - 130),
-      );
-/*
-      ,
+        HtmlEditor(
+      controller: controller,
+      callbacks: Callbacks(onInit: () {
+        controller.setFullScreen();
+      }),
+      htmlEditorOptions: HtmlEditorOptions(
+        shouldEnsureVisible: true,
+        autoAdjustHeight: false,
+        initialText: widget.initialValue,
+      ),
+      htmlToolbarOptions: HtmlToolbarOptions(
+          toolbarPosition: ToolbarPosition.aboveEditor,
+          defaultToolbarButtons: [
+            StyleButtons(),
+            FontSettingButtons(),
+            FontButtons(),
+            ColorButtons(),
+            ListButtons(),
+            ParagraphButtons(),
+            InsertButtons(audio: false, video: !widget.isWeb),
+            OtherButtons(codeview: false, fullscreen: false)
+          ],
+          toolbarType: _shouldUseNativeGrid(context)
+              ? ToolbarType.nativeGrid
+              : ToolbarType.nativeScrollable,
+          mediaUploadInterceptor: (platformFile, insertFileType) =>
+              widget.isWeb ? _interceptUploadWithBytes(platformFile, insertFileType) :  _interceptUploadWithPath(platformFile, insertFileType)
+      ),
+      otherOptions: OtherOptions(height: HtmlTextDialog.height(context) - 130),
     );
-*/
   }
 
-  Future<bool> _interceptUpload(
+  Future<bool> _toHtml(InsertFileType insertFileType, MemberMediumModel memberMediumModel) async {
+    String htmlCode;
+    if (insertFileType == InsertFileType.video) {
+      htmlCode = process(kVideoHtml, parameters: <String, String>{
+        '\${VIDEO_URL}': memberMediumModel.url!,
+        '\${IDENTIFIER}': memberMediumModel.documentID!,
+      });
+    } else {
+      htmlCode = process(kIngHtml, parameters: <String, String>{
+        '\${IMG_URL}': memberMediumModel.url!,
+        '\${IDENTIFIER}': memberMediumModel.documentID!,
+      });
+    }
+
+    controller.insertHtml(htmlCode);
+    return false;
+  }
+
+  Future<bool> _interceptUploadWithBytes(
       PlatformFile platformFile, InsertFileType insertFileType) async {
     if (insertFileType == InsertFileType.audio) return false;
     var bytes = platformFile.bytes;
@@ -191,9 +212,11 @@ class _HtmlTextDialogState extends State<HtmlTextDialog> {
     // All good
     var memberMediumModel;
     var baseName = platformFile.name;
-    var thumbnailBaseName = BaseNameHelper.baseNameExt(baseName, 'thumbnail.png');
+    var thumbnailBaseName =
+    BaseNameHelper.baseNameExt(baseName, 'thumbnail.png');
     if (insertFileType == InsertFileType.video) {
-      memberMediumModel = await MemberMediumHelper.createThumbnailUploadVideoData(
+      memberMediumModel =
+      await MemberMediumHelper.createThumbnailUploadVideoData(
           widget.appId,
           bytes,
           baseName,
@@ -202,7 +225,8 @@ class _HtmlTextDialogState extends State<HtmlTextDialog> {
           widget.readAccess,
           feedbackProgress: _feedbackProgress);
     } else {
-      memberMediumModel = await MemberMediumHelper.createThumbnailUploadPhotoData(
+      memberMediumModel =
+      await MemberMediumHelper.createThumbnailUploadPhotoData(
           widget.appId,
           bytes,
           baseName,
@@ -212,23 +236,39 @@ class _HtmlTextDialogState extends State<HtmlTextDialog> {
           feedbackProgress: _feedbackProgress);
     }
 
-    String htmlCode;
+    return _toHtml(insertFileType, memberMediumModel);
+  }
+
+  Future<bool> _interceptUploadWithPath(
+      PlatformFile platformFile, InsertFileType insertFileType) async {
+    if (insertFileType == InsertFileType.audio) return false;
+    var path = platformFile.path;
+
+    // Conditions where we pass control to the internal html editor
+    if (path == null) return true;
+    if (insertFileType == InsertFileType.audio) return true;
+
+    // All good
+    var memberMediumModel;
     if (insertFileType == InsertFileType.video) {
-      htmlCode = process(kVideoHtml, parameters: <String, String>
-      {
-        '\${VIDEO_URL}': memberMediumModel.url!,
-        '\${IDENTIFIER}': memberMediumModel!.documentID!,
-      });
+      memberMediumModel =
+      await MemberMediumHelper.createThumbnailUploadVideoFile(
+          widget.appId,
+          path,
+          widget.ownerId,
+          widget.readAccess,
+          feedbackProgress: _feedbackProgress);
     } else {
-      htmlCode = process(kIngHtml, parameters: <String, String>
-      {
-        '\${IMG_URL}': memberMediumModel.url!,
-        '\${IDENTIFIER}': memberMediumModel!.documentID!,
-      });
+      memberMediumModel =
+      await MemberMediumHelper.createThumbnailUploadPhotoFile(
+          widget.appId,
+          path,
+          widget.ownerId,
+          widget.readAccess,
+          feedbackProgress: _feedbackProgress);
     }
 
-    controller.insertHtml(htmlCode);
-    return false;
+    return _toHtml(insertFileType, memberMediumModel);
   }
 }
 
@@ -251,4 +291,3 @@ const kIngHtml = """
     <source src="\${VIDEO_URL}">
 </figure>
 """;
-
