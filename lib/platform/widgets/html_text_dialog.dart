@@ -31,6 +31,7 @@ class HtmlTextDialog extends StatefulWidget {
   // i.e. we use _interceptUploadWithBytes or _interceptUploadWithPath depending on this flag.
   // It seems that after uploading video with bytes (on web, as well on mobile when tested) then the uploaded file is correct, so hence we disable uploading video
   // for now.
+  // Actually it seems video is SUPER unstable and even on mobile sometimes works and sometimes doesn't work. So, I'm disabling this by default
   final bool isWeb;
 
   HtmlTextDialog({
@@ -169,7 +170,8 @@ class _HtmlTextDialogState extends State<HtmlTextDialog> {
             ColorButtons(),
             ListButtons(),
             ParagraphButtons(),
-            InsertButtons(audio: false, video: !widget.isWeb),
+            // Actually it seems video is SUPER unstable and even on mobile sometimes works and sometimes doesn't work. So, I'm disabling this by default
+            InsertButtons(audio: false, video: false /*!widget.isWeb*/),
             OtherButtons(codeview: false, fullscreen: false)
           ],
           toolbarType: _shouldUseNativeGrid(context)
