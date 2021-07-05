@@ -101,7 +101,7 @@ class _HtmlTextDialogState extends State<HtmlTextDialog> {
             title: widget.title, buttons: _buttons(), child: _child());
   }
 
-  void _feedbackProgress(double progress) {}
+  void _feedbackProgress(double? progress) {}
 
   List<Widget> _buttons() {
     return [
