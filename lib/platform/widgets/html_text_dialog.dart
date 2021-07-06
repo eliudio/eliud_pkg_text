@@ -63,21 +63,20 @@ class HtmlTextDialog extends StatefulWidget {
         .dialogStyle()
         .openWidgetDialog(context,
             child: HtmlTextDialog(
-              title: title,
-              updatedHtml: updatedHtml,
-              initialValue: initialValue,
-              appId: appId,
-              ownerId: ownerId,
-              readAccess: readAccess,
-              isWeb: isWeb
-            ));
+                title: title,
+                updatedHtml: updatedHtml,
+                initialValue: initialValue,
+                appId: appId,
+                ownerId: ownerId,
+                readAccess: readAccess,
+                isWeb: isWeb));
   }
 }
 
 class _HtmlTextDialogState extends State<HtmlTextDialog> {
   final HtmlEditorController controller = HtmlEditorController();
   bool isHtml = false;
-  double _progress = 1;
+  double? _progress;
 
   @override
   void initState() {
@@ -101,90 +100,149 @@ class _HtmlTextDialogState extends State<HtmlTextDialog> {
             title: widget.title, buttons: _buttons(), child: _child());
   }
 
-  void _feedbackProgress(double? progress) {}
+  void _feedbackProgress(double? progress) {
+    setState(() {
+      _progress = progress;
+    });
+  }
 
   List<Widget> _buttons() {
-    return [
-      isHtml
-          ? StyleRegistry.registry()
-              .styleWithContext(context)
-              .frontEndStyle()
-              .buttonStyle()
-              .dialogButton(context, onPressed: () {
-              isHtml = false;
-              controller.toggleCodeView();
-              setState(() {});
-            }, label: 'Visual')
-          : StyleRegistry.registry()
-              .styleWithContext(context)
-              .frontEndStyle()
-              .buttonStyle()
-              .dialogButton(context, label: 'Html', onPressed: () {
-              isHtml = true;
-              controller.toggleCodeView();
-              setState(() {});
-            }),
-      Spacer(),
-      StyleRegistry.registry()
-          .styleWithContext(context)
-          .frontEndStyle()
-          .buttonStyle()
-          .dialogButton(context, onPressed: () {
-        Navigator.pop(context);
-      }, label: 'Cancel'),
-      StyleRegistry.registry()
-          .styleWithContext(context)
-          .frontEndStyle()
-          .buttonStyle()
-          .dialogButton(context, onPressed: () async {
-        Navigator.pop(context);
-        widget.updatedHtml(await controller.getText());
-      }, label: 'Done'),
-    ];
+    if (_progress != null) {
+      return [
+        StyleRegistry.registry()
+            .styleWithContext(context)
+            .frontEndStyle()
+            .progressIndicatorStyle()
+            .progressIndicatorWithValue(context, value: _progress!)
+      ];
+    } else {
+      return [
+        isHtml
+            ? StyleRegistry.registry()
+                .styleWithContext(context)
+                .frontEndStyle()
+                .buttonStyle()
+                .dialogButton(context, onPressed: () {
+                isHtml = false;
+                controller.toggleCodeView();
+                setState(() {});
+              }, label: 'Visual')
+            : StyleRegistry.registry()
+                .styleWithContext(context)
+                .frontEndStyle()
+                .buttonStyle()
+                .dialogButton(context, label: 'Html', onPressed: () {
+                isHtml = true;
+                controller.toggleCodeView();
+                setState(() {});
+              }),
+        Spacer(),
+        StyleRegistry.registry()
+            .styleWithContext(context)
+            .frontEndStyle()
+            .buttonStyle()
+            .dialogButton(context, onPressed: () {
+          Navigator.pop(context);
+        }, label: 'Cancel'),
+        StyleRegistry.registry()
+            .styleWithContext(context)
+            .frontEndStyle()
+            .buttonStyle()
+            .dialogButton(context, onPressed: () async {
+          Navigator.pop(context);
+          widget.updatedHtml(await controller.getText());
+        }, label: 'Done'),
+      ];
+    }
   }
 
   Widget _child() {
-    return /*GestureDetector(
-      onTap: () {
-        if (!kIsWeb) {
-          controller.clearFocus();
-        }
-      },
-      child: */
-        HtmlEditor(
-      controller: controller,
-      callbacks: Callbacks(onInit: () {
-        controller.setFullScreen();
-      }),
-      htmlEditorOptions: HtmlEditorOptions(
-        shouldEnsureVisible: true,
-        autoAdjustHeight: false,
-        initialText: widget.initialValue,
-      ),
-      htmlToolbarOptions: HtmlToolbarOptions(
-          toolbarPosition: ToolbarPosition.aboveEditor,
-          defaultToolbarButtons: [
-            StyleButtons(),
-            FontSettingButtons(),
-            FontButtons(),
-            ColorButtons(),
-            ListButtons(),
-            ParagraphButtons(),
-            // Actually it seems video is SUPER unstable and even on mobile sometimes works and sometimes doesn't work. So, I'm disabling this by default
-            InsertButtons(audio: false, video: false /*!widget.isWeb*/),
-            OtherButtons(codeview: false, fullscreen: false)
-          ],
-          toolbarType: _shouldUseNativeGrid(context)
-              ? ToolbarType.nativeGrid
-              : ToolbarType.nativeScrollable,
-          mediaUploadInterceptor: (platformFile, insertFileType) =>
-              widget.isWeb ? _interceptUploadWithBytes(platformFile, insertFileType) :  _interceptUploadWithPath(platformFile, insertFileType)
-      ),
-      otherOptions: OtherOptions(height: HtmlTextDialog.height(context) - 130),
-    );
+    if (_progress != null) {
+      return /*GestureDetector(
+        onTap: () {
+          if (!kIsWeb) {
+            controller.clearFocus();
+          }
+        },
+        child: */
+          HtmlEditor(
+        controller: controller,
+        callbacks: Callbacks(onInit: () {
+          controller.setFullScreen();
+        }),
+        htmlEditorOptions: HtmlEditorOptions(
+          shouldEnsureVisible: true,
+          autoAdjustHeight: false,
+          initialText: widget.initialValue,
+        ),
+        htmlToolbarOptions: HtmlToolbarOptions(
+            toolbarPosition: ToolbarPosition.aboveEditor,
+            customToolbarButtons: [
+              StyleRegistry.registry()
+                  .styleWithContext(context)
+                  .frontEndStyle()
+                  .progressIndicatorStyle()
+                  .progressIndicatorWithValue(context, value: _progress!),
+              Spacer(),
+            ],
+            customToolbarInsertionIndices: [0, 1],
+            defaultToolbarButtons: [],
+            toolbarType: _shouldUseNativeGrid(context)
+                ? ToolbarType.nativeGrid
+                : ToolbarType.nativeScrollable,
+            mediaUploadInterceptor: (platformFile, insertFileType) =>
+                widget.isWeb
+                    ? _interceptUploadWithBytes(platformFile, insertFileType)
+                    : _interceptUploadWithPath(platformFile, insertFileType)),
+        otherOptions:
+            OtherOptions(height: HtmlTextDialog.height(context) - 130),
+      );
+    } else {
+      return /*GestureDetector(
+        onTap: () {
+          if (!kIsWeb) {
+            controller.clearFocus();
+          }
+        },
+        child: */
+          HtmlEditor(
+        controller: controller,
+        callbacks: Callbacks(onInit: () {
+          controller.setFullScreen();
+        }),
+        htmlEditorOptions: HtmlEditorOptions(
+          shouldEnsureVisible: true,
+          autoAdjustHeight: false,
+          initialText: widget.initialValue,
+        ),
+        htmlToolbarOptions: HtmlToolbarOptions(
+            toolbarPosition: ToolbarPosition.aboveEditor,
+            defaultToolbarButtons: [
+              StyleButtons(),
+              FontSettingButtons(),
+              FontButtons(),
+              ColorButtons(),
+              ListButtons(),
+              ParagraphButtons(),
+              // Actually it seems video is SUPER unstable and even on mobile sometimes works and sometimes doesn't work. So, I'm disabling this by default
+              InsertButtons(audio: false, video: false /*!widget.isWeb*/),
+              OtherButtons(codeview: false, fullscreen: false)
+            ],
+            toolbarType: _shouldUseNativeGrid(context)
+                ? ToolbarType.nativeGrid
+                : ToolbarType.nativeScrollable,
+            mediaUploadInterceptor: (platformFile, insertFileType) =>
+                widget.isWeb
+                    ? _interceptUploadWithBytes(platformFile, insertFileType)
+                    : _interceptUploadWithPath(platformFile, insertFileType)),
+        otherOptions:
+            OtherOptions(height: HtmlTextDialog.height(context) - 130),
+      );
+    }
   }
 
-  Future<bool> _toHtml(InsertFileType insertFileType, MemberMediumModel memberMediumModel) async {
+  Future<bool> _toHtml(InsertFileType insertFileType,
+      MemberMediumModel memberMediumModel) async {
     String htmlCode;
     if (insertFileType == InsertFileType.video) {
       htmlCode = process(kVideoHtml, parameters: <String, String>{
@@ -204,6 +262,9 @@ class _HtmlTextDialogState extends State<HtmlTextDialog> {
 
   Future<bool> _interceptUploadWithBytes(
       PlatformFile platformFile, InsertFileType insertFileType) async {
+    setState(() {
+      _progress = 0;
+    });
     if (insertFileType == InsertFileType.audio) return false;
     var bytes = platformFile.bytes;
 
@@ -215,34 +276,41 @@ class _HtmlTextDialogState extends State<HtmlTextDialog> {
     var memberMediumModel;
     var baseName = platformFile.name;
     var thumbnailBaseName =
-    BaseNameHelper.baseNameExt(baseName, 'thumbnail.png');
+        BaseNameHelper.baseNameExt(baseName, 'thumbnail.png');
     if (insertFileType == InsertFileType.video) {
       memberMediumModel =
-      await MemberMediumHelper.createThumbnailUploadVideoData(
-          widget.appId,
-          bytes,
-          baseName,
-          thumbnailBaseName,
-          widget.ownerId,
-          widget.readAccess,
-          feedbackProgress: _feedbackProgress);
+          await MemberMediumHelper.createThumbnailUploadVideoData(
+              widget.appId,
+              bytes,
+              baseName,
+              thumbnailBaseName,
+              widget.ownerId,
+              widget.readAccess,
+              feedbackProgress: _feedbackProgress);
     } else {
       memberMediumModel =
-      await MemberMediumHelper.createThumbnailUploadPhotoData(
-          widget.appId,
-          bytes,
-          baseName,
-          thumbnailBaseName,
-          widget.ownerId,
-          widget.readAccess,
-          feedbackProgress: _feedbackProgress);
+          await MemberMediumHelper.createThumbnailUploadPhotoData(
+              widget.appId,
+              bytes,
+              baseName,
+              thumbnailBaseName,
+              widget.ownerId,
+              widget.readAccess,
+              feedbackProgress: _feedbackProgress);
     }
 
+    setState(() {
+      _progress = null;
+    });
     return _toHtml(insertFileType, memberMediumModel);
   }
 
   Future<bool> _interceptUploadWithPath(
       PlatformFile platformFile, InsertFileType insertFileType) async {
+    setState(() {
+      _progress = 0;
+    });
+
     if (insertFileType == InsertFileType.audio) return false;
     var path = platformFile.path;
 
@@ -254,22 +322,19 @@ class _HtmlTextDialogState extends State<HtmlTextDialog> {
     var memberMediumModel;
     if (insertFileType == InsertFileType.video) {
       memberMediumModel =
-      await MemberMediumHelper.createThumbnailUploadVideoFile(
-          widget.appId,
-          path,
-          widget.ownerId,
-          widget.readAccess,
-          feedbackProgress: _feedbackProgress);
+          await MemberMediumHelper.createThumbnailUploadVideoFile(
+              widget.appId, path, widget.ownerId, widget.readAccess,
+              feedbackProgress: _feedbackProgress);
     } else {
       memberMediumModel =
-      await MemberMediumHelper.createThumbnailUploadPhotoFile(
-          widget.appId,
-          path,
-          widget.ownerId,
-          widget.readAccess,
-          feedbackProgress: _feedbackProgress);
+          await MemberMediumHelper.createThumbnailUploadPhotoFile(
+              widget.appId, path, widget.ownerId, widget.readAccess,
+              feedbackProgress: _feedbackProgress);
     }
 
+    setState(() {
+      _progress = null;
+    });
     return _toHtml(insertFileType, memberMediumModel);
   }
 }
