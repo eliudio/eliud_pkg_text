@@ -26,6 +26,7 @@ class HtmlTextDialog extends StatefulWidget {
   final String initialValue;
   final String ownerId;
   final List<String> readAccess;
+  final List<Widget>? extraIcons;
 
   // Unfortunately when uploading files on web, we can not rely on using the path to upload the files. So in that case we rely on the bytes, not the path.
   // i.e. we use _interceptUploadWithBytes or _interceptUploadWithPath depending on this flag.
@@ -43,6 +44,7 @@ class HtmlTextDialog extends StatefulWidget {
     required this.ownerId,
     required this.readAccess,
     required this.isWeb,
+    this.extraIcons,
   }) : super(key: key);
 
   @override
@@ -56,7 +58,7 @@ class HtmlTextDialog extends StatefulWidget {
       String title,
       UpdatedHtml updatedHtml,
       String initialValue,
-      bool isWeb) {
+      bool isWeb, {List<Widget>? extraIcons}) {
     StyleRegistry.registry()
         .styleWithContext(context)
         .frontEndStyle()
@@ -69,7 +71,8 @@ class HtmlTextDialog extends StatefulWidget {
                 appId: appId,
                 ownerId: ownerId,
                 readAccess: readAccess,
-                isWeb: isWeb));
+                isWeb: isWeb,
+                extraIcons: extraIcons,));
   }
 }
 
@@ -116,43 +119,49 @@ class _HtmlTextDialogState extends State<HtmlTextDialog> {
             .progressIndicatorWithValue(context, value: _progress!)
       ];
     } else {
-      return [
-        isHtml
-            ? StyleRegistry.registry()
-                .styleWithContext(context)
-                .frontEndStyle()
-                .buttonStyle()
-                .dialogButton(context, onPressed: () {
-                isHtml = false;
-                controller.toggleCodeView();
-                setState(() {});
-              }, label: 'Visual')
-            : StyleRegistry.registry()
-                .styleWithContext(context)
-                .frontEndStyle()
-                .buttonStyle()
-                .dialogButton(context, label: 'Html', onPressed: () {
-                isHtml = true;
-                controller.toggleCodeView();
-                setState(() {});
-              }),
-        Spacer(),
-        StyleRegistry.registry()
+      List<Widget> buttons = <Widget>[];
+      if (isHtml) {
+        buttons.add(StyleRegistry.registry()
             .styleWithContext(context)
             .frontEndStyle()
             .buttonStyle()
             .dialogButton(context, onPressed: () {
-          Navigator.pop(context);
-        }, label: 'Cancel'),
-        StyleRegistry.registry()
+          isHtml = false;
+          controller.toggleCodeView();
+          setState(() {});
+        }, label: 'Visual'));
+      } else {
+        buttons.add(StyleRegistry.registry()
             .styleWithContext(context)
             .frontEndStyle()
             .buttonStyle()
-            .dialogButton(context, onPressed: () async {
-          Navigator.pop(context);
-          widget.updatedHtml(await controller.getText());
-        }, label: 'Done'),
-      ];
+            .dialogButton(context, label: 'Html', onPressed: () {
+          isHtml = true;
+          controller.toggleCodeView();
+          setState(() {});
+        }));
+      }
+      buttons.add(Spacer());
+      if (widget.extraIcons != null) {
+        buttons.addAll(widget.extraIcons!);
+        buttons.add(Spacer());
+      }
+      buttons.add(StyleRegistry.registry()
+          .styleWithContext(context)
+          .frontEndStyle()
+          .buttonStyle()
+          .dialogButton(context, onPressed: () {
+        Navigator.pop(context);
+      }, label: 'Cancel'));
+      buttons.add(StyleRegistry.registry()
+          .styleWithContext(context)
+          .frontEndStyle()
+          .buttonStyle()
+          .dialogButton(context, onPressed: () async {
+        Navigator.pop(context);
+        widget.updatedHtml(await controller.getText());
+      }, label: 'Done'));
+      return buttons;
     }
   }
 

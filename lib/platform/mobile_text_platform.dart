@@ -6,8 +6,8 @@ import 'package:flutter_html/flutter_html.dart';
 
 class MobileTextPlatform extends AbstractTextPlatform {
   @override
-  void updateHtml(BuildContext context, String appId, String ownerId, List<String> readAccess, String title, UpdatedHtml updatedHtml, String initialValue) {
-    HtmlTextDialog.open(context, appId, ownerId, readAccess, title, updatedHtml, initialValue, false);
+  void updateHtml(BuildContext context, String appId, String ownerId, List<String> readAccess, String title, UpdatedHtml updatedHtml, String initialValue, {List<Widget>? extraIcons}) {
+    HtmlTextDialog.open(context, appId, ownerId, readAccess, title, updatedHtml, initialValue, false, extraIcons: extraIcons);
   }
 
   @override
