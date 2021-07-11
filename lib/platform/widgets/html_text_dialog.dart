@@ -104,9 +104,7 @@ class _HtmlTextDialogState extends State<HtmlTextDialog> {
   }
 
   void _feedbackProgress(double? progress) {
-    setState(() {
-      _progress = progress;
-    });
+    setProgress(progress);
   }
 
   List<Widget> _buttons() {
@@ -271,9 +269,9 @@ class _HtmlTextDialogState extends State<HtmlTextDialog> {
 
   Future<bool> _interceptUploadWithBytes(
       PlatformFile platformFile, InsertFileType insertFileType) async {
-    setState(() {
-      _progress = 0;
-    });
+    if (!kIsWeb) {
+      setProgress(0);
+    }
     if (insertFileType == InsertFileType.audio) return false;
     var bytes = platformFile.bytes;
 
@@ -308,17 +306,21 @@ class _HtmlTextDialogState extends State<HtmlTextDialog> {
               feedbackProgress: _feedbackProgress);
     }
 
-    setState(() {
-      _progress = null;
-    });
+    setProgress(null);
     return _toHtml(insertFileType, memberMediumModel);
+  }
+
+  void setProgress(double? progress) {
+    if (!kIsWeb) {
+      setState(() {
+        _progress = progress;
+      });
+    }
   }
 
   Future<bool> _interceptUploadWithPath(
       PlatformFile platformFile, InsertFileType insertFileType) async {
-    setState(() {
-      _progress = 0;
-    });
+    setProgress(0);
 
     if (insertFileType == InsertFileType.audio) return false;
     var path = platformFile.path;
@@ -341,9 +343,7 @@ class _HtmlTextDialogState extends State<HtmlTextDialog> {
               feedbackProgress: _feedbackProgress);
     }
 
-    setState(() {
-      _progress = null;
-    });
+    setProgress(null);
     return _toHtml(insertFileType, memberMediumModel);
   }
 }
