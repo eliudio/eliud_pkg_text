@@ -59,6 +59,9 @@ class HtmlTextDialog extends StatefulWidget {
       UpdatedHtml updatedHtml,
       String initialValue,
       bool isWeb, {List<Widget>? extraIcons}) {
+    if ((initialValue == null) || (initialValue.length == 0))
+      initialValue = ' ';
+
     StyleRegistry.registry()
         .styleWithContext(context)
         .frontEndStyle()
@@ -232,7 +235,7 @@ class _HtmlTextDialogState extends State<HtmlTextDialog> {
               ListButtons(),
               ParagraphButtons(),
               // Actually it seems video is SUPER unstable and even on mobile sometimes works and sometimes doesn't work. So, I'm disabling this by default
-              InsertButtons(audio: false, video: false /*!widget.isWeb*/),
+              InsertButtons(audio: false, video: true /*!widget.isWeb*/),
               OtherButtons(codeview: false, fullscreen: false)
             ],
             toolbarType: _shouldUseNativeGrid(context)
@@ -281,8 +284,8 @@ class _HtmlTextDialogState extends State<HtmlTextDialog> {
 
     // All good
     var memberMediumModel;
-    var baseName = platformFile.name;
     var memberMediumDocumentID = newRandomKey();
+    var baseName = memberMediumDocumentID + '.' + platformFile.name;
     var thumbnailBaseName =
         BaseNameHelper.baseNameExt(memberMediumDocumentID, baseName, 'thumbnail.png');
     if (insertFileType == InsertFileType.video) {
