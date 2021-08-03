@@ -1,7 +1,7 @@
 import 'package:eliud_core/default_style/frontend/impl/dialog/dialog_helper.dart';
 import 'package:eliud_core/model/member_medium_model.dart';
-import 'package:eliud_core/style/frontend/frontend_style.dart';
 import 'package:eliud_core/style/style_registry.dart';
+import 'package:eliud_core/tools/random.dart';
 import 'package:eliud_core/tools/tool_set.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -282,11 +282,12 @@ class _HtmlTextDialogState extends State<HtmlTextDialog> {
     // All good
     var memberMediumModel;
     var baseName = platformFile.name;
+    var memberMediumDocumentID = newRandomKey();
     var thumbnailBaseName =
-        BaseNameHelper.baseNameExt(baseName, 'thumbnail.png');
+        BaseNameHelper.baseNameExt(memberMediumDocumentID, baseName, 'thumbnail.png');
     if (insertFileType == InsertFileType.video) {
       memberMediumModel =
-          await MemberMediumHelper.createThumbnailUploadVideoData(
+          await MemberMediumHelper.createThumbnailUploadVideoData(memberMediumDocumentID,
               widget.appId,
               bytes,
               baseName,
@@ -296,7 +297,7 @@ class _HtmlTextDialogState extends State<HtmlTextDialog> {
               feedbackProgress: _feedbackProgress);
     } else {
       memberMediumModel =
-          await MemberMediumHelper.createThumbnailUploadPhotoData(
+          await MemberMediumHelper.createThumbnailUploadPhotoData(memberMediumDocumentID,
               widget.appId,
               bytes,
               baseName,
@@ -331,14 +332,15 @@ class _HtmlTextDialogState extends State<HtmlTextDialog> {
 
     // All good
     var memberMediumModel;
+    var memberMediumDocumentID = newRandomKey();
     if (insertFileType == InsertFileType.video) {
       memberMediumModel =
-          await MemberMediumHelper.createThumbnailUploadVideoFile(
+          await MemberMediumHelper.createThumbnailUploadVideoFile(memberMediumDocumentID,
               widget.appId, path, widget.ownerId, widget.readAccess,
               feedbackProgress: _feedbackProgress);
     } else {
       memberMediumModel =
-          await MemberMediumHelper.createThumbnailUploadPhotoFile(
+          await MemberMediumHelper.createThumbnailUploadPhotoFile(memberMediumDocumentID,
               widget.appId, path, widget.ownerId, widget.readAccess,
               feedbackProgress: _feedbackProgress);
     }
