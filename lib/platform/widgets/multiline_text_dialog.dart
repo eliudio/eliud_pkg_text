@@ -1,4 +1,4 @@
-import 'package:eliud_core/default_style/frontend/impl/dialog/dialog_helper.dart';
+import 'package:eliud_core/default_style/frontend/helper/dialog/dialog_helper.dart';
 import 'package:eliud_core/style/style_registry.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
