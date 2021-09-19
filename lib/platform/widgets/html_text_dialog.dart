@@ -148,13 +148,7 @@ class _HtmlTextDialogState extends State<HtmlTextDialog> {
 
   Widget _child() {
     if (_progress != null) {
-      return /*GestureDetector(
-        onTap: () {
-          if (!kIsWeb) {
-            controller.clearFocus();
-          }
-        },
-        child: */
+      return
           HtmlEditor(
         controller: controller,
         callbacks: Callbacks(onInit: () {
@@ -184,13 +178,7 @@ class _HtmlTextDialogState extends State<HtmlTextDialog> {
             OtherOptions(height: HtmlTextDialog.height(context) - 130),
       );
     } else {
-      return /*GestureDetector(
-        onTap: () {
-          if (!kIsWeb) {
-            controller.clearFocus();
-          }
-        },
-        child: */
+      return
           HtmlEditor(
         controller: controller,
         callbacks: Callbacks(onInit: () {
@@ -211,7 +199,7 @@ class _HtmlTextDialogState extends State<HtmlTextDialog> {
               ListButtons(),
               ParagraphButtons(),
               // Actually it seems video is SUPER unstable and even on mobile sometimes works and sometimes doesn't work. So, I'm disabling this by default
-              InsertButtons(audio: false, video: true /*!widget.isWeb*/),
+              InsertButtons(audio: false, video: true ),
               OtherButtons(codeview: false, fullscreen: false)
             ],
             toolbarType: _shouldUseNativeGrid(context)
