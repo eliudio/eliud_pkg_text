@@ -1,6 +1,10 @@
 import 'package:eliud_core/model/member_medium_model.dart';
 import 'package:eliud_core/style/_default/frontend/helper/dialog/dialog_helper.dart';
+import 'package:eliud_core/style/frontend/has_button.dart';
+import 'package:eliud_core/style/frontend/has_dialog_widget.dart';
+import 'package:eliud_core/style/frontend/has_progress_indicator.dart';
 import 'package:eliud_core/style/style_registry.dart';
+import 'package:eliud_core/style/frontend/has_dialog.dart';
 import 'package:eliud_core/tools/random.dart';
 import 'package:eliud_core/tools/tool_set.dart';
 import 'package:flutter/cupertino.dart';
@@ -98,11 +102,7 @@ class _HtmlTextDialogState extends State<HtmlTextDialog> {
   final DialogStateHelper dialogHelper = DialogStateHelper();
   @override
   Widget build(BuildContext context) {
-    return StyleRegistry.registry()
-        .styleWithContext(context)
-        .frontEndStyle()
-        .dialogWidgetStyle()
-        .flexibleDialog(context,
+    return flexibleDialog(context,
             title: widget.title, buttons: _buttons(), child: _child());
   }
 
@@ -113,30 +113,18 @@ class _HtmlTextDialogState extends State<HtmlTextDialog> {
   List<Widget> _buttons() {
     if (_progress != null) {
       return [
-        StyleRegistry.registry()
-            .styleWithContext(context)
-            .frontEndStyle()
-            .progressIndicatorStyle()
-            .progressIndicatorWithValue(context, value: _progress!)
+        progressIndicatorWithValue(context, value: _progress!)
       ];
     } else {
       List<Widget> buttons = <Widget>[];
       if (isHtml) {
-        buttons.add(StyleRegistry.registry()
-            .styleWithContext(context)
-            .frontEndStyle()
-            .buttonStyle()
-            .dialogButton(context, onPressed: () {
+        buttons.add(dialogButton(context, onPressed: () {
           isHtml = false;
           controller.toggleCodeView();
           setState(() {});
         }, label: 'Visual'));
       } else {
-        buttons.add(StyleRegistry.registry()
-            .styleWithContext(context)
-            .frontEndStyle()
-            .buttonStyle()
-            .dialogButton(context, label: 'Html', onPressed: () {
+        buttons.add(dialogButton(context, label: 'Html', onPressed: () {
           isHtml = true;
           controller.toggleCodeView();
           setState(() {});
@@ -147,18 +135,10 @@ class _HtmlTextDialogState extends State<HtmlTextDialog> {
         buttons.addAll(widget.extraIcons!);
         buttons.add(Spacer());
       }
-      buttons.add(StyleRegistry.registry()
-          .styleWithContext(context)
-          .frontEndStyle()
-          .buttonStyle()
-          .dialogButton(context, onPressed: () {
+      buttons.add(dialogButton(context, onPressed: () {
         Navigator.pop(context);
       }, label: 'Cancel'));
-      buttons.add(StyleRegistry.registry()
-          .styleWithContext(context)
-          .frontEndStyle()
-          .buttonStyle()
-          .dialogButton(context, onPressed: () async {
+      buttons.add(dialogButton(context, onPressed: () async {
         Navigator.pop(context);
         widget.updatedHtml(await controller.getText());
       }, label: 'Done'));
@@ -188,11 +168,7 @@ class _HtmlTextDialogState extends State<HtmlTextDialog> {
         htmlToolbarOptions: HtmlToolbarOptions(
             toolbarPosition: ToolbarPosition.aboveEditor,
             customToolbarButtons: [
-              StyleRegistry.registry()
-                  .styleWithContext(context)
-                  .frontEndStyle()
-                  .progressIndicatorStyle()
-                  .progressIndicatorWithValue(context, value: _progress!),
+              progressIndicatorWithValue(context, value: _progress!),
               Spacer(),
             ],
             customToolbarInsertionIndices: [0, 1],

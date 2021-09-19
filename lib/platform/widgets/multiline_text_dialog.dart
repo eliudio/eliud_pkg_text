@@ -1,4 +1,7 @@
 import 'package:eliud_core/style/_default/frontend/helper/dialog/dialog_helper.dart';
+import 'package:eliud_core/style/frontend/has_button.dart';
+import 'package:eliud_core/style/frontend/has_dialog.dart';
+import 'package:eliud_core/style/frontend/has_dialog_widget.dart';
 import 'package:eliud_core/style/style_registry.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -41,9 +44,7 @@ class MultilineTextDialog extends StatefulWidget {
       String title,
       UpdatedHtml updatedHtml,
       String initialValue) {
-    StyleRegistry.registry()
-        .styleWithContext(context)
-        .frontEndStyle().dialogStyle().openWidgetDialog(context,
+    openWidgetDialog(context,
         child:
         MultilineTextDialog(
           title: title,
@@ -62,9 +63,7 @@ class _MultilineTextDialogState extends State<MultilineTextDialog> {
   final DialogStateHelper dialogHelper = DialogStateHelper();
   @override
   Widget build(BuildContext context) {
-    return StyleRegistry.registry()
-        .styleWithContext(context)
-        .frontEndStyle().dialogWidgetStyle().flexibleDialog(
+    return flexibleDialog(
         context,
         title: widget.title,
         buttons: _buttons(),
@@ -80,14 +79,10 @@ class _MultilineTextDialogState extends State<MultilineTextDialog> {
   List<Widget> _buttons() {
     return [
       Spacer(),
-      StyleRegistry.registry()
-          .styleWithContext(context)
-          .frontEndStyle().buttonStyle().dialogButton(context, onPressed: () {
+      dialogButton(context, onPressed: () {
         Navigator.pop(context);
       }, label: 'Cancel'),
-      StyleRegistry.registry()
-          .styleWithContext(context)
-          .frontEndStyle().buttonStyle().dialogButton(context,
+      dialogButton(context,
           onPressed: () async {
             Navigator.pop(context);
             widget.updatedHtml(controller.text);
