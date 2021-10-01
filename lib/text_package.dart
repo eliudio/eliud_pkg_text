@@ -7,6 +7,8 @@ import 'package:flutter_bloc/src/bloc_provider.dart';
 import 'package:eliud_core/model/access_model.dart';
 
 abstract class TextPackage extends Package {
+  TextPackage() : super('eliud_pkg_text');
+
   @override
   BlocProvider? createMainBloc(NavigatorBloc navigatorBloc, AccessBloc accessBloc) => null;
 
