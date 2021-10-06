@@ -254,23 +254,22 @@ class _HtmlTextDialogState extends State<HtmlTextDialog> {
         BaseNameHelper.baseNameExt(memberMediumDocumentID, baseName, 'thumbnail.png');
     if (insertFileType == InsertFileType.video) {
       memberMediumModel =
-          await MemberMediumHelper.createThumbnailUploadVideoData(memberMediumDocumentID,
-              widget.appId,
+          await MemberMediumHelper(widget.appId,widget.ownerId,
+            widget.readAccess,
+          ).createThumbnailUploadVideoData(memberMediumDocumentID,
               bytes,
               baseName,
               thumbnailBaseName,
-              widget.ownerId,
-              widget.readAccess,
               feedbackProgress: _feedbackProgress);
     } else {
       memberMediumModel =
-          await MemberMediumHelper.createThumbnailUploadPhotoData(memberMediumDocumentID,
-              widget.appId,
+          await MemberMediumHelper(widget.appId,
+            widget.ownerId,
+            widget.readAccess,
+          ).createThumbnailUploadPhotoData(memberMediumDocumentID,
               bytes,
               baseName,
               thumbnailBaseName,
-              widget.ownerId,
-              widget.readAccess,
               feedbackProgress: _feedbackProgress);
     }
 
@@ -302,13 +301,13 @@ class _HtmlTextDialogState extends State<HtmlTextDialog> {
     var memberMediumDocumentID = newRandomKey();
     if (insertFileType == InsertFileType.video) {
       memberMediumModel =
-          await MemberMediumHelper.createThumbnailUploadVideoFile(memberMediumDocumentID,
-              widget.appId, path, widget.ownerId, widget.readAccess,
+          await MemberMediumHelper(widget.appId, widget.ownerId, widget.readAccess).createThumbnailUploadVideoFile(memberMediumDocumentID,
+              path,
               feedbackProgress: _feedbackProgress);
     } else {
       memberMediumModel =
-          await MemberMediumHelper.createThumbnailUploadPhotoFile(memberMediumDocumentID,
-              widget.appId, path, widget.ownerId, widget.readAccess,
+          await MemberMediumHelper(widget.appId, widget.ownerId, widget.readAccess,).createThumbnailUploadPhotoFile(memberMediumDocumentID,
+              path,
               feedbackProgress: _feedbackProgress);
     }
 
