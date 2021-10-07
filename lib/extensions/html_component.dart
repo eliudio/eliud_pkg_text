@@ -22,6 +22,9 @@ class HtmlComponentConstructorDefault implements ComponentConstructor {
   Widget createNew({Key? key, required String id, Map<String, dynamic>? parameters}) {
     return HtmlComponent(key: key, htmlID: id);
   }
+
+  @override
+  Future<dynamic> getModel({required String appId, required String id}) async => await htmlRepository(appId: appId)!.get(id);
 }
 
 class HtmlComponent extends AbstractHtmlComponent {
