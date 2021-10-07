@@ -1,4 +1,5 @@
 import 'package:eliud_core/model/conditions_simple_model.dart';
+import 'package:eliud_pkg_text/model/html_model.dart';
 import 'package:eliud_pkg_text/platform/text_platform.dart';
 import 'package:eliud_pkg_text/platform/widgets/handle_member_medium_model.dart';
 import 'package:eliud_pkg_text/platform/widgets/handle_platform_medium_model.dart';
@@ -25,12 +26,19 @@ class WebTextPlatform extends AbstractTextPlatform {
       BuildContext context,
       String appId,
       String ownerId,
-      PrivilegeLevelRequiredSimple privilegeLevelRequiredSimple,
-      String title,
+      HtmlModel htmlModel,
       UpdatedHtml updatedHtml,
-      String initialValue,
+      String title,
       {List<Widget>? extraIcons}) {
-    HtmlTextDialog.open(context, appId, ownerId, title, updatedHtml, initialValue, true, HandlePlatformMediumModel(appId, ownerId, privilegeLevelRequiredSimple), extraIcons: extraIcons);
+    updateHtmlUsingPlatformMedium2(
+        context,
+        appId,
+        ownerId,
+        htmlModel,
+        updatedHtml,
+        title,
+        true,
+        extraIcons:extraIcons);
   }
 
   @override

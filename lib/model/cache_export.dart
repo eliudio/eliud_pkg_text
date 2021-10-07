@@ -14,3 +14,4 @@
 */
 
 export '../model/html_cache.dart';
+export '../model/html_medium_cache.dart';

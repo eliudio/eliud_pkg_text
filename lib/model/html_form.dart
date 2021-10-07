@@ -177,6 +177,25 @@ class _MyHtmlFormState extends State<MyHtmlForm> {
 
         children.add(
 
+                new Container(
+                    height: (fullScreenHeight(context) / 2.5), 
+                    child: htmlMediumsList(context, state.value!.htmlMedia, _onHtmlMediaChanged)
+                )
+          );
+
+
+        children.add(Container(height: 20.0));
+        children.add(StyleRegistry.registry().styleWithContext(context).adminFormStyle().divider(context));
+
+
+         children.add(Container(
+                  alignment: Alignment.centerLeft,
+                  padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
+                  child: StyleRegistry.registry().styleWithContext(context).adminFormStyle().groupTitle(context, 'General')
+                ));
+
+        children.add(
+
                   StyleRegistry.registry().styleWithContext(context).adminFormStyle().textFormField(context, labelText: 'Document ID', icon: Icons.vpn_key, readOnly: (formAction == FormAction.UpdateAction), textEditingController: _documentIDController, keyboardType: TextInputType.text, validator: (_) => state is DocumentIDHtmlFormError ? state.message : null, hintText: null)
           );
 
@@ -220,6 +239,7 @@ class _MyHtmlFormState extends State<MyHtmlForm> {
                               appId: state.value!.appId, 
                               name: state.value!.name, 
                               html: state.value!.html, 
+                              htmlMedia: state.value!.htmlMedia, 
                               conditions: state.value!.conditions, 
                         )));
                       } else {
@@ -229,6 +249,7 @@ class _MyHtmlFormState extends State<MyHtmlForm> {
                               appId: state.value!.appId, 
                               name: state.value!.name, 
                               html: state.value!.html, 
+                              htmlMedia: state.value!.htmlMedia, 
                               conditions: state.value!.conditions, 
                           )));
                       }
@@ -273,6 +294,12 @@ class _MyHtmlFormState extends State<MyHtmlForm> {
 
   void _onHtmlChanged() {
     _myFormBloc.add(ChangedHtmlHtml(value: _htmlController.text));
+  }
+
+
+  void _onHtmlMediaChanged(value) {
+    _myFormBloc.add(ChangedHtmlHtmlMedia(value: value));
+    setState(() {});
   }
 
 

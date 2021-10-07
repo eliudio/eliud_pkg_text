@@ -1,15 +1,19 @@
 import 'package:eliud_core/model/conditions_simple_model.dart';
+import 'package:eliud_core/tools/random.dart';
 import 'package:eliud_core/tools/storage/medium_helper.dart';
 import 'package:eliud_core/tools/storage/platform_medium_helper.dart';
 import 'package:eliud_core/tools/tool_set.dart';
+import 'package:eliud_pkg_text/model/html_medium_model.dart';
+import 'package:eliud_pkg_text/model/html_model.dart';
 import 'package:html_editor_enhanced/html_editor.dart';
 
 import 'handle_medium_model.dart';
 
 class HandlePlatformMediumModel extends HandleMediumModel {
   final PrivilegeLevelRequiredSimple privilegeLevelRequiredSimple;
+  final HtmlModel htmlModel;
 
-  HandlePlatformMediumModel(String appId, String ownerId, this.privilegeLevelRequiredSimple)
+    HandlePlatformMediumModel(this.htmlModel, String appId, String ownerId, this.privilegeLevelRequiredSimple)
       : super(appId, ownerId);
 
   @override
@@ -39,6 +43,14 @@ class HandlePlatformMediumModel extends HandleMediumModel {
       });
     }
 
+    if (htmlModel.htmlMedia == null) {
+      htmlModel.htmlMedia = [];
+    }
+    htmlModel.htmlMedia!.add(HtmlMediumModel(
+      documentID: newRandomKey(),
+      medium: platformMediumModel,
+    ));
+
     controller.insertHtml(htmlCode);
     return false;
   }
@@ -56,10 +68,7 @@ const kVideoHtml = """
 """;
 
 const kIngHtml = """
-<figure>
-  <!--  Platform Medium with ID = '\${IDENTIFIER}'
-  -->
-  <img src="\${IMG_URL}" width="250" height="171" />
-    <source src="\${VIDEO_URL}">
-</figure>
+<!--  Platform Medium with ID = '\${IDENTIFIER}'
+-->
+<img src="\${IMG_URL}" width="250" height="171" />
 """;

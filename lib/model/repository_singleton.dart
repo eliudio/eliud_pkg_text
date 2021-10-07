@@ -19,7 +19,10 @@ import 'dart:collection';
 import '../model/html_firestore.dart';
 import '../model/html_repository.dart';
 import '../model/html_cache.dart';
+import '../model/html_medium_repository.dart';
+import '../model/html_medium_cache.dart';
 
+import '../model/html_medium_model.dart';
 
 class RepositorySingleton extends AbstractRepositorySingleton {
     var _htmlRepository = HashMap<String, HtmlRepository>();

@@ -50,6 +50,13 @@
       "iconName": "text_format"
     },
     {
+      "fieldName": "htmlMedia",
+      "fieldType": "HtmlMedium",
+      "displayName": "Media",
+      "group": "media",
+      "arrayType": "Array"
+    },
+    {
       "fieldName": "conditions",
       "displayName": "Conditions",
       "fieldType": "ConditionsSimple",

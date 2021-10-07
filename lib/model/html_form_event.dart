@@ -107,6 +107,18 @@ class ChangedHtmlHtml extends HtmlFormEvent {
   String toString() => 'ChangedHtmlHtml{ value: $value }';
 }
 
+class ChangedHtmlHtmlMedia extends HtmlFormEvent {
+  final List<HtmlMediumModel>? value;
+
+  ChangedHtmlHtmlMedia({this.value});
+
+  @override
+  List<Object?> get props => [ value ];
+
+  @override
+  String toString() => 'ChangedHtmlHtmlMedia{ value: $value }';
+}
+
 class ChangedHtmlConditions extends HtmlFormEvent {
   final ConditionsSimpleModel? value;
 

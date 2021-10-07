@@ -26,22 +26,33 @@ class HtmlEntity {
   final String? appId;
   final String? name;
   final String? html;
+  final List<HtmlMediumEntity>? htmlMedia;
   final ConditionsSimpleEntity? conditions;
 
-  HtmlEntity({this.appId, this.name, this.html, this.conditions, });
+  HtmlEntity({this.appId, this.name, this.html, this.htmlMedia, this.conditions, });
 
 
-  List<Object?> get props => [appId, name, html, conditions, ];
+  List<Object?> get props => [appId, name, html, htmlMedia, conditions, ];
 
   @override
   String toString() {
-    return 'HtmlEntity{appId: $appId, name: $name, html: $html, conditions: $conditions}';
+    String htmlMediaCsv = (htmlMedia == null) ? '' : htmlMedia!.join(', ');
+
+    return 'HtmlEntity{appId: $appId, name: $name, html: $html, htmlMedia: HtmlMedium[] { $htmlMediaCsv }, conditions: $conditions}';
   }
 
   static HtmlEntity? fromMap(Object? o) {
     if (o == null) return null;
     var map = o as Map<String, dynamic>;
 
+    var htmlMediaFromMap;
+    htmlMediaFromMap = map['htmlMedia'];
+    var htmlMediaList;
+    if (htmlMediaFromMap != null)
+      htmlMediaList = (map['htmlMedia'] as List<dynamic>)
+        .map((dynamic item) =>
+        HtmlMediumEntity.fromMap(item as Map)!)
+        .toList();
     var conditionsFromMap;
     conditionsFromMap = map['conditions'];
     if (conditionsFromMap != null)
@@ -51,11 +62,15 @@ class HtmlEntity {
       appId: map['appId'], 
       name: map['name'], 
       html: map['html'], 
+      htmlMedia: htmlMediaList, 
       conditions: conditionsFromMap, 
     );
   }
 
   Map<String, Object?> toDocument() {
+    final List<Map<String?, dynamic>>? htmlMediaListMap = htmlMedia != null 
+        ? htmlMedia!.map((item) => item.toDocument()).toList()
+        : null;
     final Map<String, dynamic>? conditionsMap = conditions != null 
         ? conditions!.toDocument()
         : null;
@@ -67,6 +82,8 @@ class HtmlEntity {
       else theDocument["name"] = null;
     if (html != null) theDocument["html"] = html;
       else theDocument["html"] = null;
+    if (htmlMedia != null) theDocument["htmlMedia"] = htmlMediaListMap;
+      else theDocument["htmlMedia"] = null;
     if (conditions != null) theDocument["conditions"] = conditionsMap;
       else theDocument["conditions"] = null;
     return theDocument;

@@ -127,6 +127,22 @@ class HtmlHtmlFormError extends HtmlFormError {
 }
 
 
+class HtmlMediaHtmlFormError extends HtmlFormError { 
+  const HtmlMediaHtmlFormError({ String? message, HtmlModel? value }): super(message: message, value: value);
+
+  @override
+  List<Object?> get props => [ message, value ];
+
+  @override
+  String toString() {
+    return '''HtmlMediaHtmlFormError {
+      value: $value,
+      message: $message,
+    }''';
+  }
+}
+
+
 class ConditionsHtmlFormError extends HtmlFormError { 
   const ConditionsHtmlFormError({ String? message, HtmlModel? value }): super(message: message, value: value);
 

@@ -13,6 +13,7 @@
 
 */
 
+import 'package:collection/collection.dart';
 import 'package:eliud_core/tools/common_tools.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -40,18 +41,19 @@ class HtmlModel {
   String? appId;
   String? name;
   String? html;
+  List<HtmlMediumModel>? htmlMedia;
   ConditionsSimpleModel? conditions;
 
-  HtmlModel({this.documentID, this.appId, this.name, this.html, this.conditions, })  {
+  HtmlModel({this.documentID, this.appId, this.name, this.html, this.htmlMedia, this.conditions, })  {
     assert(documentID != null);
   }
 
-  HtmlModel copyWith({String? documentID, String? appId, String? name, String? html, ConditionsSimpleModel? conditions, }) {
-    return HtmlModel(documentID: documentID ?? this.documentID, appId: appId ?? this.appId, name: name ?? this.name, html: html ?? this.html, conditions: conditions ?? this.conditions, );
+  HtmlModel copyWith({String? documentID, String? appId, String? name, String? html, List<HtmlMediumModel>? htmlMedia, ConditionsSimpleModel? conditions, }) {
+    return HtmlModel(documentID: documentID ?? this.documentID, appId: appId ?? this.appId, name: name ?? this.name, html: html ?? this.html, htmlMedia: htmlMedia ?? this.htmlMedia, conditions: conditions ?? this.conditions, );
   }
 
   @override
-  int get hashCode => documentID.hashCode ^ appId.hashCode ^ name.hashCode ^ html.hashCode ^ conditions.hashCode;
+  int get hashCode => documentID.hashCode ^ appId.hashCode ^ name.hashCode ^ html.hashCode ^ htmlMedia.hashCode ^ conditions.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -62,11 +64,14 @@ class HtmlModel {
           appId == other.appId &&
           name == other.name &&
           html == other.html &&
+          ListEquality().equals(htmlMedia, other.htmlMedia) &&
           conditions == other.conditions;
 
   @override
   String toString() {
-    return 'HtmlModel{documentID: $documentID, appId: $appId, name: $name, html: $html, conditions: $conditions}';
+    String htmlMediaCsv = (htmlMedia == null) ? '' : htmlMedia!.join(', ');
+
+    return 'HtmlModel{documentID: $documentID, appId: $appId, name: $name, html: $html, htmlMedia: HtmlMedium[] { $htmlMediaCsv }, conditions: $conditions}';
   }
 
   HtmlEntity toEntity({String? appId}) {
@@ -74,6 +79,9 @@ class HtmlModel {
           appId: (appId != null) ? appId : null, 
           name: (name != null) ? name : null, 
           html: (html != null) ? html : null, 
+          htmlMedia: (htmlMedia != null) ? htmlMedia
+            !.map((item) => item.toEntity(appId: appId))
+            .toList() : null, 
           conditions: (conditions != null) ? conditions!.toEntity(appId: appId) : null, 
     );
   }
@@ -86,6 +94,14 @@ class HtmlModel {
           appId: entity.appId, 
           name: entity.name, 
           html: entity.html, 
+          htmlMedia: 
+            entity.htmlMedia == null ? null :
+            entity.htmlMedia
+            !.map((item) {
+              counter++; 
+              return HtmlMediumModel.fromEntity(counter.toString(), item)!;
+            })
+            .toList(), 
           conditions: 
             ConditionsSimpleModel.fromEntity(entity.conditions), 
     );
@@ -100,6 +116,12 @@ class HtmlModel {
           appId: entity.appId, 
           name: entity.name, 
           html: entity.html, 
+          htmlMedia: 
+            entity. htmlMedia == null ? null : List<HtmlMediumModel>.from(await Future.wait(entity. htmlMedia
+            !.map((item) {
+            counter++;
+            return HtmlMediumModel.fromEntityPlus(counter.toString(), item, appId: appId);})
+            .toList())), 
           conditions: 
             await ConditionsSimpleModel.fromEntityPlus(entity.conditions, appId: appId), 
     );

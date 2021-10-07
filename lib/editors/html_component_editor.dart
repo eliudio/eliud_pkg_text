@@ -66,6 +66,7 @@ class HtmlComponentEditor extends StatefulWidget {
 class _HtmlComponentEditorState extends State<HtmlComponentEditor> {
   @override
   Widget build(BuildContext context) {
+    var readOnlyConditions = widget.model.htmlMedia != null && !widget.model.htmlMedia!.isEmpty;
     return ListView(shrinkWrap: true, physics: ScrollPhysics(), children: [
       HeaderWidget(
         title: 'Html',
@@ -128,10 +129,13 @@ class _HtmlComponentEditorState extends State<HtmlComponentEditor> {
           collapsible: true,
           collapsed: true,
           children: [
+            if (readOnlyConditions) text(context, 'Access rights can not be changed because the html component contains images'),
             getListTile(context,
                 leading: Icon(Icons.security),
-                title: ConditionsSimpleWidget(
+                title:
+                ConditionsSimpleWidget(
                   value: widget.model.conditions!,
+                  readOnly: readOnlyConditions,
                 )),
           ]),
       topicContainer(context,
@@ -147,10 +151,10 @@ class _HtmlComponentEditorState extends State<HtmlComponentEditor> {
                     AbstractTextPlatform.platform!.updateHtmlUsingPlatformMedium(context,
                         widget.model.appId!,
                         ownerId!,
-                        widget.model.conditions!.privilegeLevelRequired!, // to be the same as the component
+                        widget.model,
+                          (value) => setState(() {}),
                         "Document contents",
-                            (value) => setState(() => widget.model.html = value),
-                        widget.model.html == null ? '' : widget.model.html!);
+                    );
                 })
           ])
     ]);

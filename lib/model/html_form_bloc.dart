@@ -57,6 +57,7 @@ class HtmlFormBloc extends Bloc<HtmlFormEvent, HtmlFormState> {
                                  appId: "",
                                  name: "",
                                  html: "",
+                                 htmlMedia: [],
 
         ));
         yield loaded;
@@ -95,6 +96,12 @@ class HtmlFormBloc extends Bloc<HtmlFormEvent, HtmlFormState> {
       }
       if (event is ChangedHtmlHtml) {
         newValue = currentState.value!.copyWith(html: event.value);
+        yield SubmittableHtmlForm(value: newValue);
+
+        return;
+      }
+      if (event is ChangedHtmlHtmlMedia) {
+        newValue = currentState.value!.copyWith(htmlMedia: event.value);
         yield SubmittableHtmlForm(value: newValue);
 
         return;
