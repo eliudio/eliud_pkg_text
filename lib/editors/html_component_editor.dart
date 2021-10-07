@@ -1,5 +1,7 @@
 // TODO Implement this library.
 import 'package:eliud_core/core/access/bloc/access_bloc.dart';
+import 'package:eliud_core/model/access_model.dart';
+import 'package:eliud_core/model/conditions_simple_model.dart';
 import 'package:eliud_core/style/frontend/has_container.dart';
 import 'package:eliud_core/style/frontend/has_dialog.dart';
 import 'package:eliud_core/style/frontend/has_dialog_field.dart';
@@ -22,8 +24,9 @@ class HtmlComponentEditorConstructor extends ComponentEditorConstructor {
 
   @override
   void createNewComponent(BuildContext context) {
+    var appId = AccessBloc.app(context)!.documentID;
     _openIt(context, true,
-        HtmlModel(documentID: 'new identifier', name: 'New html'));
+        HtmlModel(documentID: 'new identifier', appId: appId, name: 'New html', conditions: ConditionsSimpleModel(privilegeLevelRequired: PrivilegeLevelRequiredSimple.NoPrivilegeRequiredSimple)));
   }
 
   @override
@@ -138,12 +141,16 @@ class _HtmlComponentEditorState extends State<HtmlComponentEditor> {
           children: [
             _htmlWidget(widget.model),
             GestureDetector(
-                child: Icon(Icons.add),
+                child: Icon(Icons.edit),
                 onTap: () {
-                  // widget with read Access + html and an edit button for the html
-                  // do we need
-                  // 1) a translation of access rights to readAcces?
-                  // 2) another updateHtml2 which uses the access rights and uploads images with that right? (prefered if possible)
+                  var ownerId = AccessBloc.member(context)!.documentID;
+                    AbstractTextPlatform.platform!.updateHtmlUsingPlatformMedium(context,
+                        widget.model.appId!,
+                        ownerId!,
+                        widget.model.conditions!.privilegeLevelRequired!, // to be the same as the component
+                        "Document contents",
+                            (value) => setState(() => widget.model.html = value),
+                        widget.model.html == null ? '' : widget.model.html!);
                 })
           ])
     ]);

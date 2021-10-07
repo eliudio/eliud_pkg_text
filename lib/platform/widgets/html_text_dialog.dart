@@ -1,21 +1,15 @@
-import 'package:eliud_core/model/member_medium_model.dart';
 import 'package:eliud_core/style/_default/frontend/helper/dialog/dialog_helper.dart';
 import 'package:eliud_core/style/frontend/has_button.dart';
 import 'package:eliud_core/style/frontend/has_dialog_widget.dart';
 import 'package:eliud_core/style/frontend/has_progress_indicator.dart';
 import 'package:eliud_core/style/style_registry.dart';
-import 'package:eliud_core/style/frontend/has_dialog.dart';
-import 'package:eliud_core/tools/random.dart';
-import 'package:eliud_core/tools/tool_set.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:html_editor_enhanced/html_editor.dart';
-import 'package:eliud_core/tools/storage/basename_helper.dart';
-import 'package:eliud_core/tools/storage/member_medium_helper.dart';
 
 import '../text_platform.dart';
+import 'handle_medium_model.dart';
 
 class HtmlTextDialog extends StatefulWidget {
   static double width(BuildContext context) =>
@@ -29,8 +23,8 @@ class HtmlTextDialog extends StatefulWidget {
   final UpdatedHtml updatedHtml;
   final String initialValue;
   final String ownerId;
-  final List<String> readAccess;
   final List<Widget>? extraIcons;
+  final HandleMediumModel handleMediumModel;
 
   // Unfortunately when uploading files on web, we can not rely on using the path to upload the files. So in that case we rely on the bytes, not the path.
   // i.e. we use _interceptUploadWithBytes or _interceptUploadWithPath depending on this flag.
@@ -46,23 +40,26 @@ class HtmlTextDialog extends StatefulWidget {
     required this.initialValue,
     required this.appId,
     required this.ownerId,
-    required this.readAccess,
     required this.isWeb,
     this.extraIcons,
+    required this.handleMediumModel,
   }) : super(key: key);
 
   @override
   _HtmlTextDialogState createState() => _HtmlTextDialogState();
 
   static void open(
-      BuildContext context,
-      String appId,
-      String ownerId,
-      List<String> readAccess,
-      String title,
-      UpdatedHtml updatedHtml,
-      String initialValue,
-      bool isWeb, {List<Widget>? extraIcons}) {
+    BuildContext context,
+    String appId,
+    String ownerId,
+    String title,
+    UpdatedHtml updatedHtml,
+    String initialValue,
+    bool isWeb,
+    HandleMediumModel handleMediumModel,
+     {
+    List<Widget>? extraIcons,
+  }) {
     if ((initialValue == null) || (initialValue.length == 0))
       initialValue = ' ';
 
@@ -72,14 +69,14 @@ class HtmlTextDialog extends StatefulWidget {
         .dialogStyle()
         .openWidgetDialog(context,
             child: HtmlTextDialog(
-                title: title,
-                updatedHtml: updatedHtml,
-                initialValue: initialValue,
-                appId: appId,
-                ownerId: ownerId,
-                readAccess: readAccess,
-                isWeb: isWeb,
-                extraIcons: extraIcons,));
+              title: title,
+              updatedHtml: updatedHtml,
+              initialValue: initialValue,
+              appId: appId,
+              ownerId: ownerId,
+              isWeb: isWeb,
+              extraIcons: extraIcons,
+              handleMediumModel: handleMediumModel,));
   }
 }
 
@@ -103,18 +100,12 @@ class _HtmlTextDialogState extends State<HtmlTextDialog> {
   @override
   Widget build(BuildContext context) {
     return flexibleDialog(context,
-            title: widget.title, buttons: _buttons(), child: _child());
-  }
-
-  void _feedbackProgress(double? progress) {
-    setProgress(progress);
+        title: widget.title, buttons: _buttons(), child: _child());
   }
 
   List<Widget> _buttons() {
     if (_progress != null) {
-      return [
-        progressIndicatorWithValue(context, value: _progress!)
-      ];
+      return [progressIndicatorWithValue(context, value: _progress!)];
     } else {
       List<Widget> buttons = <Widget>[];
       if (isHtml) {
@@ -148,8 +139,7 @@ class _HtmlTextDialogState extends State<HtmlTextDialog> {
 
   Widget _child() {
     if (_progress != null) {
-      return
-          HtmlEditor(
+      return HtmlEditor(
         controller: controller,
         callbacks: Callbacks(onInit: () {
           controller.setFullScreen();
@@ -172,14 +162,13 @@ class _HtmlTextDialogState extends State<HtmlTextDialog> {
                 : ToolbarType.nativeScrollable,
             mediaUploadInterceptor: (platformFile, insertFileType) =>
                 widget.isWeb
-                    ? _interceptUploadWithBytes(platformFile, insertFileType)
-                    : _interceptUploadWithPath(platformFile, insertFileType)),
+                    ? widget.handleMediumModel.interceptUploadWithBytes(controller, platformFile, insertFileType, setProgress)
+                    : widget.handleMediumModel.interceptUploadWithPath(controller, platformFile, insertFileType, setProgress)),
         otherOptions:
             OtherOptions(height: HtmlTextDialog.height(context) - 130),
       );
     } else {
-      return
-          HtmlEditor(
+      return HtmlEditor(
         controller: controller,
         callbacks: Callbacks(onInit: () {
           controller.setFullScreen();
@@ -199,7 +188,7 @@ class _HtmlTextDialogState extends State<HtmlTextDialog> {
               ListButtons(),
               ParagraphButtons(),
               // Actually it seems video is SUPER unstable and even on mobile sometimes works and sometimes doesn't work. So, I'm disabling this by default
-              InsertButtons(audio: false, video: true ),
+              InsertButtons(audio: false, video: true),
               OtherButtons(codeview: false, fullscreen: false)
             ],
             toolbarType: _shouldUseNativeGrid(context)
@@ -207,74 +196,12 @@ class _HtmlTextDialogState extends State<HtmlTextDialog> {
                 : ToolbarType.nativeScrollable,
             mediaUploadInterceptor: (platformFile, insertFileType) =>
                 widget.isWeb
-                    ? _interceptUploadWithBytes(platformFile, insertFileType)
-                    : _interceptUploadWithPath(platformFile, insertFileType)),
+                    ? widget.handleMediumModel.interceptUploadWithBytes(controller, platformFile, insertFileType, setProgress)
+                    : widget.handleMediumModel.interceptUploadWithPath(controller, platformFile, insertFileType, setProgress)),
         otherOptions:
             OtherOptions(height: HtmlTextDialog.height(context) - 130),
       );
     }
-  }
-
-  Future<bool> _toHtml(InsertFileType insertFileType,
-      MemberMediumModel memberMediumModel) async {
-    String htmlCode;
-    if (insertFileType == InsertFileType.video) {
-      htmlCode = process(kVideoHtml, parameters: <String, String>{
-        '\${VIDEO_URL}': memberMediumModel.url!,
-        '\${IDENTIFIER}': memberMediumModel.documentID!,
-      });
-    } else {
-      htmlCode = process(kIngHtml, parameters: <String, String>{
-        '\${IMG_URL}': memberMediumModel.url!,
-        '\${IDENTIFIER}': memberMediumModel.documentID!,
-      });
-    }
-
-    controller.insertHtml(htmlCode);
-    return false;
-  }
-
-  Future<bool> _interceptUploadWithBytes(
-      PlatformFile platformFile, InsertFileType insertFileType) async {
-    if (!kIsWeb) {
-      setProgress(0);
-    }
-    if (insertFileType == InsertFileType.audio) return false;
-    var bytes = platformFile.bytes;
-
-    // Conditions where we pass control to the internal html editor
-    if (bytes == null) return true;
-    if (insertFileType == InsertFileType.audio) return true;
-
-    // All good
-    var memberMediumModel;
-    var memberMediumDocumentID = newRandomKey();
-    var baseName = memberMediumDocumentID + '.' + platformFile.name;
-    var thumbnailBaseName =
-        BaseNameHelper.baseNameExt(memberMediumDocumentID, baseName, 'thumbnail.png');
-    if (insertFileType == InsertFileType.video) {
-      memberMediumModel =
-          await MemberMediumHelper(widget.appId,widget.ownerId,
-            widget.readAccess,
-          ).createThumbnailUploadVideoData(memberMediumDocumentID,
-              bytes,
-              baseName,
-              thumbnailBaseName,
-              feedbackProgress: _feedbackProgress);
-    } else {
-      memberMediumModel =
-          await MemberMediumHelper(widget.appId,
-            widget.ownerId,
-            widget.readAccess,
-          ).createThumbnailUploadPhotoData(memberMediumDocumentID,
-              bytes,
-              baseName,
-              thumbnailBaseName,
-              feedbackProgress: _feedbackProgress);
-    }
-
-    setProgress(null);
-    return _toHtml(insertFileType, memberMediumModel);
   }
 
   void setProgress(double? progress) {
@@ -285,53 +212,4 @@ class _HtmlTextDialogState extends State<HtmlTextDialog> {
     }
   }
 
-  Future<bool> _interceptUploadWithPath(
-      PlatformFile platformFile, InsertFileType insertFileType) async {
-    setProgress(0);
-
-    if (insertFileType == InsertFileType.audio) return false;
-    var path = platformFile.path;
-
-    // Conditions where we pass control to the internal html editor
-    if (path == null) return true;
-    if (insertFileType == InsertFileType.audio) return true;
-
-    // All good
-    var memberMediumModel;
-    var memberMediumDocumentID = newRandomKey();
-    if (insertFileType == InsertFileType.video) {
-      memberMediumModel =
-          await MemberMediumHelper(widget.appId, widget.ownerId, widget.readAccess).createThumbnailUploadVideoFile(memberMediumDocumentID,
-              path,
-              feedbackProgress: _feedbackProgress);
-    } else {
-      memberMediumModel =
-          await MemberMediumHelper(widget.appId, widget.ownerId, widget.readAccess,).createThumbnailUploadPhotoFile(memberMediumDocumentID,
-              path,
-              feedbackProgress: _feedbackProgress);
-    }
-
-    setProgress(null);
-    return _toHtml(insertFileType, memberMediumModel);
-  }
 }
-
-const kVideoHtml = """
-<figure>
-  <!--  Member Medium with ID = '\${IDENTIFIER}'
-  -->
-  <video controls width="320" height="176">
-    <source src="\${VIDEO_URL}">
-    Your browser does not support HTML5 video.
-  </video>
-</figure>
-""";
-
-const kIngHtml = """
-<figure>
-  <!--  Member Medium with ID = '\${IDENTIFIER}'
-  -->
-  <img src="\${IMG_URL}" width="250" height="171" />
-    <source src="\${VIDEO_URL}">
-</figure>
-""";
