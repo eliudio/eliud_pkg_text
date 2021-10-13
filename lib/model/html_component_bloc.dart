@@ -24,42 +24,30 @@ import 'package:flutter/services.dart';
 
 class HtmlComponentBloc extends Bloc<HtmlComponentEvent, HtmlComponentState> {
   final HtmlRepository? htmlRepository;
+  StreamSubscription? _htmlSubscription;
+
+  Stream<HtmlComponentState> _mapLoadHtmlComponentUpdateToState(String documentId) async* {
+    _htmlSubscription?.cancel();
+    _htmlSubscription = htmlRepository!.listenTo(documentId, (value) {
+      if (value != null) add(HtmlComponentUpdated(value: value!));
+    });
+  }
 
   HtmlComponentBloc({ this.htmlRepository }): super(HtmlComponentUninitialized());
+
   @override
   Stream<HtmlComponentState> mapEventToState(HtmlComponentEvent event) async* {
     final currentState = state;
     if (event is FetchHtmlComponent) {
-      try {
-        if (currentState is HtmlComponentUninitialized) {
-          bool permissionDenied = false;
-          final model = await htmlRepository!.get(event.id, onError: (error) {
-            // Unfortunatly the below is currently the only way we know how to identify if a document is read protected
-            if ((error is PlatformException) &&  (error.message!.startsWith("PERMISSION_DENIED"))) {
-              permissionDenied = true;
-            }
-          });
-          if (permissionDenied) {
-            yield HtmlComponentPermissionDenied();
-          } else {
-            if (model != null) {
-              yield HtmlComponentLoaded(value: model);
-            } else {
-              String? id = event.id;
-              yield HtmlComponentError(
-                  message: "Html with id = '$id' not found");
-            }
-          }
-          return;
-        }
-      } catch (_) {
-        yield HtmlComponentError(message: "Unknown error whilst retrieving Html");
-      }
+      yield* _mapLoadHtmlComponentUpdateToState(event.id!);
+    } else if (event is HtmlComponentUpdated) {
+      yield HtmlComponentLoaded(value: event.value);
     }
   }
 
   @override
   Future<void> close() {
+    _htmlSubscription?.cancel();
     return super.close();
   }
 

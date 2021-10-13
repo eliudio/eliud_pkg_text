@@ -1,4 +1,6 @@
-// TODO Implement this library.
+import 'package:bloc/bloc.dart';
+import 'package:eliud_pkg_text/model/html_component_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:eliud_core/core/access/bloc/access_bloc.dart';
 import 'package:eliud_core/model/access_model.dart';
 import 'package:eliud_core/model/conditions_simple_model.dart';
@@ -12,41 +14,55 @@ import 'package:eliud_core/tools/component/component_spec.dart';
 import 'package:eliud_core/tools/widgets/condition_simple_widget.dart';
 import 'package:eliud_core/tools/widgets/header_widget.dart';
 import 'package:eliud_pkg_text/model/abstract_repository_singleton.dart';
+import 'package:eliud_pkg_text/model/html_component_event.dart';
 import 'package:eliud_pkg_text/model/html_model.dart';
 import 'package:eliud_pkg_text/platform/text_platform.dart';
 import 'package:flutter/material.dart';
 
 class HtmlComponentEditorConstructor extends ComponentEditorConstructor {
   @override
-  void updateComponent(BuildContext context, model) {
-    _openIt(context, false, model.copyWith());
+  void updateComponent(BuildContext context, model, EditorFeedback feedback) {
+    _openIt(context, false, model.copyWith(), feedback);
   }
 
   @override
-  void createNewComponent(BuildContext context) {
+  void createNewComponent(BuildContext context, EditorFeedback feedback) {
     var appId = AccessBloc.app(context)!.documentID;
-    _openIt(context, true,
-        HtmlModel(documentID: 'new identifier', appId: appId, name: 'New html', conditions: ConditionsSimpleModel(privilegeLevelRequired: PrivilegeLevelRequiredSimple.NoPrivilegeRequiredSimple)));
+    _openIt(
+        context,
+        true,
+        HtmlModel(
+            documentID: 'new identifier',
+            appId: appId,
+            name: 'New html',
+            conditions: ConditionsSimpleModel(
+                privilegeLevelRequired:
+                    PrivilegeLevelRequiredSimple.NoPrivilegeRequiredSimple)),
+        feedback);
   }
 
   @override
-  void updateComponentWithID(BuildContext context, String id) async {
+  void updateComponentWithID(
+      BuildContext context, String id, EditorFeedback feedback) async {
     var html = await htmlRepository(appId: AccessBloc.appId(context))!.get(id);
     if (html != null) {
-      _openIt(context, false, html);
+      _openIt(context, false, html, feedback);
     } else {
       openErrorDialog(context,
           title: 'Error', errorMessage: 'Cannot find html with id $id');
+      feedback(false);
     }
   }
 
-  void _openIt(BuildContext context, bool create, HtmlModel model) {
+  void _openIt(BuildContext context, bool create, HtmlModel model,
+      EditorFeedback feedback) {
     openComplexDialog(
       context,
       title: create ? 'Create divider' : 'Update divider',
       includeHeading: false,
       widthFraction: .9,
-      child: HtmlComponentEditor(model: model, create: create),
+      child:
+          HtmlComponentEditor(model: model, create: create, feedback: feedback),
     );
   }
 }
@@ -54,9 +70,13 @@ class HtmlComponentEditorConstructor extends ComponentEditorConstructor {
 class HtmlComponentEditor extends StatefulWidget {
   final HtmlModel model;
   final bool create;
+  final EditorFeedback feedback;
 
   const HtmlComponentEditor(
-      {Key? key, required this.model, required this.create})
+      {Key? key,
+      required this.model,
+      required this.create,
+      required this.feedback})
       : super(key: key);
 
   @override
@@ -66,7 +86,8 @@ class HtmlComponentEditor extends StatefulWidget {
 class _HtmlComponentEditorState extends State<HtmlComponentEditor> {
   @override
   Widget build(BuildContext context) {
-    var readOnlyConditions = widget.model.htmlMedia != null && !widget.model.htmlMedia!.isEmpty;
+    var readOnlyConditions =
+        widget.model.htmlMedia != null && !widget.model.htmlMedia!.isEmpty;
     return ListView(shrinkWrap: true, physics: ScrollPhysics(), children: [
       HeaderWidget(
         title: 'Html',
@@ -76,16 +97,19 @@ class _HtmlComponentEditorState extends State<HtmlComponentEditor> {
             var existingModel = await htmlRepository(appId: appId)!
                 .get(widget.model.documentID);
             if (existingModel == null) {
-              htmlRepository(appId: appId)!.add(widget.model);
+              await htmlRepository(appId: appId)!.add(widget.model);
             } else {
               openErrorDialog(context,
                   title: 'Error',
                   errorMessage: 'Html with this ID already exists');
+              widget.feedback(false);
               return false;
             }
           } else {
-            htmlRepository(appId: appId)!.update(widget.model);
+            await htmlRepository(appId: appId)!.update(widget.model);
           }
+
+          widget.feedback(true);
           return true;
         },
         cancelAction: () {},
@@ -99,16 +123,16 @@ class _HtmlComponentEditorState extends State<HtmlComponentEditor> {
                 leading: Icon(Icons.vpn_key),
                 title: widget.create
                     ? dialogField(
-                  context,
-                  initialValue: widget.model.documentID,
-                  valueChanged: (value) {
-                    widget.model.documentID = value;
-                  },
-                  decoration: const InputDecoration(
-                    hintText: 'Identifier',
-                    labelText: 'Identifier',
-                  ),
-                )
+                        context,
+                        initialValue: widget.model.documentID,
+                        valueChanged: (value) {
+                          widget.model.documentID = value;
+                        },
+                        decoration: const InputDecoration(
+                          hintText: 'Identifier',
+                          labelText: 'Identifier',
+                        ),
+                      )
                     : text(context, widget.model.documentID!)),
             getListTile(context,
                 leading: Icon(Icons.description),
@@ -129,11 +153,12 @@ class _HtmlComponentEditorState extends State<HtmlComponentEditor> {
           collapsible: true,
           collapsed: true,
           children: [
-            if (readOnlyConditions) text(context, 'Access rights can not be changed because the html component contains images'),
+            if (readOnlyConditions)
+              text(context,
+                  'Access rights can not be changed because the html component contains images'),
             getListTile(context,
                 leading: Icon(Icons.security),
-                title:
-                ConditionsSimpleWidget(
+                title: ConditionsSimpleWidget(
                   value: widget.model.conditions!,
                   readOnly: readOnlyConditions,
                 )),
@@ -148,13 +173,14 @@ class _HtmlComponentEditorState extends State<HtmlComponentEditor> {
                 child: Icon(Icons.edit),
                 onTap: () {
                   var ownerId = AccessBloc.member(context)!.documentID;
-                    AbstractTextPlatform.platform!.updateHtmlUsingPlatformMedium(context,
-                        widget.model.appId!,
-                        ownerId!,
-                        widget.model,
-                          (value) => setState(() {}),
-                        "Document contents",
-                    );
+                  AbstractTextPlatform.platform!.updateHtmlUsingPlatformMedium(
+                    context,
+                    widget.model.appId!,
+                    ownerId!,
+                    widget.model,
+                    (value) => setState(() {}),
+                    "Document contents",
+                  );
                 })
           ])
     ]);

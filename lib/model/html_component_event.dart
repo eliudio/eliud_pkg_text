@@ -14,6 +14,7 @@
 */
 
 import 'package:equatable/equatable.dart';
+import 'package:eliud_pkg_text/model/html_model.dart';
 
 abstract class HtmlComponentEvent extends Equatable {
   @override
@@ -25,4 +26,11 @@ class FetchHtmlComponent extends HtmlComponentEvent {
 
   FetchHtmlComponent({ this.id });
 }
+
+class HtmlComponentUpdated extends HtmlComponentEvent {
+  final HtmlModel value;
+
+  HtmlComponentUpdated({ required this.value });
+}
+
 
