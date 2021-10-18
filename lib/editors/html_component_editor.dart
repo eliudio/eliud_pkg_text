@@ -112,7 +112,7 @@ class _HtmlComponentEditorState extends State<HtmlComponentEditor> {
           widget.feedback(true);
           return true;
         },
-        cancelAction: () {},
+        cancelAction: () async { return true; },
       ),
       topicContainer(context,
           title: 'General',
