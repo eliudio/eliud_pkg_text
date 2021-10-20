@@ -29,7 +29,7 @@ class HtmlComponentBloc extends Bloc<HtmlComponentEvent, HtmlComponentState> {
   Stream<HtmlComponentState> _mapLoadHtmlComponentUpdateToState(String documentId) async* {
     _htmlSubscription?.cancel();
     _htmlSubscription = htmlRepository!.listenTo(documentId, (value) {
-      if (value != null) add(HtmlComponentUpdated(value: value!));
+      if (value != null) add(HtmlComponentUpdated(value: value));
     });
   }
 
