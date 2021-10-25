@@ -19,7 +19,7 @@ dependencies:
     path: ../../html-editor-enhanced
 
   flutter_widget_from_html: 0.6.1
-  flutter_html: 2.1.0
+  flutter_html: 2.1.5
 
 dev_dependencies:
   build_runner: "1.11.5"
