@@ -14,9 +14,6 @@ abstract class TextPackage extends Package {
   TextPackage() : super('eliud_pkg_text');
 
   @override
-  BlocProvider? createMainBloc(NavigatorBloc navigatorBloc, AccessBloc accessBloc) => null;
-
-  @override
   Future<bool?> isConditionOk(String packageCondition, AppModel app, MemberModel? member, bool isOwner, bool? isBlocked, PrivilegeLevel? privilegeLevel) async => null;
 
   @override
