@@ -1,5 +1,4 @@
-import 'package:eliud_core/core/access/bloc/access_bloc.dart';
-import 'package:eliud_core/core/access/bloc/access_state.dart';
+import 'package:eliud_core/core/blocs/access/access_bloc.dart';
 import 'package:eliud_core/core/navigate/router.dart' as EliudRouter;
 import 'package:eliud_core/core/widgets/alert_widget.dart';
 import 'package:eliud_core/model/abstract_repository_singleton.dart';
@@ -37,7 +36,7 @@ class HtmlComponent extends AbstractHtmlComponent {
 
   @override
   HtmlRepository getHtmlRepository(BuildContext context) {
-    return htmlRepository(appId: AccessBloc.appId(context))!;
+    return htmlRepository(appId: AccessBloc.currentAppId(context))!;
   }
 
   @override

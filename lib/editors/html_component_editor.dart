@@ -1,20 +1,14 @@
-import 'package:bloc/bloc.dart';
-import 'package:eliud_pkg_text/model/html_component_bloc.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:eliud_core/core/access/bloc/access_bloc.dart';
-import 'package:eliud_core/model/access_model.dart';
+import 'package:eliud_core/core/blocs/access/access_bloc.dart';
 import 'package:eliud_core/model/conditions_simple_model.dart';
 import 'package:eliud_core/style/frontend/has_container.dart';
 import 'package:eliud_core/style/frontend/has_dialog.dart';
 import 'package:eliud_core/style/frontend/has_dialog_field.dart';
-import 'package:eliud_core/style/frontend/has_divider.dart';
 import 'package:eliud_core/style/frontend/has_list_tile.dart';
 import 'package:eliud_core/style/frontend/has_text.dart';
 import 'package:eliud_core/tools/component/component_spec.dart';
 import 'package:eliud_core/tools/widgets/condition_simple_widget.dart';
 import 'package:eliud_core/tools/widgets/header_widget.dart';
 import 'package:eliud_pkg_text/model/abstract_repository_singleton.dart';
-import 'package:eliud_pkg_text/model/html_component_event.dart';
 import 'package:eliud_pkg_text/model/html_model.dart';
 import 'package:eliud_pkg_text/platform/text_platform.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +21,7 @@ class HtmlComponentEditorConstructor extends ComponentEditorConstructor {
 
   @override
   void createNewComponent(BuildContext context, EditorFeedback feedback) {
-    var appId = AccessBloc.app(context)!.documentID;
+    var appId = AccessBloc.currentApp(context).documentID;
     _openIt(
         context,
         true,
@@ -44,7 +38,7 @@ class HtmlComponentEditorConstructor extends ComponentEditorConstructor {
   @override
   void updateComponentWithID(
       BuildContext context, String id, EditorFeedback feedback) async {
-    var html = await htmlRepository(appId: AccessBloc.appId(context))!.get(id);
+    var html = await htmlRepository(appId: AccessBloc.currentAppId(context))!.get(id);
     if (html != null) {
       _openIt(context, false, html, feedback);
     } else {
@@ -92,7 +86,7 @@ class _HtmlComponentEditorState extends State<HtmlComponentEditor> {
       HeaderWidget(
         title: 'Html',
         okAction: () async {
-          var appId = AccessBloc.appId(context);
+          var appId = AccessBloc.currentAppId(context);
           if (widget.create) {
             var existingModel = await htmlRepository(appId: appId)!
                 .get(widget.model.documentID);
