@@ -1,3 +1,4 @@
+import 'package:eliud_core/core/blocs/access/access_bloc.dart';
 import 'package:eliud_core/style/_default/frontend/helper/dialog/dialog_helper.dart';
 import 'package:eliud_core/style/frontend/has_button.dart';
 import 'package:eliud_core/style/frontend/has_dialog_widget.dart';
@@ -68,6 +69,7 @@ class HtmlTextDialog extends StatefulWidget {
         .frontEndStyle()
         .dialogStyle()
         .openWidgetDialog(context,
+        AccessBloc.currentAppId(context) + '/html',
             child: HtmlTextDialog(
               title: title,
               updatedHtml: updatedHtml,

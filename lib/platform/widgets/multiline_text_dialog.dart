@@ -1,3 +1,4 @@
+import 'package:eliud_core/core/blocs/access/access_bloc.dart';
 import 'package:eliud_core/style/_default/frontend/helper/dialog/dialog_helper.dart';
 import 'package:eliud_core/style/frontend/has_button.dart';
 import 'package:eliud_core/style/frontend/has_dialog.dart';
@@ -45,6 +46,7 @@ class MultilineTextDialog extends StatefulWidget {
       UpdatedHtml updatedHtml,
       String initialValue) {
     openWidgetDialog(context,
+        AccessBloc.currentAppId(context) + '/multilinetext',
         child:
         MultilineTextDialog(
           title: title,

@@ -42,7 +42,7 @@ class HtmlComponentEditorConstructor extends ComponentEditorConstructor {
     if (html != null) {
       _openIt(context, false, html, feedback);
     } else {
-      openErrorDialog(context,
+      openErrorDialog(context, AccessBloc.currentAppId(context) + '/_error', 
           title: 'Error', errorMessage: 'Cannot find html with id $id');
       feedback(false);
     }
@@ -52,6 +52,7 @@ class HtmlComponentEditorConstructor extends ComponentEditorConstructor {
       EditorFeedback feedback) {
     openComplexDialog(
       context,
+      AccessBloc.currentAppId(context) + '/divider',
       title: create ? 'Create divider' : 'Update divider',
       includeHeading: false,
       widthFraction: .9,
@@ -93,7 +94,7 @@ class _HtmlComponentEditorState extends State<HtmlComponentEditor> {
             if (existingModel == null) {
               await htmlRepository(appId: appId)!.add(widget.model);
             } else {
-              openErrorDialog(context,
+              openErrorDialog(context, AccessBloc.currentAppId(context) + '/_error', 
                   title: 'Error',
                   errorMessage: 'Html with this ID already exists');
               widget.feedback(false);
