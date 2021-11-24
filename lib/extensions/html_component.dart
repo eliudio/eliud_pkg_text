@@ -18,26 +18,22 @@ import 'package:flutter/material.dart';
 
 class HtmlComponentConstructorDefault implements ComponentConstructor {
   @override
-  Widget createNew({Key? key, required String id, Map<String, dynamic>? parameters}) {
-    return HtmlComponent(key: key, htmlID: id);
+  Widget createNew(
+      {Key? key,
+      required String appId,
+      required String id,
+      Map<String, dynamic>? parameters}) {
+    return HtmlComponent(key: key, appId: appId, htmlId: id);
   }
 
   @override
-  Future<dynamic> getModel({required String appId, required String id}) async => await htmlRepository(appId: appId)!.get(id);
+  Future<dynamic> getModel({required String appId, required String id}) async =>
+      await htmlRepository(appId: appId)!.get(id);
 }
 
 class HtmlComponent extends AbstractHtmlComponent {
-  HtmlComponent({Key? key, required String htmlID}) : super(key: key, htmlID: htmlID);
-
-  @override
-  Widget alertWidget({title = String, content = String}) {
-    return AlertWidget(title: title, content: content);
-  }
-
-  @override
-  HtmlRepository getHtmlRepository(BuildContext context) {
-    return htmlRepository(appId: AccessBloc.currentAppId(context))!;
-  }
+  HtmlComponent({Key? key, required String appId, required String htmlId})
+      : super(key: key, theAppId: appId, htmlId: htmlId);
 
   @override
   Widget yourWidget(BuildContext context, HtmlModel? value) {

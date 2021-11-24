@@ -35,9 +35,9 @@ class HtmlComponentPermissionDenied extends HtmlComponentState {
 }
 
 class HtmlComponentLoaded extends HtmlComponentState {
-  final HtmlModel? value;
+  final HtmlModel value;
 
-  const HtmlComponentLoaded({ this.value });
+  const HtmlComponentLoaded({ required this.value });
 
   HtmlComponentLoaded copyWith({ HtmlModel? copyThis }) {
     return HtmlComponentLoaded(value: copyThis ?? this.value);

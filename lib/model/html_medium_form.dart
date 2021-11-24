@@ -74,6 +74,7 @@ class HtmlMediumForm extends StatelessWidget {
     var accessState = AccessBloc.getState(context);
     var app = AccessBloc.currentApp(context);
     if (app == null) return Text("No app available");
+    var appId = app.documentID!;
     if (formAction == FormAction.ShowData) {
       return BlocProvider<HtmlMediumFormBloc >(
             create: (context) => HtmlMediumFormBloc(AccessBloc.currentAppId(context),
@@ -136,6 +137,7 @@ class _MyHtmlMediumFormState extends State<MyHtmlMediumForm> {
   Widget build(BuildContext context) {
     var app = AccessBloc.currentApp(context);
     if (app == null) return Text('No app available');
+    var appId = app.documentID!;
     var accessState = AccessBloc.getState(context);
     return BlocBuilder<HtmlMediumFormBloc, HtmlMediumFormState>(builder: (context, state) {
       if (state is HtmlMediumFormUninitialized) return Center(
@@ -173,7 +175,7 @@ class _MyHtmlMediumFormState extends State<MyHtmlMediumForm> {
 
         children.add(
 
-                DropdownButtonComponentFactory().createNew(id: "platformMediums", value: _medium, trigger: _onMediumSelected, optional: true),
+                DropdownButtonComponentFactory().createNew(appId: appId, id: "platformMediums", value: _medium, trigger: _onMediumSelected, optional: true),
           );
 
 
