@@ -77,7 +77,7 @@ class HtmlMediumForm extends StatelessWidget {
     var appId = app.documentID!;
     if (formAction == FormAction.ShowData) {
       return BlocProvider<HtmlMediumFormBloc >(
-            create: (context) => HtmlMediumFormBloc(AccessBloc.currentAppId(context),
+            create: (context) => HtmlMediumFormBloc(appId,
                                        
                                                 )..add(InitialiseHtmlMediumFormEvent(value: value)),
   
@@ -85,7 +85,7 @@ class HtmlMediumForm extends StatelessWidget {
           );
     } if (formAction == FormAction.ShowPreloadedData) {
       return BlocProvider<HtmlMediumFormBloc >(
-            create: (context) => HtmlMediumFormBloc(AccessBloc.currentAppId(context),
+            create: (context) => HtmlMediumFormBloc(appId,
                                        
                                                 )..add(InitialiseHtmlMediumFormNoLoadEvent(value: value)),
   
@@ -95,7 +95,7 @@ class HtmlMediumForm extends StatelessWidget {
       return Scaffold(
         appBar: StyleRegistry.registry().styleWithContext(context).adminFormStyle().appBarWithString(context, title: formAction == FormAction.UpdateAction ? 'Update HtmlMedium' : 'Add HtmlMedium'),
         body: BlocProvider<HtmlMediumFormBloc >(
-            create: (context) => HtmlMediumFormBloc(AccessBloc.currentAppId(context),
+            create: (context) => HtmlMediumFormBloc(appId,
                                        
                                                 )..add((formAction == FormAction.UpdateAction ? InitialiseHtmlMediumFormEvent(value: value) : InitialiseNewHtmlMediumFormEvent())),
   

@@ -35,10 +35,11 @@ class HtmlComponentSelector extends ComponentSelector {
   @override
   Widget createSelectWidget(BuildContext context, double height,
       SelectComponent selected, editorConstructor) {
+    var appId = AccessBloc.currentAppId(context);
     return BlocProvider<HtmlListBloc>(
           create: (context) => HtmlListBloc(
             htmlRepository:
-                htmlRepository(appId: AccessBloc.currentAppId(context))!,
+                htmlRepository(appId: appId)!,
           )..add(LoadHtmlList()),
       child: SelectHtmlWidget(
           height: height,

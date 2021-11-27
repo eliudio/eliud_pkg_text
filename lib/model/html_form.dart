@@ -77,7 +77,7 @@ class HtmlForm extends StatelessWidget {
     var appId = app.documentID!;
     if (formAction == FormAction.ShowData) {
       return BlocProvider<HtmlFormBloc >(
-            create: (context) => HtmlFormBloc(AccessBloc.currentAppId(context),
+            create: (context) => HtmlFormBloc(appId,
                                        formAction: formAction,
 
                                                 )..add(InitialiseHtmlFormEvent(value: value)),
@@ -86,7 +86,7 @@ class HtmlForm extends StatelessWidget {
           );
     } if (formAction == FormAction.ShowPreloadedData) {
       return BlocProvider<HtmlFormBloc >(
-            create: (context) => HtmlFormBloc(AccessBloc.currentAppId(context),
+            create: (context) => HtmlFormBloc(appId,
                                        formAction: formAction,
 
                                                 )..add(InitialiseHtmlFormNoLoadEvent(value: value)),
@@ -97,7 +97,7 @@ class HtmlForm extends StatelessWidget {
       return Scaffold(
         appBar: StyleRegistry.registry().styleWithContext(context).adminFormStyle().appBarWithString(context, title: formAction == FormAction.UpdateAction ? 'Update Html' : 'Add Html'),
         body: BlocProvider<HtmlFormBloc >(
-            create: (context) => HtmlFormBloc(AccessBloc.currentAppId(context),
+            create: (context) => HtmlFormBloc(appId,
                                        formAction: formAction,
 
                                                 )..add((formAction == FormAction.UpdateAction ? InitialiseHtmlFormEvent(value: value) : InitialiseNewHtmlFormEvent())),
