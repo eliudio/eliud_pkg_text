@@ -13,7 +13,7 @@ abstract class TextPackage extends Package {
   TextPackage() : super('eliud_pkg_text');
 
   @override
-  Future<bool?> isConditionOk(AccessBloc accessBloc, String pluginCondition, AppModel app, MemberModel? member, bool isOwner, bool? isBlocked, PrivilegeLevel? privilegeLevel) async => null;
+  Future<List<PackageConditionDetails>>? getAndSubscribe(AccessBloc accessBloc, AppModel app, MemberModel? member, bool isOwner, bool? isBlocked, PrivilegeLevel? privilegeLevel) => null;
 
   @override
   List<String>? retrieveAllPackageConditions() => null;
