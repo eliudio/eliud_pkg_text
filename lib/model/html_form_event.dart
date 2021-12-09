@@ -120,7 +120,7 @@ class ChangedHtmlHtmlMedia extends HtmlFormEvent {
 }
 
 class ChangedHtmlConditions extends HtmlFormEvent {
-  final ConditionsSimpleModel? value;
+  final StorageConditionsModel? value;
 
   ChangedHtmlConditions({this.value});
 

@@ -1,5 +1,5 @@
 import 'package:eliud_core/core/blocs/access/access_bloc.dart';
-import 'package:eliud_core/model/conditions_simple_model.dart';
+import 'package:eliud_core/model/storage_conditions_model.dart';
 import 'package:eliud_core/style/frontend/has_container.dart';
 import 'package:eliud_core/style/frontend/has_dialog.dart';
 import 'package:eliud_core/style/frontend/has_dialog_field.dart';
@@ -29,7 +29,7 @@ class HtmlComponentEditorConstructor extends ComponentEditorConstructor {
             documentID: 'new identifier',
             appId: appId,
             name: 'New html',
-            conditions: ConditionsSimpleModel(
+            conditions: StorageConditionsModel(
                 privilegeLevelRequired:
                     PrivilegeLevelRequiredSimple.NoPrivilegeRequiredSimple)),
         feedback);

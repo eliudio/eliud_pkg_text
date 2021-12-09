@@ -1,5 +1,5 @@
-import 'package:eliud_core/model/conditions_simple_model.dart';
 import 'package:eliud_core/model/member_medium_model.dart';
+import 'package:eliud_core/model/storage_conditions_model.dart';
 import 'package:eliud_pkg_text/model/html_model.dart';
 import 'package:eliud_pkg_text/platform/widgets/handle_platform_medium_model.dart';
 import 'package:eliud_pkg_text/platform/widgets/html_text_dialog.dart';

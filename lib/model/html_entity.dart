@@ -27,7 +27,7 @@ class HtmlEntity {
   final String? name;
   final String? html;
   final List<HtmlMediumEntity>? htmlMedia;
-  final ConditionsSimpleEntity? conditions;
+  final StorageConditionsEntity? conditions;
 
   HtmlEntity({this.appId, this.name, this.html, this.htmlMedia, this.conditions, });
 
@@ -56,7 +56,7 @@ class HtmlEntity {
     var conditionsFromMap;
     conditionsFromMap = map['conditions'];
     if (conditionsFromMap != null)
-      conditionsFromMap = ConditionsSimpleEntity.fromMap(conditionsFromMap);
+      conditionsFromMap = StorageConditionsEntity.fromMap(conditionsFromMap);
 
     return HtmlEntity(
       appId: map['appId'], 

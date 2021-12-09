@@ -42,13 +42,13 @@ class HtmlModel {
   String? name;
   String? html;
   List<HtmlMediumModel>? htmlMedia;
-  ConditionsSimpleModel? conditions;
+  StorageConditionsModel? conditions;
 
   HtmlModel({this.documentID, this.appId, this.name, this.html, this.htmlMedia, this.conditions, })  {
     assert(documentID != null);
   }
 
-  HtmlModel copyWith({String? documentID, String? appId, String? name, String? html, List<HtmlMediumModel>? htmlMedia, ConditionsSimpleModel? conditions, }) {
+  HtmlModel copyWith({String? documentID, String? appId, String? name, String? html, List<HtmlMediumModel>? htmlMedia, StorageConditionsModel? conditions, }) {
     return HtmlModel(documentID: documentID ?? this.documentID, appId: appId ?? this.appId, name: name ?? this.name, html: html ?? this.html, htmlMedia: htmlMedia ?? this.htmlMedia, conditions: conditions ?? this.conditions, );
   }
 
@@ -103,7 +103,7 @@ class HtmlModel {
             })
             .toList(), 
           conditions: 
-            ConditionsSimpleModel.fromEntity(entity.conditions), 
+            StorageConditionsModel.fromEntity(entity.conditions), 
     );
   }
 
@@ -123,7 +123,7 @@ class HtmlModel {
             return HtmlMediumModel.fromEntityPlus(counter.toString(), item, appId: appId);})
             .toList())), 
           conditions: 
-            await ConditionsSimpleModel.fromEntityPlus(entity.conditions, appId: appId), 
+            await StorageConditionsModel.fromEntityPlus(entity.conditions, appId: appId), 
     );
   }
 
