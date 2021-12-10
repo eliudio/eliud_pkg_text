@@ -107,7 +107,7 @@ class HtmlMediumListWidgetState extends State<HtmlMediumListWidget> {
                       context, label: 'Add',
                       onPressed: () {
                         Navigator.of(context).push(
-                                  pageRouteBuilder(accessState.currentApp(context), page: BlocProvider.value(
+                                  pageRouteBuilder(accessState.currentApp, page: BlocProvider.value(
                                       value: BlocProvider.of<HtmlMediumListBloc>(context),
                                       child: HtmlMediumForm(
                                           value: null,
