@@ -5,7 +5,7 @@ import 'package:eliud_pkg_text/platform/widgets/handle_platform_medium_model.dar
 import 'package:eliud_pkg_text/platform/widgets/html_text_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
+//import 'package:flutter_html/flutter_html.dart';
 
 class MobileTextPlatform extends AbstractTextPlatform {
   @override
@@ -52,6 +52,7 @@ class MobileTextPlatform extends AbstractTextPlatform {
 
   @override
   Widget htmlWidget(String html) {
-    return Html(data: html);
+    return Text("TODO");
+//    return Html(data: html);
   }
 }

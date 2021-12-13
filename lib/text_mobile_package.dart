@@ -19,4 +19,6 @@ class TextMobilePackage extends TextPackage {
       identical(this, other) ||
           other is TextMobilePackage &&
               runtimeType == other.runtimeType;
+
+
 }
