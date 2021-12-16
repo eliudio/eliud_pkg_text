@@ -5,7 +5,8 @@ import 'package:eliud_pkg_text/platform/widgets/handle_platform_medium_model.dar
 import 'package:eliud_pkg_text/platform/widgets/html_text_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-//import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
+import 'package:html_editor_enhanced/html_editor.dart';
 
 class MobileTextPlatform extends AbstractTextPlatform {
   @override
@@ -52,7 +53,19 @@ class MobileTextPlatform extends AbstractTextPlatform {
 
   @override
   Widget htmlWidget(String html) {
-    return Text("TODO");
-//    return Html(data: html);
+    final HtmlEditorController controller = HtmlEditorController();
+    return HtmlEditor(
+        controller: controller,
+        htmlEditorOptions: HtmlEditorOptions(
+          shouldEnsureVisible: true,
+          autoAdjustHeight: false,
+          initialText: html,
+        ),
+      htmlToolbarOptions: HtmlToolbarOptions(
+          defaultToolbarButtons:[]
+        ),
+    );
+    return HtmlWidget(html);
+// todo:    return Html(data: html);
   }
 }
