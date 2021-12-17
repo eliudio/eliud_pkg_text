@@ -155,7 +155,7 @@ class HtmlMediumListWidgetState extends State<HtmlMediumListWidget> {
               BlocProvider.of<HtmlMediumListBloc>(context)
                   .add(DeleteHtmlMediumList(value: value));
               Scaffold.of(context).showSnackBar(DeleteSnackBar(
-                message: "HtmlMedium " + value.,
+                message: "HtmlMedium " + value.documentID,
                 onUndo: () => BlocProvider.of<HtmlMediumListBloc>(context)
                     .add(AddHtmlMediumList(value: value)),
               ));
@@ -168,7 +168,7 @@ class HtmlMediumListWidgetState extends State<HtmlMediumListWidget> {
                       if (removedItem != null) {
                         Scaffold.of(context).showSnackBar(
                           DeleteSnackBar(
-                        message: "HtmlMedium " + value.,
+                        message: "HtmlMedium " + value.documentID,
                             onUndo: () => BlocProvider.of<HtmlMediumListBloc>(context)
                                 .add(AddHtmlMediumList(value: value)),
                           ),
@@ -214,7 +214,6 @@ class HtmlMediumListItem extends StatelessWidget {
       child: ListTile(
         onTap: onTap,
         title: value.documentID != null ? Center(child: StyleRegistry.registry().styleWithContext(context).frontEndStyle().textStyle().text(context, value.documentID!)) : Container(),
-        subtitle: ,
       ),
     );
   }

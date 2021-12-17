@@ -64,7 +64,6 @@ class HtmlMediumDropdownButtonWidgetState extends State<HtmlMediumDropdownButton
 List<Widget> widgets(HtmlMediumModel value) {
 var widgets = <Widget>[];
 widgets.add(value.documentID != null ? Center(child: StyleRegistry.registry().styleWithContext(context).frontEndStyle().textStyle().text(context, value.documentID!)) : Container());
-widgets.add();
 return widgets;
 }
 
