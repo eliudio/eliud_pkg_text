@@ -155,7 +155,7 @@ class HtmlListWidgetState extends State<HtmlListWidget> {
               BlocProvider.of<HtmlListBloc>(context)
                   .add(DeleteHtmlList(value: value));
               Scaffold.of(context).showSnackBar(DeleteSnackBar(
-                message: "Html " + value.documentID,
+                message: "Html " + value.,
                 onUndo: () => BlocProvider.of<HtmlListBloc>(context)
                     .add(AddHtmlList(value: value)),
               ));
@@ -168,7 +168,7 @@ class HtmlListWidgetState extends State<HtmlListWidget> {
                       if (removedItem != null) {
                         Scaffold.of(context).showSnackBar(
                           DeleteSnackBar(
-                        message: "Html " + value.documentID,
+                        message: "Html " + value.,
                             onUndo: () => BlocProvider.of<HtmlListBloc>(context)
                                 .add(AddHtmlList(value: value)),
                           ),

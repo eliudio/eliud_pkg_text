@@ -123,7 +123,12 @@ class HtmlCache implements HtmlRepository {
 
   @override
   StreamSubscription<HtmlModel?> listenTo(String documentId, HtmlChanged changed) {
-    return reference.listenTo(documentId, changed);
+    return reference.listenTo(documentId, ((value) {
+      if (value != null) {
+        fullCache[value.documentID] = value;
+      }
+      changed(value);
+    }));
   }
 
   static Future<HtmlModel> refreshRelations(HtmlModel model) async {

@@ -123,7 +123,12 @@ class HtmlMediumCache implements HtmlMediumRepository {
 
   @override
   StreamSubscription<HtmlMediumModel?> listenTo(String documentId, HtmlMediumChanged changed) {
-    return reference.listenTo(documentId, changed);
+    return reference.listenTo(documentId, ((value) {
+      if (value != null) {
+        fullCache[value.documentID] = value;
+      }
+      changed(value);
+    }));
   }
 
   static Future<HtmlMediumModel> refreshRelations(HtmlMediumModel model) async {
