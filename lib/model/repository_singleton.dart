@@ -28,7 +28,7 @@ class RepositorySingleton extends AbstractRepositorySingleton {
     var _htmlRepository = HashMap<String, HtmlRepository>();
 
     HtmlRepository? htmlRepository(String? appId) {
-      if ((appId != null) && (_htmlRepository[appId] == null)) _htmlRepository[appId] = HtmlCache(HtmlFirestore(appRepository()!.getSubCollection(appId, 'html'), appId));
+      if ((appId != null) && (_htmlRepository[appId] == null)) _htmlRepository[appId] = HtmlCache(HtmlFirestore(() => appRepository()!.getSubCollection(appId, 'html'), appId));
       return _htmlRepository[appId];
     }
 
