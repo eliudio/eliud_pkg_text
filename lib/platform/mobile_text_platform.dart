@@ -53,6 +53,8 @@ class MobileTextPlatform extends AbstractTextPlatform {
 
   @override
   Widget htmlWidget(String html) {
+    return HtmlWidget(html);
+/*
     final HtmlEditorController controller = HtmlEditorController();
     return HtmlEditor(
         controller: controller,
@@ -67,5 +69,6 @@ class MobileTextPlatform extends AbstractTextPlatform {
     );
     return HtmlWidget(html);
 // todo:    return Html(data: html);
+*/
   }
 }
