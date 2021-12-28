@@ -91,7 +91,7 @@ class AdminApp extends AdminAppInstallerBase {
 
 class AdminMenu extends AdminAppMenuInstallerBase {
 
-  Future<MenuDefModel> menu(String appId) async {
+  Future<MenuDefModel> menu(AppModel app) async {
     var menuItems = <MenuItemModel>[];
 
     menuItems.add(
@@ -100,18 +100,18 @@ class AdminMenu extends AdminAppMenuInstallerBase {
         text: "Htmls",
         description: "Htmls",
         icon: IconModel(codePoint: 0xe88a, fontFamily: "MaterialIcons"),
-        action: GotoPage(appId, pageID: "eliud_pkg_text_htmls_page"))
+        action: GotoPage(app, pageID: "eliud_pkg_text_htmls_page"))
     );
 
 
     MenuDefModel menu = MenuDefModel(
       admin: true,
       documentID: "eliud_pkg_text_admin_menu",
-      appId: appId,
+      appId: app.documentID,
       name: "eliud_pkg_text",
       menuItems: menuItems
     );
-    await menuDefRepository(appId: appId)!.add(menu);
+    await menuDefRepository(appId: app.documentID!)!.add(menu);
     return menu;
   }
 }

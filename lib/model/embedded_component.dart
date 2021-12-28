@@ -17,6 +17,7 @@
 import 'package:eliud_core/tools/random.dart';
 import 'package:eliud_core/tools/common_tools.dart';
 import 'package:eliud_core/tools/query/query_tools.dart';
+import 'package:eliud_core/model/app_model.dart';
 
 import 'dart:async';
 
@@ -32,11 +33,11 @@ import '../model/html_medium_repository.dart';
 
 typedef HtmlMediumListChanged(List<HtmlMediumModel> values);
 
-htmlMediumsList(context, value, trigger) => EmbeddedComponentFactory.htmlMediumsList(context, value, trigger);
+htmlMediumsList(app, context, value, trigger) => EmbeddedComponentFactory.htmlMediumsList(app, context, value, trigger);
 
 class EmbeddedComponentFactory {
 
-static Widget htmlMediumsList(BuildContext context, List<HtmlMediumModel> values, HtmlMediumListChanged trigger) {
+static Widget htmlMediumsList(BuildContext context, AppModel app, List<HtmlMediumModel> values, HtmlMediumListChanged trigger) {
   HtmlMediumInMemoryRepository inMemoryRepository = HtmlMediumInMemoryRepository(trigger, values,);
   return MultiBlocProvider(
     providers: [
@@ -46,7 +47,7 @@ static Widget htmlMediumsList(BuildContext context, List<HtmlMediumModel> values
           )..add(LoadHtmlMediumList()),
         )
         ],
-    child: HtmlMediumListWidget(isEmbedded: true),
+    child: HtmlMediumListWidget(app: app, isEmbedded: true),
   );
 }
 

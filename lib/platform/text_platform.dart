@@ -4,6 +4,7 @@ import 'package:eliud_pkg_text/model/html_model.dart';
 import 'package:eliud_pkg_text/platform/widgets/handle_platform_medium_model.dart';
 import 'package:eliud_pkg_text/platform/widgets/html_text_dialog.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:eliud_core/model/app_model.dart';
 
 typedef UpdatedHtml(String value);
 
@@ -12,7 +13,7 @@ abstract class AbstractTextPlatform {
 
   void updateHtmlUsingMemberMedium(
       BuildContext context,
-      String appId,
+      AppModel app,
       String ownerId,
       List<String> readAccess,
       String title,
@@ -23,7 +24,7 @@ abstract class AbstractTextPlatform {
   @override
   void updateHtmlUsingPlatformMedium(
       BuildContext context,
-      String appId,
+      AppModel app,
       String ownerId,
       HtmlModel htmlModel,
       UpdatedHtml updatedHtml,
@@ -32,14 +33,14 @@ abstract class AbstractTextPlatform {
 
   void updateHtmlUsingPlatformMedium2(
       BuildContext context,
-      String appId,
+      AppModel app,
       String ownerId,
       HtmlModel htmlModel,
       UpdatedHtml updatedHtml,
       String title,
       bool isWeb,
       {List<Widget>? extraIcons}) {
-    HtmlTextDialog.open(context, appId, ownerId, title, (value) {
+    HtmlTextDialog.open(context, app, ownerId, title, (value) {
       htmlModel.html = value;
       updatedHtml(value);
     },
@@ -47,7 +48,7 @@ abstract class AbstractTextPlatform {
         isWeb,
         HandlePlatformMediumModel(
             htmlModel,
-            appId,
+            app,
             ownerId,
             htmlModel.conditions == null ||
                     htmlModel.conditions!.privilegeLevelRequired == null

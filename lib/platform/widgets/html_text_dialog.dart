@@ -1,4 +1,5 @@
 import 'package:eliud_core/core/blocs/access/access_bloc.dart';
+import 'package:eliud_core/model/app_model.dart';
 import 'package:eliud_core/style/_default/frontend/helper/dialog/dialog_helper.dart';
 import 'package:eliud_core/style/frontend/has_button.dart';
 import 'package:eliud_core/style/frontend/has_dialog_widget.dart';
@@ -19,7 +20,7 @@ class HtmlTextDialog extends StatefulWidget {
   static double height(BuildContext context) =>
       MediaQuery.of(context).size.height * 0.9;
 
-  final String appId;
+  final AppModel app;
   final String title;
   final UpdatedHtml updatedHtml;
   final String initialValue;
@@ -39,7 +40,7 @@ class HtmlTextDialog extends StatefulWidget {
     required this.title,
     required this.updatedHtml,
     required this.initialValue,
-    required this.appId,
+    required this.app,
     required this.ownerId,
     required this.isWeb,
     this.extraIcons,
@@ -51,7 +52,7 @@ class HtmlTextDialog extends StatefulWidget {
 
   static void open(
     BuildContext context,
-    String appId,
+    AppModel app,
     String ownerId,
     String title,
     UpdatedHtml updatedHtml,
@@ -65,16 +66,15 @@ class HtmlTextDialog extends StatefulWidget {
       initialValue = ' ';
 
     StyleRegistry.registry()
-        .styleWithContext(context)
+        .styleWithApp(app)
         .frontEndStyle()
         .dialogStyle()
-        .openWidgetDialog(context,
-        AccessBloc.currentAppId(context) + '/html',
+        .openWidgetDialog(app, context, app.documentID! + '/html',
             child: HtmlTextDialog(
               title: title,
               updatedHtml: updatedHtml,
               initialValue: initialValue,
-              appId: appId,
+              app: app,
               ownerId: ownerId,
               isWeb: isWeb,
               extraIcons: extraIcons,
@@ -101,23 +101,23 @@ class _HtmlTextDialogState extends State<HtmlTextDialog> {
   final DialogStateHelper dialogHelper = DialogStateHelper();
   @override
   Widget build(BuildContext context) {
-    return flexibleDialog(context,
+    return flexibleDialog(widget.app, context,
         title: widget.title, buttons: _buttons(), child: _child());
   }
 
   List<Widget> _buttons() {
     if (_progress != null) {
-      return [progressIndicatorWithValue(context, value: _progress!)];
+      return [progressIndicatorWithValue(widget.app, context, value: _progress!)];
     } else {
       List<Widget> buttons = <Widget>[];
       if (isHtml) {
-        buttons.add(dialogButton(context, onPressed: () {
+        buttons.add(dialogButton(widget.app, context, onPressed: () {
           isHtml = false;
           controller.toggleCodeView();
           setState(() {});
         }, label: 'Visual'));
       } else {
-        buttons.add(dialogButton(context, label: 'Html', onPressed: () {
+        buttons.add(dialogButton(widget.app, context, label: 'Html', onPressed: () {
           isHtml = true;
           controller.toggleCodeView();
           setState(() {});
@@ -128,10 +128,10 @@ class _HtmlTextDialogState extends State<HtmlTextDialog> {
         buttons.addAll(widget.extraIcons!);
         buttons.add(Spacer());
       }
-      buttons.add(dialogButton(context, onPressed: () {
+      buttons.add(dialogButton(widget.app, context, onPressed: () {
         Navigator.pop(context);
       }, label: 'Cancel'));
-      buttons.add(dialogButton(context, onPressed: () async {
+      buttons.add(dialogButton(widget.app, context, onPressed: () async {
         Navigator.pop(context);
         widget.updatedHtml(await controller.getText());
       }, label: 'Done'));
@@ -154,7 +154,7 @@ class _HtmlTextDialogState extends State<HtmlTextDialog> {
         htmlToolbarOptions: HtmlToolbarOptions(
             toolbarPosition: ToolbarPosition.aboveEditor,
             customToolbarButtons: [
-              progressIndicatorWithValue(context, value: _progress!),
+              progressIndicatorWithValue(widget.app, context, value: _progress!),
               Spacer(),
             ],
             customToolbarInsertionIndices: [0, 1],

@@ -1,3 +1,4 @@
+import 'package:eliud_core/model/app_model.dart';
 import 'package:eliud_core/tools/random.dart';
 import 'package:eliud_core/tools/storage/medium_helper.dart';
 import 'package:flutter/foundation.dart';
@@ -8,10 +9,10 @@ import 'package:eliud_core/tools/storage/basename_helper.dart';
 typedef void SetProgress(double? progress);
 
 abstract class HandleMediumModel {
-  String appId;
+  AppModel app;
   String ownerId;
 
-  HandleMediumModel(this.appId, this.ownerId);
+  HandleMediumModel(this.app, this.ownerId);
 
   Future<bool> interceptUploadWithPath(
       HtmlEditorController controller,

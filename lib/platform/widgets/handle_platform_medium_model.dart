@@ -1,3 +1,4 @@
+import 'package:eliud_core/model/app_model.dart';
 import 'package:eliud_core/model/storage_conditions_model.dart';
 import 'package:eliud_core/tools/random.dart';
 import 'package:eliud_core/tools/storage/medium_helper.dart';
@@ -13,13 +14,13 @@ class HandlePlatformMediumModel extends HandleMediumModel {
   final PrivilegeLevelRequiredSimple privilegeLevelRequiredSimple;
   final HtmlModel htmlModel;
 
-    HandlePlatformMediumModel(this.htmlModel, String appId, String ownerId, this.privilegeLevelRequiredSimple)
-      : super(appId, ownerId);
+    HandlePlatformMediumModel(this.htmlModel, AppModel app, String ownerId, this.privilegeLevelRequiredSimple)
+      : super(app, ownerId);
 
   @override
   MediumHelper getMediumHelper() {
     return PlatformMediumHelper(
-      appId,
+      app,
       ownerId,
       privilegeLevelRequiredSimple,
     );

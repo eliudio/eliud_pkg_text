@@ -13,6 +13,7 @@
 
 */
 
+import 'package:eliud_core/model/app_model.dart';
 import 'package:eliud_core/package/packages.dart';
 
 import 'package:flutter/material.dart';
@@ -32,11 +33,12 @@ import 'package:eliud_pkg_text/model/html_medium_model.dart';
 typedef HtmlMediumChanged(String? value);
 
 class HtmlMediumDropdownButtonWidget extends StatefulWidget {
+  final AppModel app;
   final String? value;
   final HtmlMediumChanged? trigger;
   final bool? optional;
 
-  HtmlMediumDropdownButtonWidget({ this.value, this.trigger, this.optional, Key? key }): super(key: key);
+  HtmlMediumDropdownButtonWidget({ required this.app, this.value, this.trigger, this.optional, Key? key }): super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -62,8 +64,9 @@ class HtmlMediumDropdownButtonWidgetState extends State<HtmlMediumDropdownButton
   }
 
 List<Widget> widgets(HtmlMediumModel value) {
+var app = widget.app;
 var widgets = <Widget>[];
-widgets.add(value.documentID != null ? Center(child: StyleRegistry.registry().styleWithContext(context).frontEndStyle().textStyle().text(context, value.documentID!)) : Container());
+widgets.add(value.documentID != null ? Center(child: StyleRegistry.registry().styleWithApp(app).frontEndStyle().textStyle().text(app, context, value.documentID!)) : Container());
 return widgets;
 }
 
@@ -73,7 +76,7 @@ return widgets;
     var accessState = AccessBloc.getState(context);
     return BlocBuilder<HtmlMediumListBloc, HtmlMediumListState>(builder: (context, state) {
       if (state is HtmlMediumListLoading) {
-        return StyleRegistry.registry().styleWithContext(context).adminListStyle().progressIndicator(context);
+        return StyleRegistry.registry().styleWithApp(widget.app).adminListStyle().progressIndicator(widget.app, context);
       } else if (state is HtmlMediumListLoaded) {
         String? valueChosen;
         if (state.values!.indexWhere((v) => (v!.documentID == widget.value)) >= 0)
@@ -116,7 +119,7 @@ return widgets;
                       items: items,
                       value: valueChosen,
                       hint: Text('Select a htmlMedium'),
-                      onChanged: !accessState.memberIsOwner(AccessBloc.currentAppId(context)) ? null : _onChange,
+                      onChanged: !accessState.memberIsOwner(widget.app.documentID!) ? null : _onChange,
                     );
         if (false) {
           return Container(height:48, child: Center(child: button));
@@ -124,7 +127,7 @@ return widgets;
           return Center(child: button);
         }
       } else {
-        return StyleRegistry.registry().styleWithContext(context).adminListStyle().progressIndicator(context);
+        return StyleRegistry.registry().styleWithApp(widget.app).adminListStyle().progressIndicator(widget.app, context);
       }
     });
   }

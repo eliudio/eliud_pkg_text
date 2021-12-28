@@ -1,3 +1,4 @@
+import 'package:eliud_core/model/app_model.dart';
 import 'package:eliud_pkg_text/model/html_model.dart';
 import 'package:eliud_pkg_text/platform/text_platform.dart';
 import 'package:eliud_pkg_text/platform/widgets/handle_member_medium_model.dart';
@@ -11,20 +12,20 @@ class WebTextPlatform extends AbstractTextPlatform {
   @override
   void updateHtmlUsingMemberMedium(
       BuildContext context,
-      String appId,
+      AppModel app,
       String ownerId,
       List<String> readAccess,
       String title,
       UpdatedHtml updatedHtml,
       String initialValue,
       {List<Widget>? extraIcons}) {
-    HtmlTextDialog.open(context, appId, ownerId, title, updatedHtml, initialValue, true, HandleMemberMediumModel(appId, ownerId, readAccess), extraIcons: extraIcons);
+    HtmlTextDialog.open(context, app, ownerId, title, updatedHtml, initialValue, true, HandleMemberMediumModel(app, ownerId, readAccess), extraIcons: extraIcons);
   }
 
   @override
   void updateHtmlUsingPlatformMedium(
       BuildContext context,
-      String appId,
+      AppModel app,
       String ownerId,
       HtmlModel htmlModel,
       UpdatedHtml updatedHtml,
@@ -32,7 +33,7 @@ class WebTextPlatform extends AbstractTextPlatform {
       {List<Widget>? extraIcons}) {
     updateHtmlUsingPlatformMedium2(
         context,
-        appId,
+        app,
         ownerId,
         htmlModel,
         updatedHtml,

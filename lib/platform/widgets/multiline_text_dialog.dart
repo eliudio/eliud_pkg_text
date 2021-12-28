@@ -1,4 +1,5 @@
 import 'package:eliud_core/core/blocs/access/access_bloc.dart';
+import 'package:eliud_core/model/app_model.dart';
 import 'package:eliud_core/style/_default/frontend/helper/dialog/dialog_helper.dart';
 import 'package:eliud_core/style/frontend/has_button.dart';
 import 'package:eliud_core/style/frontend/has_dialog.dart';
@@ -17,7 +18,7 @@ class MultilineTextDialog extends StatefulWidget {
   static double height(BuildContext context) =>
       MediaQuery.of(context).size.height * 0.9;
 
-  final String appId;
+  final AppModel app;
   final String title;
   final UpdatedHtml updatedHtml;
   final String initialValue;
@@ -29,7 +30,7 @@ class MultilineTextDialog extends StatefulWidget {
     required this.title,
     required this.updatedHtml,
     required this.initialValue,
-    required this.appId,
+    required this.app,
     required this.ownerId,
     required this.readAccess,
   }) : super(key: key);
@@ -39,20 +40,20 @@ class MultilineTextDialog extends StatefulWidget {
 
   static void open(
       BuildContext context,
-      String appId,
+      AppModel app,
       String ownerId,
       List<String> readAccess,
       String title,
       UpdatedHtml updatedHtml,
       String initialValue) {
-    openWidgetDialog(context,
-        AccessBloc.currentAppId(context) + '/multilinetext',
+    openWidgetDialog(app, context,
+        app.documentID! + '/multilinetext',
         child:
         MultilineTextDialog(
           title: title,
           updatedHtml: updatedHtml,
           initialValue: initialValue,
-          appId: appId,
+          app: app,
           ownerId: ownerId,
           readAccess: readAccess,
         ));
@@ -65,7 +66,7 @@ class _MultilineTextDialogState extends State<MultilineTextDialog> {
   final DialogStateHelper dialogHelper = DialogStateHelper();
   @override
   Widget build(BuildContext context) {
-    return flexibleDialog(
+    return flexibleDialog(widget.app,
         context,
         title: widget.title,
         buttons: _buttons(),
@@ -81,10 +82,10 @@ class _MultilineTextDialogState extends State<MultilineTextDialog> {
   List<Widget> _buttons() {
     return [
       Spacer(),
-      dialogButton(context, onPressed: () {
+      dialogButton(widget.app, context, onPressed: () {
         Navigator.pop(context);
       }, label: 'Cancel'),
-      dialogButton(context,
+      dialogButton(widget.app, context,
           onPressed: () async {
             Navigator.pop(context);
             widget.updatedHtml(controller.text);

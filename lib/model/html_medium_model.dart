@@ -69,7 +69,7 @@ class HtmlMediumModel {
     );
   }
 
-  static HtmlMediumModel? fromEntity(String documentID, HtmlMediumEntity? entity) {
+  static Future<HtmlMediumModel?> fromEntity(String documentID, HtmlMediumEntity? entity) async {
     if (entity == null) return null;
     var counter = 0;
     return HtmlMediumModel(

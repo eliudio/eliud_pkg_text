@@ -86,7 +86,7 @@ class HtmlModel {
     );
   }
 
-  static HtmlModel? fromEntity(String documentID, HtmlEntity? entity) {
+  static Future<HtmlModel?> fromEntity(String documentID, HtmlEntity? entity) async {
     if (entity == null) return null;
     var counter = 0;
     return HtmlModel(
@@ -95,15 +95,14 @@ class HtmlModel {
           name: entity.name, 
           html: entity.html, 
           htmlMedia: 
-            entity.htmlMedia == null ? null :
-            entity.htmlMedia
+            entity.htmlMedia == null ? null : List<HtmlMediumModel>.from(await Future.wait(entity. htmlMedia
             !.map((item) {
-              counter++; 
-              return HtmlMediumModel.fromEntity(counter.toString(), item)!;
+            counter++;
+              return HtmlMediumModel.fromEntity(counter.toString(), item);
             })
-            .toList(), 
+            .toList())), 
           conditions: 
-            StorageConditionsModel.fromEntity(entity.conditions), 
+            await StorageConditionsModel.fromEntity(entity.conditions), 
     );
   }
 

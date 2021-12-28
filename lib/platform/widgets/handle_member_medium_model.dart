@@ -1,3 +1,4 @@
+import 'package:eliud_core/model/app_model.dart';
 import 'package:eliud_core/tools/storage/medium_helper.dart';
 import 'package:eliud_core/tools/tool_set.dart';
 import 'package:html_editor_enhanced/html_editor.dart';
@@ -8,13 +9,13 @@ import 'handle_medium_model.dart';
 class HandleMemberMediumModel extends HandleMediumModel {
   final List<String> readAccess;
 
-  HandleMemberMediumModel(String appId, String ownerId, this.readAccess)
-      : super(appId, ownerId);
+  HandleMemberMediumModel(AppModel app, String ownerId, this.readAccess)
+      : super(app, ownerId);
 
   @override
   MediumHelper getMediumHelper() {
     return MemberMediumHelper(
-      appId,
+      app,
       ownerId,
       readAccess,
     );
