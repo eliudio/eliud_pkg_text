@@ -37,7 +37,7 @@ htmlMediumsList(app, context, value, trigger) => EmbeddedComponentFactory.htmlMe
 
 class EmbeddedComponentFactory {
 
-static Widget htmlMediumsList(BuildContext context, AppModel app, List<HtmlMediumModel> values, HtmlMediumListChanged trigger) {
+static Widget htmlMediumsList(AppModel app, BuildContext context, List<HtmlMediumModel> values, HtmlMediumListChanged trigger) {
   HtmlMediumInMemoryRepository inMemoryRepository = HtmlMediumInMemoryRepository(trigger, values,);
   return MultiBlocProvider(
     providers: [
