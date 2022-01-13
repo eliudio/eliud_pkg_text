@@ -1,4 +1,5 @@
 import 'package:eliud_core/model/app_model.dart';
+import 'package:eliud_core/model/member_medium_model.dart';
 import 'package:eliud_core/tools/storage/medium_helper.dart';
 import 'package:eliud_core/tools/tool_set.dart';
 import 'package:html_editor_enhanced/html_editor.dart';
@@ -7,9 +8,10 @@ import 'package:eliud_core/tools/storage/member_medium_helper.dart';
 import 'handle_medium_model.dart';
 
 class HandleMemberMediumModel extends HandleMediumModel {
-  final List<String> readAccess;
+  final MemberMediumAccessibleByGroup accessibleByGroup;
+  final List<String>? accessibleByMembers;
 
-  HandleMemberMediumModel(AppModel app, String ownerId, this.readAccess)
+  HandleMemberMediumModel(AppModel app, String ownerId, this.accessibleByGroup, { this.accessibleByMembers})
       : super(app, ownerId);
 
   @override
@@ -17,7 +19,8 @@ class HandleMemberMediumModel extends HandleMediumModel {
     return MemberMediumHelper(
       app,
       ownerId,
-      readAccess,
+      accessibleByGroup,
+      accessibleByMembers: accessibleByMembers,
     );
   }
 

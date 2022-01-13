@@ -8,6 +8,14 @@ import 'package:eliud_core/tools/storage/basename_helper.dart';
 
 typedef void SetProgress(double? progress);
 
+/*
+ * Class used to handle uploading of photos or videos when updating html.
+ *
+ * TODO: We should consider for the container (Html itself) to hold a list of MemberMediumModels or PlatformMediumModels
+ * to allow to maintain this list when maintaining the container. E.g. when access rights change or when
+ * the container gets deleted.
+ *
+ */
 abstract class HandleMediumModel {
   AppModel app;
   String ownerId;

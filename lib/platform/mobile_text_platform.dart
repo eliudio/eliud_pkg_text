@@ -1,4 +1,5 @@
 import 'package:eliud_core/model/app_model.dart';
+import 'package:eliud_core/model/member_medium_model.dart';
 import 'package:eliud_pkg_text/model/html_model.dart';
 import 'package:eliud_pkg_text/platform/text_platform.dart';
 import 'package:eliud_pkg_text/platform/widgets/handle_member_medium_model.dart';
@@ -15,20 +16,13 @@ class MobileTextPlatform extends AbstractTextPlatform {
       BuildContext context,
       AppModel app,
       String ownerId,
-      List<String> readAccess,
+      MemberMediumAccessibleByGroup accessibleByGroup,
       String title,
       UpdatedHtml updatedHtml,
       String initialValue,
-      {List<Widget>? extraIcons}) {
-    HtmlTextDialog.open(
-        context,
-        app,
-        ownerId,
-        title,
-        updatedHtml,
-        initialValue,
-        false,
-        HandleMemberMediumModel(app, ownerId, readAccess),
+      {List<Widget>? extraIcons, List<String>? accessibleByMembers,}) {
+    HtmlTextDialog.open(context, app, ownerId, title, updatedHtml, initialValue,
+        false, HandleMemberMediumModel(app, ownerId, accessibleByGroup, accessibleByMembers: accessibleByMembers),
         extraIcons: extraIcons);
   }
 
@@ -42,14 +36,8 @@ class MobileTextPlatform extends AbstractTextPlatform {
       String title,
       {List<Widget>? extraIcons}) {
     updateHtmlUsingPlatformMedium2(
-        context,
-        app,
-        ownerId,
-        htmlModel,
-        updatedHtml,
-        title,
-        false,
-        extraIcons:extraIcons);
+        context, app, ownerId, htmlModel, updatedHtml, title, false,
+        extraIcons: extraIcons);
   }
 
   @override

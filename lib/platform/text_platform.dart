@@ -15,11 +15,11 @@ abstract class AbstractTextPlatform {
       BuildContext context,
       AppModel app,
       String ownerId,
-      List<String> readAccess,
+      MemberMediumAccessibleByGroup accessibleByGroup,
       String title,
       UpdatedHtml updatedHtml,
       String initialValue,
-      {List<Widget>? extraIcons});
+      {List<Widget>? extraIcons, List<String>? accessibleByMembers,});
 
   @override
   void updateHtmlUsingPlatformMedium(
