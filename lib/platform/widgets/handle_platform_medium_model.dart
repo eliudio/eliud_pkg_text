@@ -4,15 +4,15 @@ import 'package:eliud_core/tools/random.dart';
 import 'package:eliud_core/tools/storage/medium_helper.dart';
 import 'package:eliud_core/tools/storage/platform_medium_helper.dart';
 import 'package:eliud_core/tools/tool_set.dart';
-import 'package:eliud_pkg_text/model/html_medium_model.dart';
-import 'package:eliud_pkg_text/model/html_model.dart';
+import 'package:eliud_pkg_text/model/html_platform_medium_model.dart';
+import 'package:eliud_pkg_text/model/html_with_platform_medium_model.dart';
 import 'package:html_editor_enhanced/html_editor.dart';
 
 import 'handle_medium_model.dart';
 
 class HandlePlatformMediumModel extends HandleMediumModel {
   final PrivilegeLevelRequiredSimple privilegeLevelRequiredSimple;
-  final HtmlModel htmlModel;
+  final HtmlWithPlatformMediumModel htmlModel;
 
     HandlePlatformMediumModel(this.htmlModel, AppModel app, String ownerId, this.privilegeLevelRequiredSimple)
       : super(app, ownerId);
@@ -47,7 +47,7 @@ class HandlePlatformMediumModel extends HandleMediumModel {
     if (htmlModel.htmlMedia == null) {
       htmlModel.htmlMedia = [];
     }
-    htmlModel.htmlMedia!.add(HtmlMediumModel(
+    htmlModel.htmlMedia!.add(HtmlPlatformMediumModel(
       documentID: newRandomKey(),
       medium: platformMediumModel,
     ));

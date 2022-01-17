@@ -22,10 +22,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:eliud_core/tools/has_fab.dart';
 
 
-import 'package:eliud_pkg_text/model/html_list_bloc.dart';
-import 'package:eliud_pkg_text/model/html_list.dart';
-import 'package:eliud_pkg_text/model/html_dropdown_button.dart';
-import 'package:eliud_pkg_text/model/html_list_event.dart';
+import 'package:eliud_pkg_text/model/html_with_platform_medium_list_bloc.dart';
+import 'package:eliud_pkg_text/model/html_with_platform_medium_list.dart';
+import 'package:eliud_pkg_text/model/html_with_platform_medium_dropdown_button.dart';
+import 'package:eliud_pkg_text/model/html_with_platform_medium_list_event.dart';
 
 import 'package:eliud_core/model/repository_export.dart';
 import 'package:eliud_core/model/abstract_repository_singleton.dart';
@@ -62,13 +62,13 @@ class DropdownButtonComponentFactory implements ComponentDropDown {
 
   bool supports(String id) {
 
-    if (id == "htmls") return true;
+    if (id == "htmlWithPlatformMediums") return true;
     return false;
   }
 
   Widget createNew({Key? key, required AppModel app, required String id, Map<String, dynamic>? parameters, String? value, DropdownButtonChanged? trigger, bool? optional}) {
 
-    if (id == "htmls")
+    if (id == "htmlWithPlatformMediums")
       return DropdownButtonComponent(app: app, componentId: id, value: value, trigger: trigger, optional: optional);
 
     return Text("Id $id not found");
@@ -97,21 +97,21 @@ class ListComponent extends StatelessWidget with HasFab {
   @override
   Widget build(BuildContext context) {
 
-    if (componentId == 'htmls') return _htmlBuild(context);
+    if (componentId == 'htmlWithPlatformMediums') return _htmlWithPlatformMediumBuild(context);
     return Text('Component with componentId == $componentId not found');
   }
 
   void initWidget() {
-    if (componentId == 'htmls') widget = HtmlListWidget(app: app);
+    if (componentId == 'htmlWithPlatformMediums') widget = HtmlWithPlatformMediumListWidget(app: app);
   }
 
-  Widget _htmlBuild(BuildContext context) {
+  Widget _htmlWithPlatformMediumBuild(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<HtmlListBloc>(
-          create: (context) => HtmlListBloc(
-            htmlRepository: htmlRepository(appId: app.documentID!)!,
-          )..add(LoadHtmlList()),
+        BlocProvider<HtmlWithPlatformMediumListBloc>(
+          create: (context) => HtmlWithPlatformMediumListBloc(
+            htmlWithPlatformMediumRepository: htmlWithPlatformMediumRepository(appId: app.documentID!)!,
+          )..add(LoadHtmlWithPlatformMediumList()),
         )
       ],
       child: widget!,
@@ -135,21 +135,21 @@ class DropdownButtonComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    if (componentId == 'htmls') return _htmlBuild(context);
+    if (componentId == 'htmlWithPlatformMediums') return _htmlWithPlatformMediumBuild(context);
     return Text('Component with componentId == $componentId not found');
   }
 
 
-  Widget _htmlBuild(BuildContext context) {
+  Widget _htmlWithPlatformMediumBuild(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<HtmlListBloc>(
-          create: (context) => HtmlListBloc(
-            htmlRepository: htmlRepository(appId: app.documentID!)!,
-          )..add(LoadHtmlList()),
+        BlocProvider<HtmlWithPlatformMediumListBloc>(
+          create: (context) => HtmlWithPlatformMediumListBloc(
+            htmlWithPlatformMediumRepository: htmlWithPlatformMediumRepository(appId: app.documentID!)!,
+          )..add(LoadHtmlWithPlatformMediumList()),
         )
       ],
-      child: HtmlDropdownButtonWidget(app: app, value: value, trigger: trigger, optional: optional),
+      child: HtmlWithPlatformMediumDropdownButtonWidget(app: app, value: value, trigger: trigger, optional: optional),
     );
   }
 

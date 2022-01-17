@@ -25,44 +25,44 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:eliud_core/core/blocs/access/access_bloc.dart';
 
-import '../model/html_medium_list_bloc.dart';
-import '../model/html_medium_list.dart';
-import '../model/html_medium_list_event.dart';
-import '../model/html_medium_model.dart';
-import '../model/html_medium_repository.dart';
+import '../model/html_platform_medium_list_bloc.dart';
+import '../model/html_platform_medium_list.dart';
+import '../model/html_platform_medium_list_event.dart';
+import '../model/html_platform_medium_model.dart';
+import '../model/html_platform_medium_repository.dart';
 
-typedef HtmlMediumListChanged(List<HtmlMediumModel> values);
+typedef HtmlPlatformMediumListChanged(List<HtmlPlatformMediumModel> values);
 
-htmlMediumsList(app, context, value, trigger) => EmbeddedComponentFactory.htmlMediumsList(app, context, value, trigger);
+htmlPlatformMediumsList(app, context, value, trigger) => EmbeddedComponentFactory.htmlPlatformMediumsList(app, context, value, trigger);
 
 class EmbeddedComponentFactory {
 
-static Widget htmlMediumsList(AppModel app, BuildContext context, List<HtmlMediumModel> values, HtmlMediumListChanged trigger) {
-  HtmlMediumInMemoryRepository inMemoryRepository = HtmlMediumInMemoryRepository(trigger, values,);
+static Widget htmlPlatformMediumsList(AppModel app, BuildContext context, List<HtmlPlatformMediumModel> values, HtmlPlatformMediumListChanged trigger) {
+  HtmlPlatformMediumInMemoryRepository inMemoryRepository = HtmlPlatformMediumInMemoryRepository(trigger, values,);
   return MultiBlocProvider(
     providers: [
-      BlocProvider<HtmlMediumListBloc>(
-        create: (context) => HtmlMediumListBloc(
-          htmlMediumRepository: inMemoryRepository,
-          )..add(LoadHtmlMediumList()),
+      BlocProvider<HtmlPlatformMediumListBloc>(
+        create: (context) => HtmlPlatformMediumListBloc(
+          htmlPlatformMediumRepository: inMemoryRepository,
+          )..add(LoadHtmlPlatformMediumList()),
         )
         ],
-    child: HtmlMediumListWidget(app: app, isEmbedded: true),
+    child: HtmlPlatformMediumListWidget(app: app, isEmbedded: true),
   );
 }
 
 
 }
 
-class HtmlMediumInMemoryRepository implements HtmlMediumRepository {
-    final List<HtmlMediumModel> items;
-    final HtmlMediumListChanged trigger;
-    Stream<List<HtmlMediumModel>>? theValues;
+class HtmlPlatformMediumInMemoryRepository implements HtmlPlatformMediumRepository {
+    final List<HtmlPlatformMediumModel> items;
+    final HtmlPlatformMediumListChanged trigger;
+    Stream<List<HtmlPlatformMediumModel>>? theValues;
 
-    HtmlMediumInMemoryRepository(this.trigger, this.items) {
-        List<List<HtmlMediumModel>> myList = <List<HtmlMediumModel>>[];
+    HtmlPlatformMediumInMemoryRepository(this.trigger, this.items) {
+        List<List<HtmlPlatformMediumModel>> myList = <List<HtmlPlatformMediumModel>>[];
         if (items != null) myList.add(items);
-        theValues = Stream<List<HtmlMediumModel>>.fromIterable(myList);
+        theValues = Stream<List<HtmlPlatformMediumModel>>.fromIterable(myList);
     }
 
     int _index(String documentID) {
@@ -76,20 +76,20 @@ class HtmlMediumInMemoryRepository implements HtmlMediumRepository {
       return -1;
     }
 
-    Future<HtmlMediumModel> add(HtmlMediumModel value) {
+    Future<HtmlPlatformMediumModel> add(HtmlPlatformMediumModel value) {
         items.add(value.copyWith(documentID: newRandomKey()));
         trigger(items);
         return Future.value(value);
     }
 
-    Future<void> delete(HtmlMediumModel value) {
+    Future<void> delete(HtmlPlatformMediumModel value) {
       int index = _index(value.documentID!);
       if (index >= 0) items.removeAt(index);
       trigger(items);
       return Future.value(value);
     }
 
-    Future<HtmlMediumModel> update(HtmlMediumModel value) {
+    Future<HtmlPlatformMediumModel> update(HtmlPlatformMediumModel value) {
       int index = _index(value.documentID!);
       if (index >= 0) {
         items.replaceRange(index, index+1, [value]);
@@ -98,38 +98,38 @@ class HtmlMediumInMemoryRepository implements HtmlMediumRepository {
       return Future.value(value);
     }
 
-    Future<HtmlMediumModel> get(String? id, { Function(Exception)? onError }) {
+    Future<HtmlPlatformMediumModel> get(String? id, { Function(Exception)? onError }) {
       int index = _index(id!);
-      var completer = new Completer<HtmlMediumModel>();
+      var completer = new Completer<HtmlPlatformMediumModel>();
       completer.complete(items[index]);
       return completer.future;
     }
 
-    Stream<List<HtmlMediumModel>> values({String? orderBy, bool? descending, Object? startAfter, int? limit, SetLastDoc? setLastDoc, int? privilegeLevel, EliudQuery? eliudQuery }) {
+    Stream<List<HtmlPlatformMediumModel>> values({String? orderBy, bool? descending, Object? startAfter, int? limit, SetLastDoc? setLastDoc, int? privilegeLevel, EliudQuery? eliudQuery }) {
       return theValues!;
     }
     
-    Stream<List<HtmlMediumModel>> valuesWithDetails({String? orderBy, bool? descending, Object? startAfter, int? limit, SetLastDoc? setLastDoc, int? privilegeLevel, EliudQuery? eliudQuery }) {
+    Stream<List<HtmlPlatformMediumModel>> valuesWithDetails({String? orderBy, bool? descending, Object? startAfter, int? limit, SetLastDoc? setLastDoc, int? privilegeLevel, EliudQuery? eliudQuery }) {
       return theValues!;
     }
     
     @override
-    StreamSubscription<List<HtmlMediumModel>> listen(trigger, { String? orderBy, bool? descending, Object? startAfter, int? limit, int? privilegeLevel, EliudQuery? eliudQuery }) {
+    StreamSubscription<List<HtmlPlatformMediumModel>> listen(trigger, { String? orderBy, bool? descending, Object? startAfter, int? limit, int? privilegeLevel, EliudQuery? eliudQuery }) {
       return theValues!.listen((theList) => trigger(theList));
     }
   
     @override
-    StreamSubscription<List<HtmlMediumModel>> listenWithDetails(trigger, { String? orderBy, bool? descending, Object? startAfter, int? limit, int? privilegeLevel, EliudQuery? eliudQuery }) {
+    StreamSubscription<List<HtmlPlatformMediumModel>> listenWithDetails(trigger, { String? orderBy, bool? descending, Object? startAfter, int? limit, int? privilegeLevel, EliudQuery? eliudQuery }) {
       return theValues!.listen((theList) => trigger(theList));
     }
     
     void flush() {}
 
-    Future<List<HtmlMediumModel>> valuesList({String? orderBy, bool? descending, Object? startAfter, int? limit, SetLastDoc? setLastDoc, int? privilegeLevel, EliudQuery? eliudQuery }) {
+    Future<List<HtmlPlatformMediumModel>> valuesList({String? orderBy, bool? descending, Object? startAfter, int? limit, SetLastDoc? setLastDoc, int? privilegeLevel, EliudQuery? eliudQuery }) {
       return Future.value(items);
     }
     
-    Future<List<HtmlMediumModel>> valuesListWithDetails({String? orderBy, bool? descending, Object? startAfter, int? limit, SetLastDoc? setLastDoc, int? privilegeLevel, EliudQuery? eliudQuery }) {
+    Future<List<HtmlPlatformMediumModel>> valuesListWithDetails({String? orderBy, bool? descending, Object? startAfter, int? limit, SetLastDoc? setLastDoc, int? privilegeLevel, EliudQuery? eliudQuery }) {
       return Future.value(items);
     }
 
@@ -144,12 +144,12 @@ class HtmlMediumInMemoryRepository implements HtmlMediumRepository {
   }
   
   @override
-  StreamSubscription<HtmlMediumModel> listenTo(String documentId, HtmlMediumChanged changed) {
+  StreamSubscription<HtmlPlatformMediumModel> listenTo(String documentId, HtmlPlatformMediumChanged changed) {
     throw UnimplementedError();
   }
 
   @override
-  Future<HtmlMediumModel> changeValue(String documentId, String fieldName, num changeByThisValue) {
+  Future<HtmlPlatformMediumModel> changeValue(String documentId, String fieldName, num changeByThisValue) {
     throw UnimplementedError();
   }
   

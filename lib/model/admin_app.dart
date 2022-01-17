@@ -52,17 +52,17 @@ class AdminApp extends AdminAppInstallerBase {
   AdminApp(this.appId, this._drawer, this._endDrawer, this._appBar, this._homeMenu, this.menuItemColor, this.selectedMenuItemColor, this.backgroundColor);
 
 
-  PageModel _htmlsPages() {
+  PageModel _htmlWithPlatformMediumsPages() {
     List<BodyComponentModel> components = [];
     components.add(BodyComponentModel(
-      documentID: "internalWidget-htmls", componentName: "eliud_pkg_text_internalWidgets", componentId: "htmls"));
+      documentID: "internalWidget-htmlWithPlatformMediums", componentName: "eliud_pkg_text_internalWidgets", componentId: "htmlWithPlatformMediums"));
     PageModel page = PageModel(
         conditions: StorageConditionsModel(
           privilegeLevelRequired: PrivilegeLevelRequiredSimple.OwnerPrivilegeRequiredSimple,
         ),
         appId: appId,
-        documentID: "eliud_pkg_text_htmls_page",
-        title: "Htmls",
+        documentID: "eliud_pkg_text_htmlwithplatformmediums_page",
+        title: "HtmlWithPlatformMediums",
         drawer: _drawer,
         endDrawer: _endDrawer,
         appBar: _appBar,
@@ -76,7 +76,7 @@ class AdminApp extends AdminAppInstallerBase {
 
   Future<void> _setupAdminPages() {
 
-    return pageRepository(appId: appId)!.add(_htmlsPages())
+    return pageRepository(appId: appId)!.add(_htmlWithPlatformMediumsPages())
 
     ;
   }
@@ -96,11 +96,11 @@ class AdminMenu extends AdminAppMenuInstallerBase {
 
     menuItems.add(
       MenuItemModel(
-        documentID: "Htmls",
-        text: "Htmls",
-        description: "Htmls",
+        documentID: "HtmlWithPlatformMediums",
+        text: "HtmlWithPlatformMediums",
+        description: "HtmlWithPlatformMediums",
         icon: IconModel(codePoint: 0xe88a, fontFamily: "MaterialIcons"),
-        action: GotoPage(app, pageID: "eliud_pkg_text_htmls_page"))
+        action: GotoPage(app, pageID: "eliud_pkg_text_htmlwithplatformmediums_page"))
     );
 
 

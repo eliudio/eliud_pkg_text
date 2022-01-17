@@ -7,11 +7,14 @@ import 'package:eliud_core/tools/storage/member_medium_helper.dart';
 
 import 'handle_medium_model.dart';
 
+typedef MemberMediumModelCallback(MemberMediumModel memberMediumModel);
+
 class HandleMemberMediumModel extends HandleMediumModel {
+  final MemberMediumModelCallback memberMediumModelCallback;
   final MemberMediumAccessibleByGroup accessibleByGroup;
   final List<String>? accessibleByMembers;
 
-  HandleMemberMediumModel(AppModel app, String ownerId, this.accessibleByGroup, { this.accessibleByMembers})
+  HandleMemberMediumModel(AppModel app, String ownerId, this.memberMediumModelCallback, this.accessibleByGroup, { this.accessibleByMembers})
       : super(app, ownerId);
 
   @override
@@ -41,6 +44,8 @@ class HandleMemberMediumModel extends HandleMediumModel {
         '\${IDENTIFIER}': memberMediumModel.documentID!,
       });
     }
+
+    memberMediumModelCallback(memberMediumModel);
 
     controller.insertHtml(htmlCode);
     return false;

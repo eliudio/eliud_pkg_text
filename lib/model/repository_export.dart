@@ -13,5 +13,5 @@
 
 */
 
-export '../model/html_repository.dart';
-export '../model/html_medium_repository.dart';
+export '../model/html_with_platform_medium_repository.dart';
+export '../model/html_platform_medium_repository.dart';
