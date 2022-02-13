@@ -1,7 +1,10 @@
 import 'package:eliud_core/core/blocs/access/access_bloc.dart';
+import 'package:eliud_core/core/wizards/registry/registry.dart';
 import 'package:eliud_core/model/app_model.dart';
 import 'package:eliud_core/model/member_model.dart';
 import 'package:eliud_core/package/package.dart';
+import 'package:eliud_core/wizards/member_dashboard_dialog_wizard.dart';
+import 'package:eliud_pkg_text/wizards/welcome_page_wizard.dart';
 import 'package:flutter_bloc/src/bloc_provider.dart';
 import 'package:eliud_core/model/access_model.dart';
 
@@ -24,6 +27,10 @@ abstract class TextPackage extends Package {
   @override
   void init() {
     ComponentRegistry().init();
+
+    // Wizard
+    NewAppWizardRegistry.registry().register(WelcomePageWizard());
+    NewAppWizardRegistry.registry().register(MemberDashboardDialogWizard());
 
     AbstractRepositorySingleton.singleton = RepositorySingleton();
   }
