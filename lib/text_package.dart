@@ -30,7 +30,6 @@ abstract class TextPackage extends Package {
 
     // Wizard
     NewAppWizardRegistry.registry().register(WelcomePageWizard());
-    NewAppWizardRegistry.registry().register(MemberDashboardDialogWizard());
 
     AbstractRepositorySingleton.singleton = RepositorySingleton();
   }
