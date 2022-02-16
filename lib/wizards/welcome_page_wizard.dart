@@ -55,7 +55,7 @@ class WelcomePageWizard extends NewAppWizardInfoWithActionSpecification {
         List<NewAppTask> tasks = [];
         tasks.add(() async {
           print("Welcome Page");
-          var welcomePage = await WelcomePageBuilder(WELCOME_PAGE_ID, app,
+          await WelcomePageBuilder(WELCOME_PAGE_ID, app,
               memberId, homeMenuProvider(), appBarProvider(), leftDrawerProvider(), rightDrawerProvider())
               .create();
         });
