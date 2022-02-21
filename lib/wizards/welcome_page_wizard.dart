@@ -74,4 +74,8 @@ class WelcomePageWizard extends NewAppWizardInfoWithActionSpecification {
     if (pageType == 'homePageId') return WELCOME_PAGE_ID;
     return null;
   }
+
+  @override
+  ActionModel? getAction(AppModel app, String actionType) => null;
+
 }

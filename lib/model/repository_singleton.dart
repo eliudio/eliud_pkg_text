@@ -16,11 +16,11 @@
 import 'abstract_repository_singleton.dart';
 import 'package:eliud_core/tools/main_abstract_repository_singleton.dart';
 import 'dart:collection';
+import '../model/html_platform_medium_repository.dart';
+import '../model/html_platform_medium_cache.dart';
 import '../model/html_with_platform_medium_firestore.dart';
 import '../model/html_with_platform_medium_repository.dart';
 import '../model/html_with_platform_medium_cache.dart';
-import '../model/html_platform_medium_repository.dart';
-import '../model/html_platform_medium_cache.dart';
 
 import '../model/html_platform_medium_model.dart';
 
