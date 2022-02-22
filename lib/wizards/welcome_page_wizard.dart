@@ -47,6 +47,8 @@ class WelcomePageWizard extends NewAppWizardInfoWithActionSpecification {
       AppBarProvider appBarProvider,
       DrawerProvider leftDrawerProvider,
       DrawerProvider rightDrawerProvider,
+      PageProvider pageProvider,
+      ActionProvider actionProvider,
       ) {
     if (parameters is ActionSpecificationParametersBase) {
       var welcomePageSpecifications = parameters.actionSpecifications;
@@ -56,7 +58,7 @@ class WelcomePageWizard extends NewAppWizardInfoWithActionSpecification {
         tasks.add(() async {
           print("Welcome Page");
           await WelcomePageBuilder(WELCOME_PAGE_ID, app,
-              memberId, homeMenuProvider(), appBarProvider(), leftDrawerProvider(), rightDrawerProvider())
+              memberId, homeMenuProvider(), appBarProvider(), leftDrawerProvider(), rightDrawerProvider(), pageProvider, actionProvider)
               .create();
         });
         return tasks;
@@ -70,12 +72,12 @@ class WelcomePageWizard extends NewAppWizardInfoWithActionSpecification {
   AppModel updateApp(NewAppWizardParameters parameters, AppModel adjustMe, ) => adjustMe;
 
   @override
-  String? getPageID(String pageType) {
+  String? getPageID(NewAppWizardParameters parameters, String pageType) {
     if (pageType == 'homePageId') return WELCOME_PAGE_ID;
     return null;
   }
 
   @override
-  ActionModel? getAction(AppModel app, String actionType, ) => null;
+  ActionModel? getAction(NewAppWizardParameters parameters, AppModel app, String actionType, ) => null;
 
 }

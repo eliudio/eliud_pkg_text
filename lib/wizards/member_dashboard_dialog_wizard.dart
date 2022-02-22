@@ -53,6 +53,8 @@ class MemberDashboardDialogWizard extends NewAppWizardInfoWithActionSpecificatio
       AppBarProvider appBarProvider,
       DrawerProvider leftDrawerProvider,
       DrawerProvider rightDrawerProvider,
+      PageProvider pageProvider,
+      ActionProvider actionProvider,
       ) {
     if (parameters is ActionSpecificationParametersBase) {
       var memberDashboardDialogSpecifications = parameters.actionSpecifications;
@@ -76,9 +78,9 @@ class MemberDashboardDialogWizard extends NewAppWizardInfoWithActionSpecificatio
   AppModel updateApp(NewAppWizardParameters parameters, AppModel adjustMe, ) => adjustMe;
 
   @override
-  String? getPageID(String pageType) => null;
+  String? getPageID(NewAppWizardParameters parameters, String pageType) => null;
 
   @override
-  ActionModel? getAction(AppModel app, String actionType, ) => null;
+  ActionModel? getAction(NewAppWizardParameters parameters, AppModel app, String actionType, ) => null;
 
 }
