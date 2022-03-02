@@ -1,4 +1,5 @@
 import 'package:eliud_core/core/wizards/builders/dialog_builder.dart';
+import 'package:eliud_core/core/wizards/tools/documentIdentifier.dart';
 import 'package:eliud_core/core_package.dart';
 import 'package:eliud_core/model/abstract_repository_singleton.dart'
     as corerepo;
@@ -33,7 +34,7 @@ Sorry to see you go. Your account has been destroyed.
 """;
 
 class MemberDashboardDialogBuilder extends DialogBuilder {
-  MemberDashboardDialogBuilder(AppModel app, String dialogDocumentId): super(app, dialogDocumentId);
+  MemberDashboardDialogBuilder(String uniqueId, AppModel app, String dialogDocumentId): super(uniqueId, app, dialogDocumentId);
 
   Future<DialogModel> _setupDialog() async {
     return await corerepo.AbstractRepositorySingleton.singleton
@@ -46,10 +47,10 @@ class MemberDashboardDialogBuilder extends DialogBuilder {
     components.add(BodyComponentModel(
         documentID: "1",
         componentName: AbstractMemberDashboardComponent.componentName,
-        componentId: dialogDocumentId));
+        componentId: constructDocumentId(uniqueId: uniqueId, documentId: dialogDocumentId)));
 
     return DialogModel(
-        documentID: dialogDocumentId,
+        documentID: constructDocumentId(uniqueId: uniqueId, documentId: dialogDocumentId),
         appId: app.documentID!,
         title: "Member dashboard",
         layout: DialogLayout.ListView,
@@ -58,7 +59,7 @@ class MemberDashboardDialogBuilder extends DialogBuilder {
 
   MemberDashboardModel _dashboardModel() {
     return MemberDashboardModel(
-        documentID: dialogDocumentId,
+        documentID: constructDocumentId(uniqueId: uniqueId, documentId: dialogDocumentId),
         appId: app.documentID!,
         description: "Member dashboard",
         updateProfileText: updateProfileText,

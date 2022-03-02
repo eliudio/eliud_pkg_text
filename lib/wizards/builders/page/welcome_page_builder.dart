@@ -9,6 +9,7 @@ import 'package:eliud_pkg_text/wizards/builders/page/page_with_text.dart';
 
 class WelcomePageBuilder extends PageBuilder {
   WelcomePageBuilder(
+      String uniqueId,
       String pageId,
       AppModel app,
       String memberId,
@@ -19,10 +20,10 @@ class WelcomePageBuilder extends PageBuilder {
       PageProvider pageProvider,
       ActionProvider actionProvider
       )
-      : super(pageId, app, memberId, theHomeMenu, theAppBar, leftDrawer,
+      : super(uniqueId, pageId, app, memberId, theHomeMenu, theAppBar, leftDrawer,
             rightDrawer, pageProvider, actionProvider);
 
   Future<PageModel> create() async {
-    return PageWithTextBuilder('Welcome', 'Hello world', pageId, app, memberId, theHomeMenu, theAppBar, leftDrawer, rightDrawer, pageProvider, actionProvider).create();
+    return PageWithTextBuilder(uniqueId, 'Welcome', 'Welcome', pageId, app, memberId, theHomeMenu, theAppBar, leftDrawer, rightDrawer, pageProvider, actionProvider).create();
   }
 }

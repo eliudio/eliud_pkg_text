@@ -1,18 +1,19 @@
 import 'package:eliud_core/core/wizards/registry/new_app_wizard_info_with_action_specification.dart';
 import 'package:eliud_core/core/wizards/registry/registry.dart';
+import 'package:eliud_core/core/wizards/tools/documentIdentifier.dart';
 import 'package:eliud_core/model/app_model.dart';
 import 'package:eliud_core/model/icon_model.dart';
 import 'package:eliud_core/model/member_model.dart';
 import 'package:eliud_core/model/menu_item_model.dart';
+import 'package:eliud_core/model/public_medium_model.dart';
 import 'package:eliud_core/tools/action/action_model.dart';
 import 'package:flutter/material.dart';
-
 import 'builders/page/welcome_page_builder.dart';
 
 class WelcomePageWizard extends NewAppWizardInfoWithActionSpecification {
-  static String WELCOME_PAGE_ID = 'welcome';
+  static String welcomePageId = 'welcome';
 
-  WelcomePageWizard() : super('welcome', 'Welcome Page',  'Generate Welcome Page');
+  WelcomePageWizard() : super('welcome', 'Welcome Page',  'Generate a default Welcome Page');
 
   @override
   NewAppWizardParameters newAppWizardParameters() => ActionSpecificationParametersBase(
@@ -25,21 +26,22 @@ class WelcomePageWizard extends NewAppWizardInfoWithActionSpecification {
   );
 
   @override
-  List<MenuItemModel>? getThoseMenuItems(AppModel app) =>[
-    menuItemWelcome(app, WELCOME_PAGE_ID, 'Welcome'),
+  List<MenuItemModel>? getThoseMenuItems(String uniqueId, AppModel app) =>[
+    menuItemWelcome(uniqueId, app, welcomePageId, 'Welcome'),
   ];
 
-  menuItemWelcome(AppModel app, pageID, text) => MenuItemModel(
-      documentID: pageID,
+  MenuItemModel menuItemWelcome(String uniqueId, AppModel app, pageID, text) => MenuItemModel(
+      documentID: constructDocumentId(uniqueId: uniqueId, documentId: pageID),
       text: text,
       description: text,
       icon: IconModel(
           codePoint: Icons.emoji_people.codePoint,
           fontFamily: Icons.settings.fontFamily),
-      action: GotoPage(app, pageID: pageID));
+      action: GotoPage(app, pageID: constructDocumentId(uniqueId: uniqueId, documentId: pageID)));
 
   @override
   List<NewAppTask>? getCreateTasks(
+      String uniqueId,
       AppModel app,
       NewAppWizardParameters parameters,
       MemberModel member,
@@ -57,7 +59,7 @@ class WelcomePageWizard extends NewAppWizardInfoWithActionSpecification {
         List<NewAppTask> tasks = [];
         tasks.add(() async {
           print("Welcome Page");
-          await WelcomePageBuilder(WELCOME_PAGE_ID, app,
+          await WelcomePageBuilder(uniqueId, welcomePageId, app,
               memberId, homeMenuProvider(), appBarProvider(), leftDrawerProvider(), rightDrawerProvider(), pageProvider, actionProvider)
               .create();
         });
@@ -69,15 +71,18 @@ class WelcomePageWizard extends NewAppWizardInfoWithActionSpecification {
   }
 
   @override
-  AppModel updateApp(NewAppWizardParameters parameters, AppModel adjustMe, ) => adjustMe;
+  AppModel updateApp(String uniqueId, NewAppWizardParameters parameters, AppModel adjustMe, ) => adjustMe;
 
   @override
-  String? getPageID(NewAppWizardParameters parameters, String pageType) {
-    if (pageType == 'homePageId') return WELCOME_PAGE_ID;
+  String? getPageID(String uniqueId, NewAppWizardParameters parameters, String pageType) {
+    if (pageType == 'homePageId') return welcomePageId;
     return null;
   }
 
   @override
-  ActionModel? getAction(NewAppWizardParameters parameters, AppModel app, String actionType, ) => null;
+  ActionModel? getAction(String uniqueId, NewAppWizardParameters parameters, AppModel app, String actionType, ) => null;
+
+  @override
+  PublicMediumModel? getPublicMediumModel(String uniqueId, NewAppWizardParameters parameters, String pageType) => null;
 
 }

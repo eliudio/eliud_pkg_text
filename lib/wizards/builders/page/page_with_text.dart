@@ -1,5 +1,6 @@
 import 'package:eliud_core/core/wizards/builders/page_builder.dart';
 import 'package:eliud_core/core/wizards/registry/registry.dart';
+import 'package:eliud_core/core/wizards/tools/documentIdentifier.dart';
 import 'package:eliud_core/model/abstract_repository_singleton.dart';
 import 'package:eliud_core/model/app_bar_model.dart';
 import 'package:eliud_core/model/app_model.dart';
@@ -17,6 +18,7 @@ class PageWithTextBuilder extends PageBuilder {
   final String text;
 
   PageWithTextBuilder(
+      String uniqueId,
       this.title,
       this.text,
       String pageId,
@@ -29,12 +31,11 @@ class PageWithTextBuilder extends PageBuilder {
       PageProvider pageProvider,
       ActionProvider actionProvider
       )
-      : super(pageId, app, memberId, theHomeMenu, theAppBar, leftDrawer,
+      : super(uniqueId, pageId, app, memberId, theHomeMenu, theAppBar, leftDrawer,
             rightDrawer, pageProvider, actionProvider);
 
   Future<PageModel> create() async {
-    // welcome page
-    var htmlComponentId = pageId;
+    var htmlComponentId = constructDocumentId(uniqueId: uniqueId, documentId: pageId);
     await htmlWithPlatformMediumRepository(appId: app.documentID!)!.add(HtmlWithPlatformMediumModel(
       documentID: htmlComponentId,
       appId: app.documentID!,
@@ -46,7 +47,7 @@ class PageWithTextBuilder extends PageBuilder {
     ));
 
     var page = PageModel(
-      documentID: pageId,
+      documentID: constructDocumentId(uniqueId: uniqueId, documentId: pageId),
       title: title,
       appId: app.documentID!,
       bodyComponents: [

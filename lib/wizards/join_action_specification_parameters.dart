@@ -1,5 +1,6 @@
 import 'package:eliud_core/core/wizards/registry/action_specification.dart';
 import 'package:eliud_core/core/wizards/registry/registry.dart';
+import 'package:eliud_core/wizards/join_action_specification_parameters.dart';
 
 class JoinActionSpecificationParameters extends NewAppWizardParameters {
   late JoinActionSpecifications joinActionSpecifications;

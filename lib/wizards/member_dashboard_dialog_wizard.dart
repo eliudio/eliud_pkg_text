@@ -1,11 +1,13 @@
 import 'package:eliud_core/core/wizards/registry/new_app_wizard_info_with_action_specification.dart';
 import 'package:eliud_core/core/wizards/registry/registry.dart';
+import 'package:eliud_core/core/wizards/tools/documentIdentifier.dart';
 import 'package:eliud_core/core_package.dart';
 import 'package:eliud_core/model/app_model.dart';
 import 'package:eliud_core/model/display_conditions_model.dart';
 import 'package:eliud_core/model/icon_model.dart';
 import 'package:eliud_core/model/member_model.dart';
 import 'package:eliud_core/model/menu_item_model.dart';
+import 'package:eliud_core/model/public_medium_model.dart';
 import 'package:eliud_core/tools/action/action_model.dart';
 import 'package:flutter/material.dart';
 
@@ -27,11 +29,11 @@ class MemberDashboardDialogWizard extends NewAppWizardInfoWithActionSpecificatio
   );
 
   @override
-  List<MenuItemModel>? getThoseMenuItems(AppModel app) =>[
-    menuItemManageAccount(app, MEMBER_DASHBOARD_DIALOG_ID),
+  List<MenuItemModel>? getThoseMenuItems(String uniqueId, AppModel app) =>[
+    menuItemManageAccount(uniqueId, app, MEMBER_DASHBOARD_DIALOG_ID),
   ];
 
-  menuItemManageAccount(AppModel app, dialogID) => MenuItemModel(
+  menuItemManageAccount(String uniqueId, AppModel app, dialogID) => MenuItemModel(
       documentID: dialogID,
       text: 'Manage your account',
       description: 'Manage your account',
@@ -39,13 +41,14 @@ class MemberDashboardDialogWizard extends NewAppWizardInfoWithActionSpecificatio
           codePoint: Icons.account_box.codePoint,
           fontFamily: Icons.settings.fontFamily),
       action: OpenDialog(app,
-          dialogID: dialogID,
+          dialogID: constructDocumentId(uniqueId: uniqueId, documentId: dialogID),
           conditions: DisplayConditionsModel(
               privilegeLevelRequired: PrivilegeLevelRequired.NoPrivilegeRequired,
               packageCondition: CorePackage.MUST_BE_LOGGED_ON)));
 
   @override
   List<NewAppTask>? getCreateTasks(
+      String uniqueId,
       AppModel app,
       NewAppWizardParameters parameters,
       MemberModel member,
@@ -64,7 +67,7 @@ class MemberDashboardDialogWizard extends NewAppWizardInfoWithActionSpecificatio
         List<NewAppTask> tasks = [];
         tasks.add(() async {
           print("member dashboard");
-          await MemberDashboardDialogBuilder(app, MEMBER_DASHBOARD_DIALOG_ID)
+          await MemberDashboardDialogBuilder(uniqueId, app, MEMBER_DASHBOARD_DIALOG_ID)
               .create();
         });
         return tasks;
@@ -75,12 +78,14 @@ class MemberDashboardDialogWizard extends NewAppWizardInfoWithActionSpecificatio
   }
 
   @override
-  AppModel updateApp(NewAppWizardParameters parameters, AppModel adjustMe, ) => adjustMe;
+  AppModel updateApp(String uniqueId, NewAppWizardParameters parameters, AppModel adjustMe, ) => adjustMe;
 
   @override
-  String? getPageID(NewAppWizardParameters parameters, String pageType) => null;
+  String? getPageID(String uniqueId, NewAppWizardParameters parameters, String pageType) => null;
 
   @override
-  ActionModel? getAction(NewAppWizardParameters parameters, AppModel app, String actionType, ) => null;
+  ActionModel? getAction(String uniqueId, NewAppWizardParameters parameters, AppModel app, String actionType, ) => null;
 
+  @override
+  PublicMediumModel? getPublicMediumModel(String uniqueId, NewAppWizardParameters parameters, String pageType) => null;
 }
