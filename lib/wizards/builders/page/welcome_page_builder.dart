@@ -18,12 +18,11 @@ class WelcomePageBuilder extends PageBuilder {
       DrawerModel leftDrawer,
       DrawerModel rightDrawer,
       PageProvider pageProvider,
-      ActionProvider actionProvider
       )
       : super(uniqueId, pageId, app, memberId, theHomeMenu, theAppBar, leftDrawer,
-            rightDrawer, pageProvider, actionProvider);
+            rightDrawer, pageProvider, );
 
   Future<PageModel> create() async {
-    return PageWithTextBuilder(uniqueId, 'Welcome', 'Welcome', pageId, app, memberId, theHomeMenu, theAppBar, leftDrawer, rightDrawer, pageProvider, actionProvider).create();
+    return PageWithTextBuilder(uniqueId, 'Welcome', 'Welcome', pageId, app, memberId, theHomeMenu, theAppBar, leftDrawer, rightDrawer, pageProvider, ).create();
   }
 }
