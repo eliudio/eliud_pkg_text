@@ -16,6 +16,9 @@ class WelcomePageWizard extends NewAppWizardInfoWithActionSpecification {
   WelcomePageWizard() : super('welcome', 'Welcome Page',  'Generate a default Welcome Page');
 
   @override
+  String getPackageName() => "eliud_pkg_text";
+
+  @override
   NewAppWizardParameters newAppWizardParameters() => ActionSpecificationParametersBase(
     requiresAccessToLocalFileSystem: false,
     availableInLeftDrawer: true,
