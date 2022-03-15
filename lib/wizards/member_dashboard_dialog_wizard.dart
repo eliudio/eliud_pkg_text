@@ -87,4 +87,7 @@ class MemberDashboardDialogWizard extends NewAppWizardInfoWithActionSpecificatio
 
   @override
   PublicMediumModel? getPublicMediumModel(String uniqueId, NewAppWizardParameters parameters, String pageType) => null;
+
+  @override
+  String getPackageName() => "eliud_pkg_text";
 }
