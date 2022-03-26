@@ -32,11 +32,12 @@ import 'package:eliud_pkg_text/model/entity_export.dart';
 import 'dart:async';
 import 'package:eliud_core/tools/query/query_tools.dart';
 import 'package:eliud_core/tools/common_tools.dart';
+import 'package:eliud_core/tools/repository_base.dart';
 
 typedef HtmlPlatformMediumModelTrigger(List<HtmlPlatformMediumModel?> list);
 typedef HtmlPlatformMediumChanged(HtmlPlatformMediumModel? value);
 
-abstract class HtmlPlatformMediumRepository {
+abstract class HtmlPlatformMediumRepository extends RepositoryBase<HtmlPlatformMediumModel> {
   Future<HtmlPlatformMediumModel> add(HtmlPlatformMediumModel value);
   Future<void> delete(HtmlPlatformMediumModel value);
   Future<HtmlPlatformMediumModel?> get(String? id, { Function(Exception)? onError });
