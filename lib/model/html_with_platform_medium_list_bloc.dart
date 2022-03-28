@@ -27,7 +27,7 @@ import 'package:eliud_core/tools/query/query_tools.dart';
 class HtmlWithPlatformMediumListBloc extends Bloc<HtmlWithPlatformMediumListEvent, HtmlWithPlatformMediumListState> {
   final HtmlWithPlatformMediumRepository _htmlWithPlatformMediumRepository;
   StreamSubscription? _htmlWithPlatformMediumsListSubscription;
-  final EliudQuery? eliudQuery;
+  EliudQuery? eliudQuery;
   int pages = 1;
   final bool? paged;
   final String? orderBy;
@@ -99,6 +99,13 @@ class HtmlWithPlatformMediumListBloc extends Bloc<HtmlWithPlatformMediumListEven
     if (event is NewPage) {
       pages = pages + 1; // it doesn't matter so much if we increase pages beyond the end
       yield* _mapLoadHtmlWithPlatformMediumListWithDetailsToState();
+    } else if (event is HtmlWithPlatformMediumChangeQuery) {
+      eliudQuery = event.newQuery;
+      if ((detailed == null) || (!detailed!)) {
+        yield* _mapLoadHtmlWithPlatformMediumListToState();
+      } else {
+        yield* _mapLoadHtmlWithPlatformMediumListWithDetailsToState();
+      }
     } else if (event is AddHtmlWithPlatformMediumList) {
       yield* _mapAddHtmlWithPlatformMediumListToState(event);
     } else if (event is UpdateHtmlWithPlatformMediumList) {

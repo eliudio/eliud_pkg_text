@@ -13,6 +13,7 @@
 
 */
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:eliud_pkg_text/model/html_with_platform_medium_model.dart';
 
@@ -36,6 +37,13 @@ class HtmlWithPlatformMediumListLoaded extends HtmlWithPlatformMediumListState {
 
   @override
   String toString() => 'HtmlWithPlatformMediumListLoaded { values: $values }';
+
+  @override
+  bool operator ==(Object other) => 
+          other is HtmlWithPlatformMediumListLoaded &&
+              runtimeType == other.runtimeType &&
+              ListEquality().equals(values, other.values) &&
+              mightHaveMore == other.mightHaveMore;
 }
 
 class HtmlWithPlatformMediumNotLoaded extends HtmlWithPlatformMediumListState {}
