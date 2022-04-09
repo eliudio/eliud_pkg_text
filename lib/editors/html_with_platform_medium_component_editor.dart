@@ -7,6 +7,7 @@ import 'package:eliud_core/style/frontend/has_dialog_field.dart';
 import 'package:eliud_core/style/frontend/has_list_tile.dart';
 import 'package:eliud_core/style/frontend/has_text.dart';
 import 'package:eliud_core/tools/component/component_spec.dart';
+import 'package:eliud_core/tools/random.dart';
 import 'package:eliud_core/tools/widgets/condition_simple_widget.dart';
 import 'package:eliud_core/tools/widgets/header_widget.dart';
 import 'package:eliud_pkg_text/model/abstract_repository_singleton.dart';
@@ -27,7 +28,7 @@ class HtmlWithPlatformMediumComponentEditorConstructor extends ComponentEditorCo
         context,
         true,
         HtmlWithPlatformMediumModel(
-            documentID: 'new identifier',
+            documentID: newRandomKey(),
             appId: appId,
             name: 'New html',
             conditions: StorageConditionsModel(
@@ -118,21 +119,10 @@ class _HtmlComponentEditorState extends State<HtmlComponentEditor> {
           collapsible: true,
           collapsed: true,
           children: [
-            getListTile(context,widget.app,
+            getListTile(context, widget.app,
                 leading: Icon(Icons.vpn_key),
-                title: widget.create
-                    ? dialogField(widget.app,
-                  context,
-                        initialValue: widget.model.documentID,
-                        valueChanged: (value) {
-                          widget.model.documentID = value;
-                        },
-                        decoration: const InputDecoration(
-                          hintText: 'Identifier',
-                          labelText: 'Identifier',
-                        ),
-                      )
-                    : text(widget.app, context, widget.model.documentID!)),
+                title: text(widget.app, context,
+                    widget.model.documentID!)),
             getListTile(context,widget.app,
                 leading: Icon(Icons.description),
                 title: dialogField(widget.app,
@@ -148,19 +138,18 @@ class _HtmlComponentEditorState extends State<HtmlComponentEditor> {
                 )),
           ]),
       topicContainer(widget.app, context,
-          title: 'Access',
+          title: 'Condition',
           collapsible: true,
           collapsed: true,
           children: [
             if (readOnlyConditions)
               text(widget.app, context,
                   'Access rights can not be changed because the html component contains images'),
-            getListTile(context,widget.app,
+            getListTile(context, widget.app,
                 leading: Icon(Icons.security),
                 title: ConditionsSimpleWidget(
                   app: widget.app,
                   value: widget.model.conditions!,
-                  readOnly: readOnlyConditions,
                 )),
           ]),
       topicContainer(widget.app, context,
