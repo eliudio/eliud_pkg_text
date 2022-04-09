@@ -52,7 +52,6 @@ class WelcomePageWizard extends NewAppWizardInfoWithActionSpecification {
       AppBarProvider appBarProvider,
       DrawerProvider leftDrawerProvider,
       DrawerProvider rightDrawerProvider,
-      PageProvider pageProvider,
       ) {
     if (parameters is ActionSpecificationParametersBase) {
       var welcomePageSpecifications = parameters.actionSpecifications;
@@ -62,7 +61,7 @@ class WelcomePageWizard extends NewAppWizardInfoWithActionSpecification {
         tasks.add(() async {
           print("Welcome Page");
           await WelcomePageBuilder(uniqueId, welcomePageId, app,
-              memberId, homeMenuProvider(), appBarProvider(), leftDrawerProvider(), rightDrawerProvider(), pageProvider, )
+              memberId, homeMenuProvider(), appBarProvider(), leftDrawerProvider(), rightDrawerProvider(), )
               .create();
         });
         return tasks;
