@@ -144,8 +144,8 @@ class _SelectHtmlWithPlatformMediumWidgetState extends State<SelectHtmlWithPlatf
                       widget.editorConstructor.updateComponent(widget.app, context, value, (_) {});
                     }
                   }),
-              title: value.documentID != null ? Center(child: StyleRegistry.registry().styleWithApp(app).frontEndStyle().textStyle().text(app, context, value.documentID!)) : Container(),
-              subtitle: value.name != null ? Center(child: StyleRegistry.registry().styleWithApp(app).frontEndStyle().textStyle().text(app, context, value.name!)) : Container(),
+              title: value.description != null ? Center(child: text(app, context, value.description!)) : value.documentID != null ? Center(child: text(app, context, value.documentID!)) : Container(),
+              subtitle: null,
             );
           } else {
             return Container();

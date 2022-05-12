@@ -1,6 +1,7 @@
 {
   "id": "HtmlPlatformMedium",
   "packageName": "eliud_pkg_text",
+  "packageFriendlyName": "text",
   "generate": {
     "generateComponent": false,
     "generateRepository": true,

@@ -34,7 +34,7 @@ class ComponentRegistry {
     Registry.registry()!.register(componentName: "eliud_pkg_text_internalWidgets", componentConstructor: ListComponentFactory());
     Registry.registry()!.addDropDownSupporter("htmlWithPlatformMediums", DropdownButtonComponentFactory());
     Registry.registry()!.register(componentName: "htmlWithPlatformMediums", componentConstructor: HtmlWithPlatformMediumComponentConstructorDefault());
-    Registry.registry()!.addComponentSpec('eliud_pkg_text', [
+    Registry.registry()!.addComponentSpec('eliud_pkg_text', 'text', [
       ComponentSpec('htmlWithPlatformMediums', HtmlWithPlatformMediumComponentConstructorDefault(), HtmlWithPlatformMediumComponentSelector(), HtmlWithPlatformMediumComponentEditorConstructor(), ), 
     ]);
 

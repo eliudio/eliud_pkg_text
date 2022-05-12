@@ -30,7 +30,7 @@ class HtmlWithPlatformMediumComponentEditorConstructor extends ComponentEditorCo
         HtmlWithPlatformMediumModel(
             documentID: newRandomKey(),
             appId: appId,
-            name: 'New html',
+            description: 'New html',
             conditions: StorageConditionsModel(
                 privilegeLevelRequired:
                     PrivilegeLevelRequiredSimple.NoPrivilegeRequiredSimple)),
@@ -127,29 +127,14 @@ class _HtmlComponentEditorState extends State<HtmlComponentEditor> {
                 leading: Icon(Icons.description),
                 title: dialogField(widget.app,
                   context,
-                  initialValue: widget.model.name,
-                  valueChanged: (value) {
-                    widget.model.name = value;
+                  initialValue: widget.model.description,
+                  valueChanged: (description) {
+                    widget.model.description = description;
                   },
                   decoration: const InputDecoration(
-                    hintText: 'Name',
-                    labelText: 'Name',
+                    hintText: 'Description',
+                    labelText: 'Description',
                   ),
-                )),
-          ]),
-      topicContainer(widget.app, context,
-          title: 'Condition',
-          collapsible: true,
-          collapsed: true,
-          children: [
-            if (readOnlyConditions)
-              text(widget.app, context,
-                  'Access rights can not be changed because the html component contains images'),
-            getListTile(context, widget.app,
-                leading: Icon(Icons.security),
-                title: ConditionsSimpleWidget(
-                  app: widget.app,
-                  value: widget.model.conditions!,
                 )),
           ]),
       topicContainer(widget.app, context,
@@ -171,7 +156,22 @@ class _HtmlComponentEditorState extends State<HtmlComponentEditor> {
                     "Document contents",
                   );
                 })
-          ])
+          ]),
+      topicContainer(widget.app, context,
+          title: 'Condition',
+          collapsible: true,
+          collapsed: true,
+          children: [
+            if (readOnlyConditions)
+              text(widget.app, context,
+                  'Access rights can not be changed because the html component contains images'),
+            getListTile(context, widget.app,
+                leading: Icon(Icons.security),
+                title: ConditionsSimpleWidget(
+                  app: widget.app,
+                  value: widget.model.conditions!,
+                )),
+          ]),
     ]);
   }
 

@@ -37,7 +37,7 @@ class PageWithTextBuilder extends PageBuilder {
     await htmlWithPlatformMediumRepository(appId: app.documentID!)!.add(HtmlWithPlatformMediumModel(
       documentID: htmlComponentId,
       appId: app.documentID!,
-      name: 'html 1',
+      description: 'html 1',
       html: '<html><p>$text</p></html>',
       conditions: StorageConditionsModel(
           privilegeLevelRequired: PrivilegeLevelRequiredSimple.NoPrivilegeRequiredSimple

@@ -126,7 +126,7 @@ class _MyHtmlWithPlatformMediumFormState extends State<MyHtmlWithPlatformMediumF
 
   final TextEditingController _documentIDController = TextEditingController();
   final TextEditingController _appIdController = TextEditingController();
-  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _htmlController = TextEditingController();
 
 
@@ -138,7 +138,7 @@ class _MyHtmlWithPlatformMediumFormState extends State<MyHtmlWithPlatformMediumF
     _myFormBloc = BlocProvider.of<HtmlWithPlatformMediumFormBloc>(context);
     _documentIDController.addListener(_onDocumentIDChanged);
     _appIdController.addListener(_onAppIdChanged);
-    _nameController.addListener(_onNameChanged);
+    _descriptionController.addListener(_onDescriptionChanged);
     _htmlController.addListener(_onHtmlChanged);
   }
 
@@ -159,10 +159,10 @@ class _MyHtmlWithPlatformMediumFormState extends State<MyHtmlWithPlatformMediumF
           _appIdController.text = state.value!.appId.toString();
         else
           _appIdController.text = "";
-        if (state.value!.name != null)
-          _nameController.text = state.value!.name.toString();
+        if (state.value!.description != null)
+          _descriptionController.text = state.value!.description.toString();
         else
-          _nameController.text = "";
+          _descriptionController.text = "";
         if (state.value!.html != null)
           _htmlController.text = state.value!.html.toString();
         else
@@ -202,7 +202,7 @@ class _MyHtmlWithPlatformMediumFormState extends State<MyHtmlWithPlatformMediumF
 
         children.add(
 
-                  StyleRegistry.registry().styleWithApp(widget.app).adminFormStyle().textFormField(widget.app, context, labelText: 'Name', icon: Icons.text_format, readOnly: _readOnly(accessState, state), textEditingController: _nameController, keyboardType: TextInputType.text, validator: (_) => state is NameHtmlWithPlatformMediumFormError ? state.message : null, hintText: null)
+                  StyleRegistry.registry().styleWithApp(widget.app).adminFormStyle().textFormField(widget.app, context, labelText: 'Description', icon: Icons.text_format, readOnly: _readOnly(accessState, state), textEditingController: _descriptionController, keyboardType: TextInputType.text, validator: (_) => state is DescriptionHtmlWithPlatformMediumFormError ? state.message : null, hintText: null)
           );
 
         children.add(
@@ -238,7 +238,7 @@ class _MyHtmlWithPlatformMediumFormState extends State<MyHtmlWithPlatformMediumF
                           UpdateHtmlWithPlatformMediumList(value: state.value!.copyWith(
                               documentID: state.value!.documentID, 
                               appId: state.value!.appId, 
-                              name: state.value!.name, 
+                              description: state.value!.description, 
                               html: state.value!.html, 
                               htmlMedia: state.value!.htmlMedia, 
                               conditions: state.value!.conditions, 
@@ -248,7 +248,7 @@ class _MyHtmlWithPlatformMediumFormState extends State<MyHtmlWithPlatformMediumF
                           AddHtmlWithPlatformMediumList(value: HtmlWithPlatformMediumModel(
                               documentID: state.value!.documentID, 
                               appId: state.value!.appId, 
-                              name: state.value!.name, 
+                              description: state.value!.description, 
                               html: state.value!.html, 
                               htmlMedia: state.value!.htmlMedia, 
                               conditions: state.value!.conditions, 
@@ -288,8 +288,8 @@ class _MyHtmlWithPlatformMediumFormState extends State<MyHtmlWithPlatformMediumF
   }
 
 
-  void _onNameChanged() {
-    _myFormBloc.add(ChangedHtmlWithPlatformMediumName(value: _nameController.text));
+  void _onDescriptionChanged() {
+    _myFormBloc.add(ChangedHtmlWithPlatformMediumDescription(value: _descriptionController.text));
   }
 
 
@@ -309,7 +309,7 @@ class _MyHtmlWithPlatformMediumFormState extends State<MyHtmlWithPlatformMediumF
   void dispose() {
     _documentIDController.dispose();
     _appIdController.dispose();
-    _nameController.dispose();
+    _descriptionController.dispose();
     _htmlController.dispose();
     super.dispose();
   }

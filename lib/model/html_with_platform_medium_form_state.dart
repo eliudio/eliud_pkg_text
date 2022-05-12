@@ -95,15 +95,15 @@ class AppIdHtmlWithPlatformMediumFormError extends HtmlWithPlatformMediumFormErr
 }
 
 
-class NameHtmlWithPlatformMediumFormError extends HtmlWithPlatformMediumFormError { 
-  const NameHtmlWithPlatformMediumFormError({ String? message, HtmlWithPlatformMediumModel? value }): super(message: message, value: value);
+class DescriptionHtmlWithPlatformMediumFormError extends HtmlWithPlatformMediumFormError { 
+  const DescriptionHtmlWithPlatformMediumFormError({ String? message, HtmlWithPlatformMediumModel? value }): super(message: message, value: value);
 
   @override
   List<Object?> get props => [ message, value ];
 
   @override
   String toString() {
-    return '''NameHtmlWithPlatformMediumFormError {
+    return '''DescriptionHtmlWithPlatformMediumFormError {
       value: $value,
       message: $message,
     }''';

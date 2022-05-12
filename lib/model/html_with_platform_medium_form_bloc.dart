@@ -55,7 +55,7 @@ class HtmlWithPlatformMediumFormBloc extends Bloc<HtmlWithPlatformMediumFormEven
         HtmlWithPlatformMediumFormLoaded loaded = HtmlWithPlatformMediumFormLoaded(value: HtmlWithPlatformMediumModel(
                                                documentID: "",
                                  appId: "",
-                                 name: "",
+                                 description: "",
                                  html: "",
                                  htmlMedia: [],
 
@@ -88,8 +88,8 @@ class HtmlWithPlatformMediumFormBloc extends Bloc<HtmlWithPlatformMediumFormEven
 
         return;
       }
-      if (event is ChangedHtmlWithPlatformMediumName) {
-        newValue = currentState.value!.copyWith(name: event.value);
+      if (event is ChangedHtmlWithPlatformMediumDescription) {
+        newValue = currentState.value!.copyWith(description: event.value);
         yield SubmittableHtmlWithPlatformMediumForm(value: newValue);
 
         return;

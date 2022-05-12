@@ -83,16 +83,16 @@ class ChangedHtmlWithPlatformMediumAppId extends HtmlWithPlatformMediumFormEvent
   String toString() => 'ChangedHtmlWithPlatformMediumAppId{ value: $value }';
 }
 
-class ChangedHtmlWithPlatformMediumName extends HtmlWithPlatformMediumFormEvent {
+class ChangedHtmlWithPlatformMediumDescription extends HtmlWithPlatformMediumFormEvent {
   final String? value;
 
-  ChangedHtmlWithPlatformMediumName({this.value});
+  ChangedHtmlWithPlatformMediumDescription({this.value});
 
   @override
   List<Object?> get props => [ value ];
 
   @override
-  String toString() => 'ChangedHtmlWithPlatformMediumName{ value: $value }';
+  String toString() => 'ChangedHtmlWithPlatformMediumDescription{ value: $value }';
 }
 
 class ChangedHtmlWithPlatformMediumHtml extends HtmlWithPlatformMediumFormEvent {

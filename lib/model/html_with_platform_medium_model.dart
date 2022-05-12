@@ -39,21 +39,21 @@ import 'package:eliud_core/tools/random.dart';
 class HtmlWithPlatformMediumModel {
   String? documentID;
   String? appId;
-  String? name;
+  String? description;
   String? html;
   List<HtmlPlatformMediumModel>? htmlMedia;
   StorageConditionsModel? conditions;
 
-  HtmlWithPlatformMediumModel({this.documentID, this.appId, this.name, this.html, this.htmlMedia, this.conditions, })  {
+  HtmlWithPlatformMediumModel({this.documentID, this.appId, this.description, this.html, this.htmlMedia, this.conditions, })  {
     assert(documentID != null);
   }
 
-  HtmlWithPlatformMediumModel copyWith({String? documentID, String? appId, String? name, String? html, List<HtmlPlatformMediumModel>? htmlMedia, StorageConditionsModel? conditions, }) {
-    return HtmlWithPlatformMediumModel(documentID: documentID ?? this.documentID, appId: appId ?? this.appId, name: name ?? this.name, html: html ?? this.html, htmlMedia: htmlMedia ?? this.htmlMedia, conditions: conditions ?? this.conditions, );
+  HtmlWithPlatformMediumModel copyWith({String? documentID, String? appId, String? description, String? html, List<HtmlPlatformMediumModel>? htmlMedia, StorageConditionsModel? conditions, }) {
+    return HtmlWithPlatformMediumModel(documentID: documentID ?? this.documentID, appId: appId ?? this.appId, description: description ?? this.description, html: html ?? this.html, htmlMedia: htmlMedia ?? this.htmlMedia, conditions: conditions ?? this.conditions, );
   }
 
   @override
-  int get hashCode => documentID.hashCode ^ appId.hashCode ^ name.hashCode ^ html.hashCode ^ htmlMedia.hashCode ^ conditions.hashCode;
+  int get hashCode => documentID.hashCode ^ appId.hashCode ^ description.hashCode ^ html.hashCode ^ htmlMedia.hashCode ^ conditions.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -62,7 +62,7 @@ class HtmlWithPlatformMediumModel {
           runtimeType == other.runtimeType && 
           documentID == other.documentID &&
           appId == other.appId &&
-          name == other.name &&
+          description == other.description &&
           html == other.html &&
           ListEquality().equals(htmlMedia, other.htmlMedia) &&
           conditions == other.conditions;
@@ -71,13 +71,13 @@ class HtmlWithPlatformMediumModel {
   String toString() {
     String htmlMediaCsv = (htmlMedia == null) ? '' : htmlMedia!.join(', ');
 
-    return 'HtmlWithPlatformMediumModel{documentID: $documentID, appId: $appId, name: $name, html: $html, htmlMedia: HtmlPlatformMedium[] { $htmlMediaCsv }, conditions: $conditions}';
+    return 'HtmlWithPlatformMediumModel{documentID: $documentID, appId: $appId, description: $description, html: $html, htmlMedia: HtmlPlatformMedium[] { $htmlMediaCsv }, conditions: $conditions}';
   }
 
   HtmlWithPlatformMediumEntity toEntity({String? appId}) {
     return HtmlWithPlatformMediumEntity(
           appId: (appId != null) ? appId : null, 
-          name: (name != null) ? name : null, 
+          description: (description != null) ? description : null, 
           html: (html != null) ? html : null, 
           htmlMedia: (htmlMedia != null) ? htmlMedia
             !.map((item) => item.toEntity(appId: appId))
@@ -92,7 +92,7 @@ class HtmlWithPlatformMediumModel {
     return HtmlWithPlatformMediumModel(
           documentID: documentID, 
           appId: entity.appId, 
-          name: entity.name, 
+          description: entity.description, 
           html: entity.html, 
           htmlMedia: 
             entity.htmlMedia == null ? null : List<HtmlPlatformMediumModel>.from(await Future.wait(entity. htmlMedia
@@ -113,7 +113,7 @@ class HtmlWithPlatformMediumModel {
     return HtmlWithPlatformMediumModel(
           documentID: documentID, 
           appId: entity.appId, 
-          name: entity.name, 
+          description: entity.description, 
           html: entity.html, 
           htmlMedia: 
             entity. htmlMedia == null ? null : List<HtmlPlatformMediumModel>.from(await Future.wait(entity. htmlMedia

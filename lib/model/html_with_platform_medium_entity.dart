@@ -24,21 +24,21 @@ import 'package:eliud_pkg_text/model/entity_export.dart';
 import 'package:eliud_core/tools/common_tools.dart';
 class HtmlWithPlatformMediumEntity {
   final String? appId;
-  final String? name;
+  final String? description;
   final String? html;
   final List<HtmlPlatformMediumEntity>? htmlMedia;
   final StorageConditionsEntity? conditions;
 
-  HtmlWithPlatformMediumEntity({this.appId, this.name, this.html, this.htmlMedia, this.conditions, });
+  HtmlWithPlatformMediumEntity({this.appId, this.description, this.html, this.htmlMedia, this.conditions, });
 
 
-  List<Object?> get props => [appId, name, html, htmlMedia, conditions, ];
+  List<Object?> get props => [appId, description, html, htmlMedia, conditions, ];
 
   @override
   String toString() {
     String htmlMediaCsv = (htmlMedia == null) ? '' : htmlMedia!.join(', ');
 
-    return 'HtmlWithPlatformMediumEntity{appId: $appId, name: $name, html: $html, htmlMedia: HtmlPlatformMedium[] { $htmlMediaCsv }, conditions: $conditions}';
+    return 'HtmlWithPlatformMediumEntity{appId: $appId, description: $description, html: $html, htmlMedia: HtmlPlatformMedium[] { $htmlMediaCsv }, conditions: $conditions}';
   }
 
   static HtmlWithPlatformMediumEntity? fromMap(Object? o) {
@@ -60,7 +60,7 @@ class HtmlWithPlatformMediumEntity {
 
     return HtmlWithPlatformMediumEntity(
       appId: map['appId'], 
-      name: map['name'], 
+      description: map['description'], 
       html: map['html'], 
       htmlMedia: htmlMediaList, 
       conditions: conditionsFromMap, 
@@ -78,8 +78,8 @@ class HtmlWithPlatformMediumEntity {
     Map<String, Object?> theDocument = HashMap();
     if (appId != null) theDocument["appId"] = appId;
       else theDocument["appId"] = null;
-    if (name != null) theDocument["name"] = name;
-      else theDocument["name"] = null;
+    if (description != null) theDocument["description"] = description;
+      else theDocument["description"] = null;
     if (html != null) theDocument["html"] = html;
       else theDocument["html"] = null;
     if (htmlMedia != null) theDocument["htmlMedia"] = htmlMediaListMap;
