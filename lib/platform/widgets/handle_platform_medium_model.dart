@@ -35,12 +35,12 @@ class HandlePlatformMediumModel extends HandleMediumModel {
     if (insertFileType == InsertFileType.video) {
       htmlCode = process(kVideoHtml, parameters: <String, String>{
         '\${VIDEO_URL}': platformMediumModel.url!,
-        '\${IDENTIFIER}': platformMediumModel.documentID!,
+        '\${IDENTIFIER}': platformMediumModel.documentID,
       });
     } else {
       htmlCode = process(kIngHtml, parameters: <String, String>{
         '\${IMG_URL}': platformMediumModel.url!,
-        '\${IDENTIFIER}': platformMediumModel.documentID!,
+        '\${IDENTIFIER}': platformMediumModel.documentID,
       });
     }
 

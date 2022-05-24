@@ -38,7 +38,7 @@ class MemberDashboardDialogBuilder extends DialogBuilder {
 
   Future<DialogModel> _setupDialog() async {
     return await corerepo.AbstractRepositorySingleton.singleton
-        .dialogRepository(app.documentID!)!
+        .dialogRepository(app.documentID)!
         .add(_dialog());
   }
 
@@ -51,7 +51,7 @@ class MemberDashboardDialogBuilder extends DialogBuilder {
 
     return DialogModel(
         documentID: constructDocumentId(uniqueId: uniqueId, documentId: dialogDocumentId),
-        appId: app.documentID!,
+        appId: app.documentID,
         title: "Member dashboard",
         layout: DialogLayout.ListView,
         bodyComponents: components);
@@ -60,7 +60,7 @@ class MemberDashboardDialogBuilder extends DialogBuilder {
   MemberDashboardModel _dashboardModel() {
     return MemberDashboardModel(
         documentID: constructDocumentId(uniqueId: uniqueId, documentId: dialogDocumentId),
-        appId: app.documentID!,
+        appId: app.documentID,
         description: "Member dashboard",
         updateProfileText: updateProfileText,
         retrieveDataText: retrieveDataText,
@@ -76,7 +76,7 @@ class MemberDashboardDialogBuilder extends DialogBuilder {
 
   Future<MemberDashboardModel> _setupDashboard() async {
     return await corerepo.AbstractRepositorySingleton.singleton
-        .memberDashboardRepository(app.documentID!)!
+        .memberDashboardRepository(app.documentID)!
         .add(_dashboardModel());
   }
 

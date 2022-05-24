@@ -47,7 +47,7 @@ class MultilineTextDialog extends StatefulWidget {
       UpdatedHtml updatedHtml,
       String initialValue) {
     openWidgetDialog(app, context,
-        app.documentID! + '/multilinetext',
+        app.documentID + '/multilinetext',
         child:
         MultilineTextDialog(
           title: title,

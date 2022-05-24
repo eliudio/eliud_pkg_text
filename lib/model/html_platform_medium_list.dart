@@ -75,7 +75,7 @@ class HtmlPlatformMediumListWidget extends StatefulWidget with HasFab {
 class HtmlPlatformMediumListWidgetState extends State<HtmlPlatformMediumListWidget> {
   @override
   Widget? fab(BuildContext aContext, AccessState accessState) {
-    return !accessState.memberIsOwner(widget.app.documentID!) 
+    return !accessState.memberIsOwner(widget.app.documentID) 
       ? null
       : StyleRegistry.registry().styleWithApp(widget.app).adminListStyle().floatingActionButton(widget.app, context, 'PageFloatBtnTag', Icon(Icons.add),
       onPressed: () {
@@ -217,7 +217,7 @@ class HtmlPlatformMediumListItem extends StatelessWidget {
       onDismissed: onDismissed,
       child: ListTile(
         onTap: onTap,
-        title: value.documentID != null ? Center(child: StyleRegistry.registry().styleWithApp(app).frontEndStyle().textStyle().text(app, context, value.documentID!)) : Container(),
+        title: value.documentID != null ? Center(child: StyleRegistry.registry().styleWithApp(app).frontEndStyle().textStyle().text(app, context, value.documentID)) : Container(),
       ),
     );
   }

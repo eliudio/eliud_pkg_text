@@ -39,7 +39,7 @@ abstract class AbstractHtmlWithPlatformMediumComponent extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider<HtmlWithPlatformMediumComponentBloc> (
           create: (context) => HtmlWithPlatformMediumComponentBloc(
-            htmlWithPlatformMediumRepository: htmlWithPlatformMediumRepository(appId: app.documentID!)!)
+            htmlWithPlatformMediumRepository: htmlWithPlatformMediumRepository(appId: app.documentID)!)
         ..add(FetchHtmlWithPlatformMediumComponent(id: htmlWithPlatformMediumId)),
       child: _htmlWithPlatformMediumBlockBuilder(context),
     );

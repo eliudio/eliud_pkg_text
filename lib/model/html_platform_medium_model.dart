@@ -15,6 +15,7 @@
 
 import 'package:eliud_core/tools/common_tools.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:eliud_core/core/base/model_base.dart';
 
 import 'package:eliud_core/model/repository_export.dart';
 import 'package:eliud_core/model/abstract_repository_singleton.dart';
@@ -35,11 +36,11 @@ import 'package:eliud_core/tools/random.dart';
 
 
 
-class HtmlPlatformMediumModel {
-  String? documentID;
+class HtmlPlatformMediumModel implements ModelBase {
+  String documentID;
   MemberMediumModel? medium;
 
-  HtmlPlatformMediumModel({this.documentID, this.medium, })  {
+  HtmlPlatformMediumModel({required this.documentID, this.medium, })  {
     assert(documentID != null);
   }
 

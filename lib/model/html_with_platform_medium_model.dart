@@ -16,6 +16,7 @@
 import 'package:collection/collection.dart';
 import 'package:eliud_core/tools/common_tools.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:eliud_core/core/base/model_base.dart';
 
 import 'package:eliud_core/model/repository_export.dart';
 import 'package:eliud_core/model/abstract_repository_singleton.dart';
@@ -36,15 +37,15 @@ import 'package:eliud_core/tools/random.dart';
 
 
 
-class HtmlWithPlatformMediumModel {
-  String? documentID;
-  String? appId;
+class HtmlWithPlatformMediumModel implements ModelBase, WithAppId {
+  String documentID;
+  String appId;
   String? description;
   String? html;
   List<HtmlPlatformMediumModel>? htmlMedia;
   StorageConditionsModel? conditions;
 
-  HtmlWithPlatformMediumModel({this.documentID, this.appId, this.description, this.html, this.htmlMedia, this.conditions, })  {
+  HtmlWithPlatformMediumModel({required this.documentID, required this.appId, this.description, this.html, this.htmlMedia, this.conditions, })  {
     assert(documentID != null);
   }
 
@@ -91,7 +92,7 @@ class HtmlWithPlatformMediumModel {
     var counter = 0;
     return HtmlWithPlatformMediumModel(
           documentID: documentID, 
-          appId: entity.appId, 
+          appId: entity.appId ?? '', 
           description: entity.description, 
           html: entity.html, 
           htmlMedia: 
@@ -112,7 +113,7 @@ class HtmlWithPlatformMediumModel {
     var counter = 0;
     return HtmlWithPlatformMediumModel(
           documentID: documentID, 
-          appId: entity.appId, 
+          appId: entity.appId ?? '', 
           description: entity.description, 
           html: entity.html, 
           htmlMedia: 

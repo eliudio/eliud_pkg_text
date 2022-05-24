@@ -28,7 +28,7 @@ class HtmlWithPlatformMediumComponentConstructorDefault implements ComponentCons
 
   @override
   Future<dynamic> getModel({required AppModel app, required String id}) async =>
-      await htmlWithPlatformMediumRepository(appId: app.documentID!)!.get(id);
+      await htmlWithPlatformMediumRepository(appId: app.documentID)!.get(id);
 }
 
 class HtmlWithPlatformMediumComponent extends AbstractHtmlWithPlatformMediumComponent {

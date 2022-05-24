@@ -69,7 +69,7 @@ class HtmlTextDialog extends StatefulWidget {
         .styleWithApp(app)
         .frontEndStyle()
         .dialogStyle()
-        .openWidgetDialog(app, context, app.documentID! + '/html',
+        .openWidgetDialog(app, context, app.documentID + '/html',
             child: HtmlTextDialog(
               title: title,
               updatedHtml: updatedHtml,

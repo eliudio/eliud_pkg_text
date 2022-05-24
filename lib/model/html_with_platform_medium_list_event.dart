@@ -77,7 +77,7 @@ class HtmlWithPlatformMediumListUpdated extends HtmlWithPlatformMediumListEvent 
 }
 
 class HtmlWithPlatformMediumChangeQuery extends HtmlWithPlatformMediumListEvent {
-  final EliudQuery newQuery;
+  final EliudQuery? newQuery;
 
   const HtmlWithPlatformMediumChangeQuery({ required this.newQuery });
 

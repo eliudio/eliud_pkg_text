@@ -74,7 +74,7 @@ class HtmlWithPlatformMediumForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var accessState = AccessBloc.getState(context);
-    var appId = app.documentID!;
+    var appId = app.documentID;
     if (formAction == FormAction.ShowData) {
       return BlocProvider<HtmlWithPlatformMediumFormBloc >(
             create: (context) => HtmlWithPlatformMediumFormBloc(appId,
@@ -315,7 +315,7 @@ class _MyHtmlWithPlatformMediumFormState extends State<MyHtmlWithPlatformMediumF
   }
 
   bool _readOnly(AccessState accessState, HtmlWithPlatformMediumFormInitialized state) {
-    return (formAction == FormAction.ShowData) || (formAction == FormAction.ShowPreloadedData) || (!accessState.memberIsOwner(widget.app.documentID!));
+    return (formAction == FormAction.ShowData) || (formAction == FormAction.ShowPreloadedData) || (!accessState.memberIsOwner(widget.app.documentID));
   }
   
 

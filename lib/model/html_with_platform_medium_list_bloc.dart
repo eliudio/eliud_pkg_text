@@ -38,9 +38,47 @@ class HtmlWithPlatformMediumListBloc extends Bloc<HtmlWithPlatformMediumListEven
   HtmlWithPlatformMediumListBloc({this.paged, this.orderBy, this.descending, this.detailed, this.eliudQuery, required HtmlWithPlatformMediumRepository htmlWithPlatformMediumRepository, this.htmlWithPlatformMediumLimit = 5})
       : assert(htmlWithPlatformMediumRepository != null),
         _htmlWithPlatformMediumRepository = htmlWithPlatformMediumRepository,
-        super(HtmlWithPlatformMediumListLoading());
+        super(HtmlWithPlatformMediumListLoading()) {
+    on <LoadHtmlWithPlatformMediumList> ((event, emit) {
+      if ((detailed == null) || (!detailed!)) {
+        _mapLoadHtmlWithPlatformMediumListToState();
+      } else {
+        _mapLoadHtmlWithPlatformMediumListWithDetailsToState();
+      }
+    });
+    
+    on <NewPage> ((event, emit) {
+      pages = pages + 1; // it doesn't matter so much if we increase pages beyond the end
+      _mapLoadHtmlWithPlatformMediumListWithDetailsToState();
+    });
+    
+    on <HtmlWithPlatformMediumChangeQuery> ((event, emit) {
+      eliudQuery = event.newQuery;
+      if ((detailed == null) || (!detailed!)) {
+        _mapLoadHtmlWithPlatformMediumListToState();
+      } else {
+        _mapLoadHtmlWithPlatformMediumListWithDetailsToState();
+      }
+    });
+      
+    on <AddHtmlWithPlatformMediumList> ((event, emit) async {
+      await _mapAddHtmlWithPlatformMediumListToState(event);
+    });
+    
+    on <UpdateHtmlWithPlatformMediumList> ((event, emit) async {
+      await _mapUpdateHtmlWithPlatformMediumListToState(event);
+    });
+    
+    on <DeleteHtmlWithPlatformMediumList> ((event, emit) async {
+      await _mapDeleteHtmlWithPlatformMediumListToState(event);
+    });
+    
+    on <HtmlWithPlatformMediumListUpdated> ((event, emit) {
+      emit(_mapHtmlWithPlatformMediumListUpdatedToState(event));
+    });
+  }
 
-  Stream<HtmlWithPlatformMediumListState> _mapLoadHtmlWithPlatformMediumListToState() async* {
+  Future<void> _mapLoadHtmlWithPlatformMediumListToState() async {
     int amountNow =  (state is HtmlWithPlatformMediumListLoaded) ? (state as HtmlWithPlatformMediumListLoaded).values!.length : 0;
     _htmlWithPlatformMediumsListSubscription?.cancel();
     _htmlWithPlatformMediumsListSubscription = _htmlWithPlatformMediumRepository.listen(
@@ -52,7 +90,7 @@ class HtmlWithPlatformMediumListBloc extends Bloc<HtmlWithPlatformMediumListEven
     );
   }
 
-  Stream<HtmlWithPlatformMediumListState> _mapLoadHtmlWithPlatformMediumListWithDetailsToState() async* {
+  Future<void> _mapLoadHtmlWithPlatformMediumListWithDetailsToState() async {
     int amountNow =  (state is HtmlWithPlatformMediumListLoaded) ? (state as HtmlWithPlatformMediumListLoaded).values!.length : 0;
     _htmlWithPlatformMediumsListSubscription?.cancel();
     _htmlWithPlatformMediumsListSubscription = _htmlWithPlatformMediumRepository.listenWithDetails(
@@ -64,58 +102,29 @@ class HtmlWithPlatformMediumListBloc extends Bloc<HtmlWithPlatformMediumListEven
     );
   }
 
-  Stream<HtmlWithPlatformMediumListState> _mapAddHtmlWithPlatformMediumListToState(AddHtmlWithPlatformMediumList event) async* {
+  Future<void> _mapAddHtmlWithPlatformMediumListToState(AddHtmlWithPlatformMediumList event) async {
     var value = event.value;
-    if (value != null) 
-      _htmlWithPlatformMediumRepository.add(value);
-  }
-
-  Stream<HtmlWithPlatformMediumListState> _mapUpdateHtmlWithPlatformMediumListToState(UpdateHtmlWithPlatformMediumList event) async* {
-    var value = event.value;
-    if (value != null) 
-      _htmlWithPlatformMediumRepository.update(value);
-  }
-
-  Stream<HtmlWithPlatformMediumListState> _mapDeleteHtmlWithPlatformMediumListToState(DeleteHtmlWithPlatformMediumList event) async* {
-    var value = event.value;
-    if (value != null) 
-      _htmlWithPlatformMediumRepository.delete(value);
-  }
-
-  Stream<HtmlWithPlatformMediumListState> _mapHtmlWithPlatformMediumListUpdatedToState(
-      HtmlWithPlatformMediumListUpdated event) async* {
-    yield HtmlWithPlatformMediumListLoaded(values: event.value, mightHaveMore: event.mightHaveMore);
-  }
-
-  @override
-  Stream<HtmlWithPlatformMediumListState> mapEventToState(HtmlWithPlatformMediumListEvent event) async* {
-    if (event is LoadHtmlWithPlatformMediumList) {
-      if ((detailed == null) || (!detailed!)) {
-        yield* _mapLoadHtmlWithPlatformMediumListToState();
-      } else {
-        yield* _mapLoadHtmlWithPlatformMediumListWithDetailsToState();
-      }
-    }
-    if (event is NewPage) {
-      pages = pages + 1; // it doesn't matter so much if we increase pages beyond the end
-      yield* _mapLoadHtmlWithPlatformMediumListWithDetailsToState();
-    } else if (event is HtmlWithPlatformMediumChangeQuery) {
-      eliudQuery = event.newQuery;
-      if ((detailed == null) || (!detailed!)) {
-        yield* _mapLoadHtmlWithPlatformMediumListToState();
-      } else {
-        yield* _mapLoadHtmlWithPlatformMediumListWithDetailsToState();
-      }
-    } else if (event is AddHtmlWithPlatformMediumList) {
-      yield* _mapAddHtmlWithPlatformMediumListToState(event);
-    } else if (event is UpdateHtmlWithPlatformMediumList) {
-      yield* _mapUpdateHtmlWithPlatformMediumListToState(event);
-    } else if (event is DeleteHtmlWithPlatformMediumList) {
-      yield* _mapDeleteHtmlWithPlatformMediumListToState(event);
-    } else if (event is HtmlWithPlatformMediumListUpdated) {
-      yield* _mapHtmlWithPlatformMediumListUpdatedToState(event);
+    if (value != null) {
+      await _htmlWithPlatformMediumRepository.add(value);
     }
   }
+
+  Future<void> _mapUpdateHtmlWithPlatformMediumListToState(UpdateHtmlWithPlatformMediumList event) async {
+    var value = event.value;
+    if (value != null) {
+      await _htmlWithPlatformMediumRepository.update(value);
+    }
+  }
+
+  Future<void> _mapDeleteHtmlWithPlatformMediumListToState(DeleteHtmlWithPlatformMediumList event) async {
+    var value = event.value;
+    if (value != null) {
+      await _htmlWithPlatformMediumRepository.delete(value);
+    }
+  }
+
+  HtmlWithPlatformMediumListLoaded _mapHtmlWithPlatformMediumListUpdatedToState(
+      HtmlWithPlatformMediumListUpdated event) => HtmlWithPlatformMediumListLoaded(values: event.value, mightHaveMore: event.mightHaveMore);
 
   @override
   Future<void> close() {

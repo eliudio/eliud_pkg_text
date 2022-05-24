@@ -40,11 +40,11 @@ class HtmlWithPlatformMediumComponentEditorConstructor extends ComponentEditorCo
   @override
   void updateComponentWithID(AppModel app,
       BuildContext context, String id, EditorFeedback feedback) async {
-    var html = await htmlWithPlatformMediumRepository(appId: app.documentID!)!.get(id);
+    var html = await htmlWithPlatformMediumRepository(appId: app.documentID)!.get(id);
     if (html != null) {
       _openIt(app, context, false, html, feedback);
     } else {
-      openErrorDialog(app, context, app.documentID! + '/_error',
+      openErrorDialog(app, context, app.documentID + '/_error',
           title: 'Error', errorMessage: 'Cannot find html with id $id');
       feedback(false);
     }
@@ -54,7 +54,7 @@ class HtmlWithPlatformMediumComponentEditorConstructor extends ComponentEditorCo
       EditorFeedback feedback) {
     openComplexDialog(app,
       context,
-      app.documentID! + '/divider',
+      app.documentID + '/divider',
       title: create ? 'Create divider' : 'Update divider',
       includeHeading: false,
       widthFraction: .9,
@@ -92,14 +92,14 @@ class _HtmlComponentEditorState extends State<HtmlComponentEditor> {
         title: 'Html',
         app: widget.app,
         okAction: () async {
-          var appId = widget.app.documentID!;
+          var appId = widget.app.documentID;
           if (widget.create) {
             var existingModel = await htmlWithPlatformMediumRepository(appId: appId)!
                 .get(widget.model.documentID);
             if (existingModel == null) {
               await htmlWithPlatformMediumRepository(appId: appId)!.add(widget.model);
             } else {
-              openErrorDialog(widget.app, context, widget.app.documentID! + '/_error',
+              openErrorDialog(widget.app, context, widget.app.documentID + '/_error',
                   title: 'Error',
                   errorMessage: 'Html with this ID already exists');
               widget.feedback(false);
@@ -122,7 +122,7 @@ class _HtmlComponentEditorState extends State<HtmlComponentEditor> {
             getListTile(context, widget.app,
                 leading: Icon(Icons.vpn_key),
                 title: text(widget.app, context,
-                    widget.model.documentID!)),
+                    widget.model.documentID)),
             getListTile(context,widget.app,
                 leading: Icon(Icons.description),
                 title: dialogField(widget.app,
@@ -150,7 +150,7 @@ class _HtmlComponentEditorState extends State<HtmlComponentEditor> {
                   AbstractTextPlatform.platform!.updateHtmlWithPlatformMedium(
                     context,
                     widget.app,
-                    ownerId!,
+                    ownerId,
                     widget.model,
                     (value) => setState(() {}),
                     "Document contents",

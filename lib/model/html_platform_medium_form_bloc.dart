@@ -50,40 +50,30 @@ class HtmlPlatformMediumFormBloc extends Bloc<HtmlPlatformMediumFormEvent, HtmlP
   Stream<HtmlPlatformMediumFormState> mapEventToState(HtmlPlatformMediumFormEvent event) async* {
     final currentState = state;
     if (currentState is HtmlPlatformMediumFormUninitialized) {
-      if (event is InitialiseNewHtmlPlatformMediumFormEvent) {
+      on <InitialiseNewHtmlPlatformMediumFormEvent> ((event, emit) {
         HtmlPlatformMediumFormLoaded loaded = HtmlPlatformMediumFormLoaded(value: HtmlPlatformMediumModel(
                                                documentID: "IDENTIFIER", 
 
         ));
-        yield loaded;
-        return;
-
-      }
+        emit(loaded);
+      });
 
 
       if (event is InitialiseHtmlPlatformMediumFormEvent) {
         HtmlPlatformMediumFormLoaded loaded = HtmlPlatformMediumFormLoaded(value: event.value);
-        yield loaded;
-        return;
+        emit(loaded);
       } else if (event is InitialiseHtmlPlatformMediumFormNoLoadEvent) {
         HtmlPlatformMediumFormLoaded loaded = HtmlPlatformMediumFormLoaded(value: event.value);
-        yield loaded;
-        return;
+        emit(loaded);
       }
     } else if (currentState is HtmlPlatformMediumFormInitialized) {
       HtmlPlatformMediumModel? newValue = null;
-      if (event is ChangedHtmlPlatformMediumMedium) {
+      on <ChangedHtmlPlatformMediumMedium> ((event, emit) async {
         if (event.value != null)
           newValue = currentState.value!.copyWith(medium: await memberMediumRepository(appId: appId)!.get(event.value));
-        else
-          newValue = new HtmlPlatformMediumModel(
-                                 documentID: currentState.value!.documentID,
-                                 medium: null,
-          );
-        yield SubmittableHtmlPlatformMediumForm(value: newValue);
+        emit(SubmittableHtmlPlatformMediumForm(value: newValue));
 
-        return;
-      }
+      });
     }
   }
 

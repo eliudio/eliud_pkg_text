@@ -56,7 +56,7 @@ class WelcomePageWizard extends NewAppWizardInfoWithActionSpecification {
     if (parameters is ActionSpecificationParametersBase) {
       var welcomePageSpecifications = parameters.actionSpecifications;
       if (welcomePageSpecifications.shouldCreatePageDialogOrWorkflow()) {
-        var memberId = member.documentID!;
+        var memberId = member.documentID;
         List<NewAppTask> tasks = [];
         tasks.add(() async {
           print("Welcome Page");

@@ -34,9 +34,9 @@ class PageWithTextBuilder extends PageBuilder {
 
   Future<PageModel> create() async {
     var htmlComponentId = constructDocumentId(uniqueId: uniqueId, documentId: pageId);
-    await htmlWithPlatformMediumRepository(appId: app.documentID!)!.add(HtmlWithPlatformMediumModel(
+    await htmlWithPlatformMediumRepository(appId: app.documentID)!.add(HtmlWithPlatformMediumModel(
       documentID: htmlComponentId,
-      appId: app.documentID!,
+      appId: app.documentID,
       description: 'html 1',
       html: '<html><p>$text</p></html>',
       conditions: StorageConditionsModel(
@@ -47,7 +47,7 @@ class PageWithTextBuilder extends PageBuilder {
     var page = PageModel(
       documentID: constructDocumentId(uniqueId: uniqueId, documentId: pageId),
       title: title,
-      appId: app.documentID!,
+      appId: app.documentID,
       bodyComponents: [
         BodyComponentModel(
             documentID: "1",
@@ -62,7 +62,7 @@ class PageWithTextBuilder extends PageBuilder {
       conditions: StorageConditionsModel(
           privilegeLevelRequired: PrivilegeLevelRequiredSimple.NoPrivilegeRequiredSimple),
     );
-    await pageRepository(appId: app.documentID!)!.add(page);
+    await pageRepository(appId: app.documentID)!.add(page);
     return page;
   }
 }

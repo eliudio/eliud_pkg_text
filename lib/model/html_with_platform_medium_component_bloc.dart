@@ -26,23 +26,22 @@ class HtmlWithPlatformMediumComponentBloc extends Bloc<HtmlWithPlatformMediumCom
   final HtmlWithPlatformMediumRepository? htmlWithPlatformMediumRepository;
   StreamSubscription? _htmlWithPlatformMediumSubscription;
 
-  Stream<HtmlWithPlatformMediumComponentState> _mapLoadHtmlWithPlatformMediumComponentUpdateToState(String documentId) async* {
+  void _mapLoadHtmlWithPlatformMediumComponentUpdateToState(String documentId) {
     _htmlWithPlatformMediumSubscription?.cancel();
     _htmlWithPlatformMediumSubscription = htmlWithPlatformMediumRepository!.listenTo(documentId, (value) {
-      if (value != null) add(HtmlWithPlatformMediumComponentUpdated(value: value));
+      if (value != null) {
+        add(HtmlWithPlatformMediumComponentUpdated(value: value));
+      }
     });
   }
 
-  HtmlWithPlatformMediumComponentBloc({ this.htmlWithPlatformMediumRepository }): super(HtmlWithPlatformMediumComponentUninitialized());
-
-  @override
-  Stream<HtmlWithPlatformMediumComponentState> mapEventToState(HtmlWithPlatformMediumComponentEvent event) async* {
-    final currentState = state;
-    if (event is FetchHtmlWithPlatformMediumComponent) {
-      yield* _mapLoadHtmlWithPlatformMediumComponentUpdateToState(event.id!);
-    } else if (event is HtmlWithPlatformMediumComponentUpdated) {
-      yield HtmlWithPlatformMediumComponentLoaded(value: event.value);
-    }
+  HtmlWithPlatformMediumComponentBloc({ this.htmlWithPlatformMediumRepository }): super(HtmlWithPlatformMediumComponentUninitialized()) {
+    on <FetchHtmlWithPlatformMediumComponent> ((event, emit) {
+      _mapLoadHtmlWithPlatformMediumComponentUpdateToState(event.id!);
+    });
+    on <HtmlWithPlatformMediumComponentUpdated> ((event, emit) {
+      emit(HtmlWithPlatformMediumComponentLoaded(value: event.value));
+    });
   }
 
   @override

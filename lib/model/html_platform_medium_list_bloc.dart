@@ -38,9 +38,47 @@ class HtmlPlatformMediumListBloc extends Bloc<HtmlPlatformMediumListEvent, HtmlP
   HtmlPlatformMediumListBloc({this.paged, this.orderBy, this.descending, this.detailed, this.eliudQuery, required HtmlPlatformMediumRepository htmlPlatformMediumRepository, this.htmlPlatformMediumLimit = 5})
       : assert(htmlPlatformMediumRepository != null),
         _htmlPlatformMediumRepository = htmlPlatformMediumRepository,
-        super(HtmlPlatformMediumListLoading());
+        super(HtmlPlatformMediumListLoading()) {
+    on <LoadHtmlPlatformMediumList> ((event, emit) {
+      if ((detailed == null) || (!detailed!)) {
+        _mapLoadHtmlPlatformMediumListToState();
+      } else {
+        _mapLoadHtmlPlatformMediumListWithDetailsToState();
+      }
+    });
+    
+    on <NewPage> ((event, emit) {
+      pages = pages + 1; // it doesn't matter so much if we increase pages beyond the end
+      _mapLoadHtmlPlatformMediumListWithDetailsToState();
+    });
+    
+    on <HtmlPlatformMediumChangeQuery> ((event, emit) {
+      eliudQuery = event.newQuery;
+      if ((detailed == null) || (!detailed!)) {
+        _mapLoadHtmlPlatformMediumListToState();
+      } else {
+        _mapLoadHtmlPlatformMediumListWithDetailsToState();
+      }
+    });
+      
+    on <AddHtmlPlatformMediumList> ((event, emit) async {
+      await _mapAddHtmlPlatformMediumListToState(event);
+    });
+    
+    on <UpdateHtmlPlatformMediumList> ((event, emit) async {
+      await _mapUpdateHtmlPlatformMediumListToState(event);
+    });
+    
+    on <DeleteHtmlPlatformMediumList> ((event, emit) async {
+      await _mapDeleteHtmlPlatformMediumListToState(event);
+    });
+    
+    on <HtmlPlatformMediumListUpdated> ((event, emit) {
+      emit(_mapHtmlPlatformMediumListUpdatedToState(event));
+    });
+  }
 
-  Stream<HtmlPlatformMediumListState> _mapLoadHtmlPlatformMediumListToState() async* {
+  Future<void> _mapLoadHtmlPlatformMediumListToState() async {
     int amountNow =  (state is HtmlPlatformMediumListLoaded) ? (state as HtmlPlatformMediumListLoaded).values!.length : 0;
     _htmlPlatformMediumsListSubscription?.cancel();
     _htmlPlatformMediumsListSubscription = _htmlPlatformMediumRepository.listen(
@@ -52,7 +90,7 @@ class HtmlPlatformMediumListBloc extends Bloc<HtmlPlatformMediumListEvent, HtmlP
     );
   }
 
-  Stream<HtmlPlatformMediumListState> _mapLoadHtmlPlatformMediumListWithDetailsToState() async* {
+  Future<void> _mapLoadHtmlPlatformMediumListWithDetailsToState() async {
     int amountNow =  (state is HtmlPlatformMediumListLoaded) ? (state as HtmlPlatformMediumListLoaded).values!.length : 0;
     _htmlPlatformMediumsListSubscription?.cancel();
     _htmlPlatformMediumsListSubscription = _htmlPlatformMediumRepository.listenWithDetails(
@@ -64,58 +102,29 @@ class HtmlPlatformMediumListBloc extends Bloc<HtmlPlatformMediumListEvent, HtmlP
     );
   }
 
-  Stream<HtmlPlatformMediumListState> _mapAddHtmlPlatformMediumListToState(AddHtmlPlatformMediumList event) async* {
+  Future<void> _mapAddHtmlPlatformMediumListToState(AddHtmlPlatformMediumList event) async {
     var value = event.value;
-    if (value != null) 
-      _htmlPlatformMediumRepository.add(value);
-  }
-
-  Stream<HtmlPlatformMediumListState> _mapUpdateHtmlPlatformMediumListToState(UpdateHtmlPlatformMediumList event) async* {
-    var value = event.value;
-    if (value != null) 
-      _htmlPlatformMediumRepository.update(value);
-  }
-
-  Stream<HtmlPlatformMediumListState> _mapDeleteHtmlPlatformMediumListToState(DeleteHtmlPlatformMediumList event) async* {
-    var value = event.value;
-    if (value != null) 
-      _htmlPlatformMediumRepository.delete(value);
-  }
-
-  Stream<HtmlPlatformMediumListState> _mapHtmlPlatformMediumListUpdatedToState(
-      HtmlPlatformMediumListUpdated event) async* {
-    yield HtmlPlatformMediumListLoaded(values: event.value, mightHaveMore: event.mightHaveMore);
-  }
-
-  @override
-  Stream<HtmlPlatformMediumListState> mapEventToState(HtmlPlatformMediumListEvent event) async* {
-    if (event is LoadHtmlPlatformMediumList) {
-      if ((detailed == null) || (!detailed!)) {
-        yield* _mapLoadHtmlPlatformMediumListToState();
-      } else {
-        yield* _mapLoadHtmlPlatformMediumListWithDetailsToState();
-      }
-    }
-    if (event is NewPage) {
-      pages = pages + 1; // it doesn't matter so much if we increase pages beyond the end
-      yield* _mapLoadHtmlPlatformMediumListWithDetailsToState();
-    } else if (event is HtmlPlatformMediumChangeQuery) {
-      eliudQuery = event.newQuery;
-      if ((detailed == null) || (!detailed!)) {
-        yield* _mapLoadHtmlPlatformMediumListToState();
-      } else {
-        yield* _mapLoadHtmlPlatformMediumListWithDetailsToState();
-      }
-    } else if (event is AddHtmlPlatformMediumList) {
-      yield* _mapAddHtmlPlatformMediumListToState(event);
-    } else if (event is UpdateHtmlPlatformMediumList) {
-      yield* _mapUpdateHtmlPlatformMediumListToState(event);
-    } else if (event is DeleteHtmlPlatformMediumList) {
-      yield* _mapDeleteHtmlPlatformMediumListToState(event);
-    } else if (event is HtmlPlatformMediumListUpdated) {
-      yield* _mapHtmlPlatformMediumListUpdatedToState(event);
+    if (value != null) {
+      await _htmlPlatformMediumRepository.add(value);
     }
   }
+
+  Future<void> _mapUpdateHtmlPlatformMediumListToState(UpdateHtmlPlatformMediumList event) async {
+    var value = event.value;
+    if (value != null) {
+      await _htmlPlatformMediumRepository.update(value);
+    }
+  }
+
+  Future<void> _mapDeleteHtmlPlatformMediumListToState(DeleteHtmlPlatformMediumList event) async {
+    var value = event.value;
+    if (value != null) {
+      await _htmlPlatformMediumRepository.delete(value);
+    }
+  }
+
+  HtmlPlatformMediumListLoaded _mapHtmlPlatformMediumListUpdatedToState(
+      HtmlPlatformMediumListUpdated event) => HtmlPlatformMediumListLoaded(values: event.value, mightHaveMore: event.mightHaveMore);
 
   @override
   Future<void> close() {

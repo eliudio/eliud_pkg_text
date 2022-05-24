@@ -29,7 +29,7 @@ class HtmlWithPlatformMediumEntity {
   final List<HtmlPlatformMediumEntity>? htmlMedia;
   final StorageConditionsEntity? conditions;
 
-  HtmlWithPlatformMediumEntity({this.appId, this.description, this.html, this.htmlMedia, this.conditions, });
+  HtmlWithPlatformMediumEntity({required this.appId, this.description, this.html, this.htmlMedia, this.conditions, });
 
 
   List<Object?> get props => [appId, description, html, htmlMedia, conditions, ];

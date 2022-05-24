@@ -51,7 +51,7 @@ class HtmlWithPlatformMediumFormBloc extends Bloc<HtmlWithPlatformMediumFormEven
   Stream<HtmlWithPlatformMediumFormState> mapEventToState(HtmlWithPlatformMediumFormEvent event) async* {
     final currentState = state;
     if (currentState is HtmlWithPlatformMediumFormUninitialized) {
-      if (event is InitialiseNewHtmlWithPlatformMediumFormEvent) {
+      on <InitialiseNewHtmlWithPlatformMediumFormEvent> ((event, emit) {
         HtmlWithPlatformMediumFormLoaded loaded = HtmlWithPlatformMediumFormLoaded(value: HtmlWithPlatformMediumModel(
                                                documentID: "",
                                  appId: "",
@@ -60,58 +60,49 @@ class HtmlWithPlatformMediumFormBloc extends Bloc<HtmlWithPlatformMediumFormEven
                                  htmlMedia: [],
 
         ));
-        yield loaded;
-        return;
-
-      }
+        emit(loaded);
+      });
 
 
       if (event is InitialiseHtmlWithPlatformMediumFormEvent) {
         // Need to re-retrieve the document from the repository so that I get all associated types
         HtmlWithPlatformMediumFormLoaded loaded = HtmlWithPlatformMediumFormLoaded(value: await htmlWithPlatformMediumRepository(appId: appId)!.get(event.value!.documentID));
-        yield loaded;
-        return;
+        emit(loaded);
       } else if (event is InitialiseHtmlWithPlatformMediumFormNoLoadEvent) {
         HtmlWithPlatformMediumFormLoaded loaded = HtmlWithPlatformMediumFormLoaded(value: event.value);
-        yield loaded;
-        return;
+        emit(loaded);
       }
     } else if (currentState is HtmlWithPlatformMediumFormInitialized) {
       HtmlWithPlatformMediumModel? newValue = null;
-      if (event is ChangedHtmlWithPlatformMediumDocumentID) {
+      on <ChangedHtmlWithPlatformMediumDocumentID> ((event, emit) async {
         newValue = currentState.value!.copyWith(documentID: event.value);
         if (formAction == FormAction.AddAction) {
-          yield* _isDocumentIDValid(event.value, newValue).asStream();
+          emit(await _isDocumentIDValid(event.value, newValue!));
         } else {
-          yield SubmittableHtmlWithPlatformMediumForm(value: newValue);
+          emit(SubmittableHtmlWithPlatformMediumForm(value: newValue));
         }
 
-        return;
-      }
-      if (event is ChangedHtmlWithPlatformMediumDescription) {
+      });
+      on <ChangedHtmlWithPlatformMediumDescription> ((event, emit) async {
         newValue = currentState.value!.copyWith(description: event.value);
-        yield SubmittableHtmlWithPlatformMediumForm(value: newValue);
+        emit(SubmittableHtmlWithPlatformMediumForm(value: newValue));
 
-        return;
-      }
-      if (event is ChangedHtmlWithPlatformMediumHtml) {
+      });
+      on <ChangedHtmlWithPlatformMediumHtml> ((event, emit) async {
         newValue = currentState.value!.copyWith(html: event.value);
-        yield SubmittableHtmlWithPlatformMediumForm(value: newValue);
+        emit(SubmittableHtmlWithPlatformMediumForm(value: newValue));
 
-        return;
-      }
-      if (event is ChangedHtmlWithPlatformMediumHtmlMedia) {
+      });
+      on <ChangedHtmlWithPlatformMediumHtmlMedia> ((event, emit) async {
         newValue = currentState.value!.copyWith(htmlMedia: event.value);
-        yield SubmittableHtmlWithPlatformMediumForm(value: newValue);
+        emit(SubmittableHtmlWithPlatformMediumForm(value: newValue));
 
-        return;
-      }
-      if (event is ChangedHtmlWithPlatformMediumConditions) {
+      });
+      on <ChangedHtmlWithPlatformMediumConditions> ((event, emit) async {
         newValue = currentState.value!.copyWith(conditions: event.value);
-        yield SubmittableHtmlWithPlatformMediumForm(value: newValue);
+        emit(SubmittableHtmlWithPlatformMediumForm(value: newValue));
 
-        return;
-      }
+      });
     }
   }
 
