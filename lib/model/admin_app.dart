@@ -63,6 +63,7 @@ class AdminApp extends AdminAppInstallerBase {
         appId: appId,
         documentID: "eliud_pkg_text_htmlwithplatformmediums_page",
         title: "HtmlWithPlatformMediums",
+        description: "HtmlWithPlatformMediums",
         drawer: _drawer,
         endDrawer: _endDrawer,
         appBar: _appBar,

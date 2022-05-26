@@ -22,6 +22,6 @@ class WelcomePageBuilder extends PageBuilder {
             rightDrawer, );
 
   Future<PageModel> create() async {
-    return PageWithTextBuilder(uniqueId, 'Welcome', 'Welcome', pageId, app, memberId, theHomeMenu, theAppBar, leftDrawer, rightDrawer, ).create();
+    return PageWithTextBuilder(uniqueId, 'Welcome', 'Welcome', 'Welcome', pageId, app, memberId, theHomeMenu, theAppBar, leftDrawer, rightDrawer, ).create();
   }
 }

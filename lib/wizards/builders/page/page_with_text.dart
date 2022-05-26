@@ -16,10 +16,12 @@ import 'package:eliud_pkg_text/model/html_with_platform_medium_model.dart';
 class PageWithTextBuilder extends PageBuilder {
   final String title;
   final String text;
+  final String description;
 
   PageWithTextBuilder(
       String uniqueId,
       this.title,
+      this.description,
       this.text,
       String pageId,
       AppModel app,
@@ -47,6 +49,7 @@ class PageWithTextBuilder extends PageBuilder {
     var page = PageModel(
       documentID: constructDocumentId(uniqueId: uniqueId, documentId: pageId),
       title: title,
+      description: description,
       appId: app.documentID,
       bodyComponents: [
         BodyComponentModel(

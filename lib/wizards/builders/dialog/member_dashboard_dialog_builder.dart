@@ -53,6 +53,7 @@ class MemberDashboardDialogBuilder extends DialogBuilder {
         documentID: constructDocumentId(uniqueId: uniqueId, documentId: dialogDocumentId),
         appId: app.documentID,
         title: "Member dashboard",
+        description: "Member dashboard",
         layout: DialogLayout.ListView,
         bodyComponents: components);
   }
