@@ -508,6 +508,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_widget_from_html_core:
+    dependency: "direct main"
+    description:
+      path: "../../flutter_widget_from_html/packages/core"
+      relative: true
+    source: path
+    version: "0.8.5+4"
   font_awesome_flutter:
     dependency: transitive
     description:
@@ -515,6 +522,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "9.1.0"
+  fwfh_text_style:
+    dependency: transitive
+    description:
+      path: "../../flutter_widget_from_html/packages/fwfh_text_style"
+      relative: true
+    source: path
+    version: "2.7.3+3"
   glob:
     dependency: transitive
     description:
