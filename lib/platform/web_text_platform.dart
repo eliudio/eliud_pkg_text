@@ -6,7 +6,6 @@ import 'package:eliud_pkg_text/platform/widgets/handle_member_medium_model.dart'
 import 'package:eliud_pkg_text/platform/widgets/handle_platform_medium_model.dart';
 import 'package:eliud_pkg_text/platform/widgets/html_text_dialog.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 //import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 
 class WebTextPlatform extends AbstractTextPlatform {
@@ -54,6 +53,6 @@ class WebTextPlatform extends AbstractTextPlatform {
 
   @override
   Widget htmlWidget(String html) {
-    return HtmlWidget(html);
+    return Text("Nothing");
   }
 }

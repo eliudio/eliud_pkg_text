@@ -156,7 +156,7 @@ class HtmlPlatformMediumListWidgetState extends State<HtmlPlatformMediumListWidg
             onDismissed: (direction) {
               BlocProvider.of<HtmlPlatformMediumListBloc>(context)
                   .add(DeleteHtmlPlatformMediumList(value: value));
-              Scaffold.of(context).showSnackBar(DeleteSnackBar(
+              ScaffoldMessenger.of(context).showSnackBar(DeleteSnackBar(
                 message: "HtmlPlatformMedium " + value.documentID,
                 onUndo: () => BlocProvider.of<HtmlPlatformMediumListBloc>(context)
                     .add(AddHtmlPlatformMediumList(value: value)),
@@ -168,7 +168,7 @@ class HtmlPlatformMediumListWidgetState extends State<HtmlPlatformMediumListWidg
                               value: BlocProvider.of<HtmlPlatformMediumListBloc>(context),
                               child: getForm(value, FormAction.UpdateAction))));
                       if (removedItem != null) {
-                        Scaffold.of(context).showSnackBar(
+                        ScaffoldMessenger.of(context).showSnackBar(
                           DeleteSnackBar(
                         message: "HtmlPlatformMedium " + value.documentID,
                             onUndo: () => BlocProvider.of<HtmlPlatformMediumListBloc>(context)
