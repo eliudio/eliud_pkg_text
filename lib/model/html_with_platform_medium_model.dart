@@ -68,6 +68,10 @@ class HtmlWithPlatformMediumModel implements ModelBase, WithAppId {
           ListEquality().equals(htmlMedia, other.htmlMedia) &&
           conditions == other.conditions;
 
+  String toJsonString({String? appId}) {
+    return toEntity(appId: appId).toJsonString();
+  }
+
   @override
   String toString() {
     String htmlMediaCsv = (htmlMedia == null) ? '' : htmlMedia!.join(', ');

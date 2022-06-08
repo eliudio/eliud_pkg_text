@@ -59,6 +59,10 @@ class HtmlPlatformMediumModel implements ModelBase {
           documentID == other.documentID &&
           medium == other.medium;
 
+  String toJsonString({String? appId}) {
+    return toEntity(appId: appId).toJsonString();
+  }
+
   @override
   String toString() {
     return 'HtmlPlatformMediumModel{documentID: $documentID, medium: $medium}';
