@@ -17,6 +17,7 @@
 import '../model/internal_component.dart';
 import 'package:eliud_core/core/registry.dart';
 import 'package:eliud_core/tools/component/component_spec.dart';
+import 'abstract_repository_singleton.dart';
 
 import '../extensions/html_with_platform_medium_component.dart';
 import '../editors/html_with_platform_medium_component_editor.dart';
@@ -35,7 +36,7 @@ class ComponentRegistry {
     Registry.registry()!.addDropDownSupporter("htmlWithPlatformMediums", DropdownButtonComponentFactory());
     Registry.registry()!.register(componentName: "htmlWithPlatformMediums", componentConstructor: HtmlWithPlatformMediumComponentConstructorDefault());
     Registry.registry()!.addComponentSpec('eliud_pkg_text', 'text', [
-      ComponentSpec('htmlWithPlatformMediums', HtmlWithPlatformMediumComponentConstructorDefault(), HtmlWithPlatformMediumComponentSelector(), HtmlWithPlatformMediumComponentEditorConstructor(), ), 
+      ComponentSpec('htmlWithPlatformMediums', HtmlWithPlatformMediumComponentConstructorDefault(), HtmlWithPlatformMediumComponentSelector(), HtmlWithPlatformMediumComponentEditorConstructor(), ({String? appId}) => htmlWithPlatformMediumRepository(appId: appId)! ), 
     ]);
 
   }
