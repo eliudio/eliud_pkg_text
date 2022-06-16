@@ -47,6 +47,14 @@ class HtmlWithPlatformMediumCache implements HtmlWithPlatformMediumRepository {
     });
   }
 
+  Future<HtmlWithPlatformMediumEntity> addEntity(String documentID, HtmlWithPlatformMediumEntity value) {
+    return reference.addEntity(documentID, value);
+  }
+
+  Future<HtmlWithPlatformMediumEntity> updateEntity(String documentID, HtmlWithPlatformMediumEntity value) {
+    return reference.updateEntity(documentID, value);
+  }
+
   Future<void> delete(HtmlWithPlatformMediumModel value){
     fullCache.remove(value.documentID);
     reference.delete(value);

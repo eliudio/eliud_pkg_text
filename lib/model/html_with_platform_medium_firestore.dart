@@ -36,6 +36,14 @@ import 'package:eliud_core/tools/firestore/firestore_tools.dart';
 import 'package:eliud_core/tools/common_tools.dart';
 
 class HtmlWithPlatformMediumFirestore implements HtmlWithPlatformMediumRepository {
+  Future<HtmlWithPlatformMediumEntity> addEntity(String documentID, HtmlWithPlatformMediumEntity value) {
+    return HtmlWithPlatformMediumCollection.doc(documentID).set(value.toDocument()).then((_) => value);
+  }
+
+  Future<HtmlWithPlatformMediumEntity> updateEntity(String documentID, HtmlWithPlatformMediumEntity value) {
+    return HtmlWithPlatformMediumCollection.doc(documentID).update(value.toDocument()).then((_) => value);
+  }
+
   Future<HtmlWithPlatformMediumModel> add(HtmlWithPlatformMediumModel value) {
     return HtmlWithPlatformMediumCollection.doc(value.documentID).set(value.toEntity(appId: appId).toDocument()).then((_) => value);
   }
@@ -54,6 +62,21 @@ class HtmlWithPlatformMediumFirestore implements HtmlWithPlatformMediumRepositor
 
   Future<HtmlWithPlatformMediumModel?> _populateDocPlus(DocumentSnapshot value) async {
     return HtmlWithPlatformMediumModel.fromEntityPlus(value.id, HtmlWithPlatformMediumEntity.fromMap(value.data()), appId: appId);  }
+
+  Future<HtmlWithPlatformMediumEntity?> getEntity(String? id, {Function(Exception)? onError}) async {
+    try {
+      var collection = HtmlWithPlatformMediumCollection.doc(id);
+      var doc = await collection.get();
+      return HtmlWithPlatformMediumEntity.fromMap(doc.data());
+    } on Exception catch(e) {
+      if (onError != null) {
+        onError(e);
+      } else {
+        print("Error whilst retrieving HtmlWithPlatformMedium with id $id");
+        print("Exceptoin: $e");
+      }
+    };
+  }
 
   Future<HtmlWithPlatformMediumModel?> get(String? id, {Function(Exception)? onError}) async {
     try {

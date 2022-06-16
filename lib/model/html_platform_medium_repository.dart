@@ -38,6 +38,8 @@ typedef HtmlPlatformMediumModelTrigger(List<HtmlPlatformMediumModel?> list);
 typedef HtmlPlatformMediumChanged(HtmlPlatformMediumModel? value);
 
 abstract class HtmlPlatformMediumRepository extends RepositoryBase<HtmlPlatformMediumModel> {
+  Future<HtmlPlatformMediumEntity> addEntity(String documentID, HtmlPlatformMediumEntity value);
+  Future<HtmlPlatformMediumEntity> updateEntity(String documentID, HtmlPlatformMediumEntity value);
   Future<HtmlPlatformMediumModel> add(HtmlPlatformMediumModel value);
   Future<void> delete(HtmlPlatformMediumModel value);
   Future<HtmlPlatformMediumModel?> get(String? id, { Function(Exception)? onError });

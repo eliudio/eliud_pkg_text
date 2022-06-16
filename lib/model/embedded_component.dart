@@ -29,6 +29,7 @@ import '../model/html_platform_medium_list_bloc.dart';
 import '../model/html_platform_medium_list.dart';
 import '../model/html_platform_medium_list_event.dart';
 import '../model/html_platform_medium_model.dart';
+import '../model/html_platform_medium_entity.dart';
 import '../model/html_platform_medium_repository.dart';
 
 typedef HtmlPlatformMediumListChanged(List<HtmlPlatformMediumModel> values);
@@ -74,6 +75,14 @@ class HtmlPlatformMediumInMemoryRepository implements HtmlPlatformMediumReposito
         i++;
       }
       return -1;
+    }
+
+    Future<HtmlPlatformMediumEntity> addEntity(String documentID, HtmlPlatformMediumEntity value) {
+      throw Exception('Not implemented'); 
+    }
+
+    Future<HtmlPlatformMediumEntity> updateEntity(String documentID, HtmlPlatformMediumEntity value) {
+      throw Exception('Not implemented'); 
     }
 
     Future<HtmlPlatformMediumModel> add(HtmlPlatformMediumModel value) {
