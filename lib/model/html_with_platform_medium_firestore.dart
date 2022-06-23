@@ -36,6 +36,11 @@ import 'package:eliud_core/tools/firestore/firestore_tools.dart';
 import 'package:eliud_core/tools/common_tools.dart';
 
 class HtmlWithPlatformMediumFirestore implements HtmlWithPlatformMediumRepository {
+  @override
+  HtmlWithPlatformMediumEntity? fromMap(Object? o) {
+    return HtmlWithPlatformMediumEntity.fromMap(o);
+  }
+
   Future<HtmlWithPlatformMediumEntity> addEntity(String documentID, HtmlWithPlatformMediumEntity value) {
     return HtmlWithPlatformMediumCollection.doc(documentID).set(value.toDocument()).then((_) => value);
   }

@@ -162,6 +162,15 @@ class HtmlPlatformMediumInMemoryRepository implements HtmlPlatformMediumReposito
     throw UnimplementedError();
   }
   
+  @override
+  Future<HtmlPlatformMediumEntity?> getEntity(String? id, {Function(Exception p1)? onError}) {
+    throw UnimplementedError();
+  }
+
+  @override
+  HtmlPlatformMediumEntity? fromMap(Object? o) {
+    throw UnimplementedError();
+  }
 
     Future<void> deleteAll() async {}
 }

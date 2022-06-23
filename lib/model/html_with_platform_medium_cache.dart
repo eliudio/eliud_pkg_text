@@ -115,6 +115,16 @@ class HtmlWithPlatformMediumCache implements HtmlWithPlatformMediumRepository {
     });
   }
 
+  @override
+  Future<HtmlWithPlatformMediumEntity?> getEntity(String? id, {Function(Exception p1)? onError}) {
+    return reference.getEntity(id, onError: onError);
+  }
+
+  @override
+  HtmlWithPlatformMediumEntity? fromMap(Object? o) {
+    return reference.fromMap(o);
+  }
+
   Future<void> deleteAll() {
     return reference.deleteAll();
   }
