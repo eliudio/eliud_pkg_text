@@ -41,6 +41,9 @@ import 'package:eliud_core/tools/random.dart';
 
 
 class HtmlWithPlatformMediumModel implements ModelBase, WithAppId {
+  static const String packageName = 'eliud_pkg_text';
+  static const String id = 'HtmlWithPlatformMedium';
+
   String documentID;
   String appId;
   String? description;
@@ -78,7 +81,7 @@ class HtmlWithPlatformMediumModel implements ModelBase, WithAppId {
     return 'HtmlWithPlatformMediumModel{documentID: $documentID, appId: $appId, description: $description, html: $html, htmlMedia: HtmlPlatformMedium[] { $htmlMediaCsv }, conditions: $conditions}';
   }
 
-  HtmlWithPlatformMediumEntity toEntity({String? appId, List<ModelBase>? referencesCollector}) {
+  HtmlWithPlatformMediumEntity toEntity({String? appId, Set<ModelReference>? referencesCollector}) {
     if (referencesCollector != null) {
     }
     return HtmlWithPlatformMediumEntity(

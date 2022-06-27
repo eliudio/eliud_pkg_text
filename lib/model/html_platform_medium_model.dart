@@ -40,6 +40,9 @@ import 'package:eliud_core/tools/random.dart';
 
 
 class HtmlPlatformMediumModel implements ModelBase {
+  static const String packageName = 'eliud_pkg_text';
+  static const String id = 'HtmlPlatformMedium';
+
   String documentID;
   MemberMediumModel? medium;
 
@@ -67,9 +70,9 @@ class HtmlPlatformMediumModel implements ModelBase {
     return 'HtmlPlatformMediumModel{documentID: $documentID, medium: $medium}';
   }
 
-  HtmlPlatformMediumEntity toEntity({String? appId, List<ModelBase>? referencesCollector}) {
+  HtmlPlatformMediumEntity toEntity({String? appId, Set<ModelReference>? referencesCollector}) {
     if (referencesCollector != null) {
-      if (medium != null) referencesCollector.add(medium!);
+      if (medium != null) referencesCollector.add(ModelReference(MemberMediumModel.packageName, MemberMediumModel.id, medium!));
     }
     return HtmlPlatformMediumEntity(
           mediumId: (medium != null) ? medium!.documentID : null, 
