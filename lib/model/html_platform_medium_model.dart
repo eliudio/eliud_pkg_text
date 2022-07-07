@@ -70,7 +70,7 @@ class HtmlPlatformMediumModel implements ModelBase {
     return 'HtmlPlatformMediumModel{documentID: $documentID, medium: $medium}';
   }
 
-  HtmlPlatformMediumEntity toEntity({String? appId, Set<ModelReference>? referencesCollector}) {
+  HtmlPlatformMediumEntity toEntity({String? appId, List<ModelReference>? referencesCollector}) {
     if (referencesCollector != null) {
       if (medium != null) referencesCollector.add(ModelReference(MemberMediumModel.packageName, MemberMediumModel.id, medium!));
     }

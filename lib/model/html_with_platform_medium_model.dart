@@ -81,7 +81,7 @@ class HtmlWithPlatformMediumModel implements ModelBase, WithAppId {
     return 'HtmlWithPlatformMediumModel{documentID: $documentID, appId: $appId, description: $description, html: $html, htmlMedia: HtmlPlatformMedium[] { $htmlMediaCsv }, conditions: $conditions}';
   }
 
-  HtmlWithPlatformMediumEntity toEntity({String? appId, Set<ModelReference>? referencesCollector}) {
+  HtmlWithPlatformMediumEntity toEntity({String? appId, List<ModelReference>? referencesCollector}) {
     if (referencesCollector != null) {
     }
     return HtmlWithPlatformMediumEntity(
