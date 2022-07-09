@@ -38,6 +38,7 @@ class ComponentRegistry {
     Registry.registry()!.addComponentSpec('eliud_pkg_text', 'text', [
       ComponentSpec('htmlWithPlatformMediums', HtmlWithPlatformMediumComponentConstructorDefault(), HtmlWithPlatformMediumComponentSelector(), HtmlWithPlatformMediumComponentEditorConstructor(), ({String? appId}) => htmlWithPlatformMediumRepository(appId: appId)! ), 
     ]);
+      Registry.registry()!.registerRetrieveRepository('eliud_pkg_text', 'htmlWithPlatformMediums', ({String? appId}) => htmlWithPlatformMediumRepository(appId: appId)!);
 
   }
 }

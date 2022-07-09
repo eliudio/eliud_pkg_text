@@ -41,7 +41,7 @@ import 'package:eliud_core/tools/random.dart';
 
 class HtmlPlatformMediumModel implements ModelBase {
   static const String packageName = 'eliud_pkg_text';
-  static const String id = 'HtmlPlatformMedium';
+  static const String id = 'htmlPlatformMediums';
 
   String documentID;
   MemberMediumModel? medium;

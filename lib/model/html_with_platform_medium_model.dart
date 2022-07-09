@@ -42,7 +42,7 @@ import 'package:eliud_core/tools/random.dart';
 
 class HtmlWithPlatformMediumModel implements ModelBase, WithAppId {
   static const String packageName = 'eliud_pkg_text';
-  static const String id = 'HtmlWithPlatformMedium';
+  static const String id = 'htmlWithPlatformMediums';
 
   String documentID;
   String appId;
