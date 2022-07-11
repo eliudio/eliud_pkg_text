@@ -81,17 +81,26 @@ class HtmlWithPlatformMediumModel implements ModelBase, WithAppId {
     return 'HtmlWithPlatformMediumModel{documentID: $documentID, appId: $appId, description: $description, html: $html, htmlMedia: HtmlPlatformMedium[] { $htmlMediaCsv }, conditions: $conditions}';
   }
 
-  HtmlWithPlatformMediumEntity toEntity({String? appId, List<ModelReference>? referencesCollector}) {
-    if (referencesCollector != null) {
+  Future<List<ModelReference>> collectReferences({String? appId}) async {
+    List<ModelReference> referencesCollector = [];
+    if (htmlMedia != null) {
+      for (var item in htmlMedia!) {
+        referencesCollector.addAll(await item.collectReferences(appId: appId));
+      }
     }
+    if (conditions != null) referencesCollector.addAll(await conditions!.collectReferences(appId: appId));
+    return referencesCollector;
+  }
+
+  HtmlWithPlatformMediumEntity toEntity({String? appId}) {
     return HtmlWithPlatformMediumEntity(
           appId: (appId != null) ? appId : null, 
           description: (description != null) ? description : null, 
           html: (html != null) ? html : null, 
           htmlMedia: (htmlMedia != null) ? htmlMedia
-            !.map((item) => item.toEntity(appId: appId, referencesCollector: referencesCollector))
+            !.map((item) => item.toEntity(appId: appId))
             .toList() : null, 
-          conditions: (conditions != null) ? conditions!.toEntity(appId: appId, referencesCollector: referencesCollector) : null, 
+          conditions: (conditions != null) ? conditions!.toEntity(appId: appId) : null, 
     );
   }
 

@@ -70,10 +70,16 @@ class HtmlPlatformMediumModel implements ModelBase {
     return 'HtmlPlatformMediumModel{documentID: $documentID, medium: $medium}';
   }
 
-  HtmlPlatformMediumEntity toEntity({String? appId, List<ModelReference>? referencesCollector}) {
-    if (referencesCollector != null) {
-      if (medium != null) referencesCollector.add(ModelReference(MemberMediumModel.packageName, MemberMediumModel.id, medium!));
+  Future<List<ModelReference>> collectReferences({String? appId}) async {
+    List<ModelReference> referencesCollector = [];
+    if (medium != null) {
+      referencesCollector.add(ModelReference(MemberMediumModel.packageName, MemberMediumModel.id, medium!));
     }
+    if (medium != null) referencesCollector.addAll(await medium!.collectReferences(appId: appId));
+    return referencesCollector;
+  }
+
+  HtmlPlatformMediumEntity toEntity({String? appId}) {
     return HtmlPlatformMediumEntity(
           mediumId: (medium != null) ? medium!.documentID : null, 
     );
