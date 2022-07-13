@@ -28,7 +28,9 @@ class HtmlPlatformMediumEntity implements EntityBase {
 
   HtmlPlatformMediumEntity({this.mediumId, });
 
-
+  HtmlPlatformMediumEntity copyWith({String? documentID, String? mediumId, }) {
+    return HtmlPlatformMediumEntity(mediumId : mediumId ?? this.mediumId, );
+  }
   List<Object?> get props => [mediumId, ];
 
   @override
@@ -50,6 +52,12 @@ class HtmlPlatformMediumEntity implements EntityBase {
     if (mediumId != null) theDocument["mediumId"] = mediumId;
       else theDocument["mediumId"] = null;
     return theDocument;
+  }
+
+  @override
+  HtmlPlatformMediumEntity switchAppId({required String newAppId}) {
+    var newEntity = copyWith();
+    return newEntity;
   }
 
   static HtmlPlatformMediumEntity? fromJsonString(String json) {

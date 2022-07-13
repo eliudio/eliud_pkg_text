@@ -32,7 +32,9 @@ class HtmlWithPlatformMediumEntity implements EntityBase {
 
   HtmlWithPlatformMediumEntity({required this.appId, this.description, this.html, this.htmlMedia, this.conditions, });
 
-
+  HtmlWithPlatformMediumEntity copyWith({String? documentID, String? appId, String? description, String? html, List<HtmlPlatformMediumEntity>? htmlMedia, StorageConditionsEntity? conditions, }) {
+    return HtmlWithPlatformMediumEntity(appId : appId ?? this.appId, description : description ?? this.description, html : html ?? this.html, htmlMedia : htmlMedia ?? this.htmlMedia, conditions : conditions ?? this.conditions, );
+  }
   List<Object?> get props => [appId, description, html, htmlMedia, conditions, ];
 
   @override
@@ -88,6 +90,12 @@ class HtmlWithPlatformMediumEntity implements EntityBase {
     if (conditions != null) theDocument["conditions"] = conditionsMap;
       else theDocument["conditions"] = null;
     return theDocument;
+  }
+
+  @override
+  HtmlWithPlatformMediumEntity switchAppId({required String newAppId}) {
+    var newEntity = copyWith(appId: newAppId);
+    return newEntity;
   }
 
   static HtmlWithPlatformMediumEntity? fromJsonString(String json) {
