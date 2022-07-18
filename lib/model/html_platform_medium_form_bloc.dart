@@ -45,11 +45,7 @@ import 'package:eliud_pkg_text/model/html_platform_medium_repository.dart';
 class HtmlPlatformMediumFormBloc extends Bloc<HtmlPlatformMediumFormEvent, HtmlPlatformMediumFormState> {
   final String? appId;
 
-  HtmlPlatformMediumFormBloc(this.appId, ): super(HtmlPlatformMediumFormUninitialized());
-  @override
-  Stream<HtmlPlatformMediumFormState> mapEventToState(HtmlPlatformMediumFormEvent event) async* {
-    final currentState = state;
-    if (currentState is HtmlPlatformMediumFormUninitialized) {
+  HtmlPlatformMediumFormBloc(this.appId, ): super(HtmlPlatformMediumFormUninitialized()) {
       on <InitialiseNewHtmlPlatformMediumFormEvent> ((event, emit) {
         HtmlPlatformMediumFormLoaded loaded = HtmlPlatformMediumFormLoaded(value: HtmlPlatformMediumModel(
                                                documentID: "IDENTIFIER", 
@@ -59,22 +55,24 @@ class HtmlPlatformMediumFormBloc extends Bloc<HtmlPlatformMediumFormEvent, HtmlP
       });
 
 
-      if (event is InitialiseHtmlPlatformMediumFormEvent) {
+      on <InitialiseHtmlPlatformMediumFormEvent> ((event, emit) async {
         HtmlPlatformMediumFormLoaded loaded = HtmlPlatformMediumFormLoaded(value: event.value);
         emit(loaded);
-      } else if (event is InitialiseHtmlPlatformMediumFormNoLoadEvent) {
+      });
+      on <InitialiseHtmlPlatformMediumFormNoLoadEvent> ((event, emit) async {
         HtmlPlatformMediumFormLoaded loaded = HtmlPlatformMediumFormLoaded(value: event.value);
         emit(loaded);
-      }
-    } else if (currentState is HtmlPlatformMediumFormInitialized) {
+      });
       HtmlPlatformMediumModel? newValue = null;
       on <ChangedHtmlPlatformMediumMedium> ((event, emit) async {
+      if (state is HtmlPlatformMediumFormInitialized) {
+        final currentState = state as HtmlPlatformMediumFormInitialized;
         if (event.value != null)
           newValue = currentState.value!.copyWith(medium: await memberMediumRepository(appId: appId)!.get(event.value));
         emit(SubmittableHtmlPlatformMediumForm(value: newValue));
 
+      }
       });
-    }
   }
 
 
