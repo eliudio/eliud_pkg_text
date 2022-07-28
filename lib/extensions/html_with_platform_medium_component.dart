@@ -16,7 +16,8 @@ import 'package:eliud_pkg_text/model/html_with_platform_medium_model.dart';
 import 'package:eliud_pkg_text/platform/text_platform.dart';
 import 'package:flutter/material.dart';
 
-class HtmlWithPlatformMediumComponentConstructorDefault implements ComponentConstructor {
+class HtmlWithPlatformMediumComponentConstructorDefault
+    implements ComponentConstructor {
   @override
   Widget createNew(
       {Key? key,
@@ -31,16 +32,28 @@ class HtmlWithPlatformMediumComponentConstructorDefault implements ComponentCons
       await htmlWithPlatformMediumRepository(appId: app.documentID)!.get(id);
 }
 
-class HtmlWithPlatformMediumComponent extends AbstractHtmlWithPlatformMediumComponent {
-  HtmlWithPlatformMediumComponent({Key? key, required AppModel app, required String htmlId})
+class HtmlWithPlatformMediumComponent
+    extends AbstractHtmlWithPlatformMediumComponent {
+  HtmlWithPlatformMediumComponent(
+      {Key? key, required AppModel app, required String htmlId})
       : super(key: key, app: app, htmlWithPlatformMediumId: htmlId);
 
   @override
   Widget yourWidget(BuildContext context, HtmlWithPlatformMediumModel? value) {
+    var accessState = AccessBloc.getState(context);
     if ((value == null) || (value.html == null)) {
       return text(app, context, 'No contents provided');
     } else {
-      return AbstractTextPlatform.platform!.htmlWidget(value.html!);
+      return Container(
+          clipBehavior: BoxDecorationHelper.determineClipBehaviour(
+              app, accessState.getMember(), value.background),
+          margin: BoxDecorationHelper.determineMargin(
+              app, accessState.getMember(), value.background),
+          padding: BoxDecorationHelper.determinePadding(
+              app, accessState.getMember(), value.background),
+          decoration: BoxDecorationHelper.boxDecoration(
+              app, accessState.getMember(), value.background),
+          child: AbstractTextPlatform.platform!.htmlWidget(value.html!));
     }
   }
 }

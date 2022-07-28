@@ -49,18 +49,19 @@ class HtmlWithPlatformMediumModel implements ModelBase, WithAppId {
   String? description;
   String? html;
   List<HtmlPlatformMediumModel>? htmlMedia;
+  BackgroundModel? background;
   StorageConditionsModel? conditions;
 
-  HtmlWithPlatformMediumModel({required this.documentID, required this.appId, this.description, this.html, this.htmlMedia, this.conditions, })  {
+  HtmlWithPlatformMediumModel({required this.documentID, required this.appId, this.description, this.html, this.htmlMedia, this.background, this.conditions, })  {
     assert(documentID != null);
   }
 
-  HtmlWithPlatformMediumModel copyWith({String? documentID, String? appId, String? description, String? html, List<HtmlPlatformMediumModel>? htmlMedia, StorageConditionsModel? conditions, }) {
-    return HtmlWithPlatformMediumModel(documentID: documentID ?? this.documentID, appId: appId ?? this.appId, description: description ?? this.description, html: html ?? this.html, htmlMedia: htmlMedia ?? this.htmlMedia, conditions: conditions ?? this.conditions, );
+  HtmlWithPlatformMediumModel copyWith({String? documentID, String? appId, String? description, String? html, List<HtmlPlatformMediumModel>? htmlMedia, BackgroundModel? background, StorageConditionsModel? conditions, }) {
+    return HtmlWithPlatformMediumModel(documentID: documentID ?? this.documentID, appId: appId ?? this.appId, description: description ?? this.description, html: html ?? this.html, htmlMedia: htmlMedia ?? this.htmlMedia, background: background ?? this.background, conditions: conditions ?? this.conditions, );
   }
 
   @override
-  int get hashCode => documentID.hashCode ^ appId.hashCode ^ description.hashCode ^ html.hashCode ^ htmlMedia.hashCode ^ conditions.hashCode;
+  int get hashCode => documentID.hashCode ^ appId.hashCode ^ description.hashCode ^ html.hashCode ^ htmlMedia.hashCode ^ background.hashCode ^ conditions.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -72,13 +73,14 @@ class HtmlWithPlatformMediumModel implements ModelBase, WithAppId {
           description == other.description &&
           html == other.html &&
           ListEquality().equals(htmlMedia, other.htmlMedia) &&
+          background == other.background &&
           conditions == other.conditions;
 
   @override
   String toString() {
     String htmlMediaCsv = (htmlMedia == null) ? '' : htmlMedia!.join(', ');
 
-    return 'HtmlWithPlatformMediumModel{documentID: $documentID, appId: $appId, description: $description, html: $html, htmlMedia: HtmlPlatformMedium[] { $htmlMediaCsv }, conditions: $conditions}';
+    return 'HtmlWithPlatformMediumModel{documentID: $documentID, appId: $appId, description: $description, html: $html, htmlMedia: HtmlPlatformMedium[] { $htmlMediaCsv }, background: $background, conditions: $conditions}';
   }
 
   Future<List<ModelReference>> collectReferences({String? appId}) async {
@@ -88,6 +90,7 @@ class HtmlWithPlatformMediumModel implements ModelBase, WithAppId {
         referencesCollector.addAll(await item.collectReferences(appId: appId));
       }
     }
+    if (background != null) referencesCollector.addAll(await background!.collectReferences(appId: appId));
     if (conditions != null) referencesCollector.addAll(await conditions!.collectReferences(appId: appId));
     return referencesCollector;
   }
@@ -100,6 +103,7 @@ class HtmlWithPlatformMediumModel implements ModelBase, WithAppId {
           htmlMedia: (htmlMedia != null) ? htmlMedia
             !.map((item) => item.toEntity(appId: appId))
             .toList() : null, 
+          background: (background != null) ? background!.toEntity(appId: appId) : null, 
           conditions: (conditions != null) ? conditions!.toEntity(appId: appId) : null, 
     );
   }
@@ -119,6 +123,8 @@ class HtmlWithPlatformMediumModel implements ModelBase, WithAppId {
               return HtmlPlatformMediumModel.fromEntity(counter.toString(), item);
             })
             .toList())), 
+          background: 
+            await BackgroundModel.fromEntity(entity.background), 
           conditions: 
             await StorageConditionsModel.fromEntity(entity.conditions), 
     );
@@ -139,6 +145,8 @@ class HtmlWithPlatformMediumModel implements ModelBase, WithAppId {
             counter++;
             return HtmlPlatformMediumModel.fromEntityPlus(counter.toString(), item, appId: appId);})
             .toList())), 
+          background: 
+            await BackgroundModel.fromEntityPlus(entity.background, appId: appId), 
           conditions: 
             await StorageConditionsModel.fromEntityPlus(entity.conditions, appId: appId), 
     );

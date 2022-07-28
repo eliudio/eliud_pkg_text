@@ -119,6 +119,18 @@ class ChangedHtmlWithPlatformMediumHtmlMedia extends HtmlWithPlatformMediumFormE
   String toString() => 'ChangedHtmlWithPlatformMediumHtmlMedia{ value: $value }';
 }
 
+class ChangedHtmlWithPlatformMediumBackground extends HtmlWithPlatformMediumFormEvent {
+  final BackgroundModel? value;
+
+  ChangedHtmlWithPlatformMediumBackground({this.value});
+
+  @override
+  List<Object?> get props => [ value ];
+
+  @override
+  String toString() => 'ChangedHtmlWithPlatformMediumBackground{ value: $value }';
+}
+
 class ChangedHtmlWithPlatformMediumConditions extends HtmlWithPlatformMediumFormEvent {
   final StorageConditionsModel? value;
 

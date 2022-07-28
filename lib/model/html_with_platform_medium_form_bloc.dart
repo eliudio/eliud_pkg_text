@@ -106,6 +106,14 @@ class HtmlWithPlatformMediumFormBloc extends Bloc<HtmlWithPlatformMediumFormEven
 
       }
       });
+      on <ChangedHtmlWithPlatformMediumBackground> ((event, emit) async {
+      if (state is HtmlWithPlatformMediumFormInitialized) {
+        final currentState = state as HtmlWithPlatformMediumFormInitialized;
+        newValue = currentState.value!.copyWith(background: event.value);
+        emit(SubmittableHtmlWithPlatformMediumForm(value: newValue));
+
+      }
+      });
       on <ChangedHtmlWithPlatformMediumConditions> ((event, emit) async {
       if (state is HtmlWithPlatformMediumFormInitialized) {
         final currentState = state as HtmlWithPlatformMediumFormInitialized;

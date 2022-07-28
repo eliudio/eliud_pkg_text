@@ -143,6 +143,22 @@ class HtmlMediaHtmlWithPlatformMediumFormError extends HtmlWithPlatformMediumFor
 }
 
 
+class BackgroundHtmlWithPlatformMediumFormError extends HtmlWithPlatformMediumFormError { 
+  const BackgroundHtmlWithPlatformMediumFormError({ String? message, HtmlWithPlatformMediumModel? value }): super(message: message, value: value);
+
+  @override
+  List<Object?> get props => [ message, value ];
+
+  @override
+  String toString() {
+    return '''BackgroundHtmlWithPlatformMediumFormError {
+      value: $value,
+      message: $message,
+    }''';
+  }
+}
+
+
 class ConditionsHtmlWithPlatformMediumFormError extends HtmlWithPlatformMediumFormError { 
   const ConditionsHtmlWithPlatformMediumFormError({ String? message, HtmlWithPlatformMediumModel? value }): super(message: message, value: value);
 

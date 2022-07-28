@@ -1,4 +1,6 @@
 import 'package:eliud_core/core/blocs/access/access_bloc.dart';
+import 'package:eliud_core/model/background_model.dart';
+import 'package:eliud_core/tools/widgets/background_widget.dart';
 import 'package:eliud_core/model/app_model.dart';
 import 'package:eliud_core/model/storage_conditions_model.dart';
 import 'package:eliud_core/style/frontend/has_container.dart';
@@ -85,6 +87,7 @@ class HtmlComponentEditor extends StatefulWidget {
 class _HtmlComponentEditorState extends State<HtmlComponentEditor> {
   @override
   Widget build(BuildContext context) {
+    var ownerId = AccessBloc.member(context)!.documentID;
     var readOnlyConditions =
         widget.model.htmlMedia != null && !widget.model.htmlMedia!.isEmpty;
     return ListView(shrinkWrap: true, physics: ScrollPhysics(), children: [
@@ -138,6 +141,36 @@ class _HtmlComponentEditorState extends State<HtmlComponentEditor> {
                 )),
           ]),
       topicContainer(widget.app, context,
+          title: 'Background',
+          collapsible: true,
+          collapsed: true,
+          children: [
+            checkboxListTile(
+                widget.app,
+                context,
+                'Background?',
+                widget.model.background !=
+                    null, (value) {
+              setState(() {
+                if (value!) {
+                  widget.model.background =
+                      BackgroundModel();
+                } else {
+                  widget.model.background =
+                  null;
+                }
+              });
+            }),
+            if (widget.model.background !=
+                null)
+              BackgroundWidget(
+                  app: widget.app,
+                  memberId: ownerId,
+                  value:
+                  widget.model.background!,
+                  label: 'Background'),
+          ]),
+      topicContainer(widget.app, context,
           title: 'Html',
           collapsible: true,
           collapsed: true,
@@ -146,7 +179,6 @@ class _HtmlComponentEditorState extends State<HtmlComponentEditor> {
             GestureDetector(
                 child: Icon(Icons.edit),
                 onTap: () {
-                  var ownerId = AccessBloc.member(context)!.documentID;
                   AbstractTextPlatform.platform!.updateHtmlWithPlatformMedium(
                     context,
                     widget.app,

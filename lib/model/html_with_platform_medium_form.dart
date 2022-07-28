@@ -185,6 +185,7 @@ class _MyHtmlWithPlatformMediumFormState extends State<MyHtmlWithPlatformMediumF
           );
 
 
+
         children.add(Container(height: 20.0));
         children.add(StyleRegistry.registry().styleWithApp(widget.app).adminFormStyle().divider(widget.app, context));
 
@@ -241,6 +242,7 @@ class _MyHtmlWithPlatformMediumFormState extends State<MyHtmlWithPlatformMediumF
                               description: state.value!.description, 
                               html: state.value!.html, 
                               htmlMedia: state.value!.htmlMedia, 
+                              background: state.value!.background, 
                               conditions: state.value!.conditions, 
                         )));
                       } else {
@@ -251,6 +253,7 @@ class _MyHtmlWithPlatformMediumFormState extends State<MyHtmlWithPlatformMediumF
                               description: state.value!.description, 
                               html: state.value!.html, 
                               htmlMedia: state.value!.htmlMedia, 
+                              background: state.value!.background, 
                               conditions: state.value!.conditions, 
                           )));
                       }

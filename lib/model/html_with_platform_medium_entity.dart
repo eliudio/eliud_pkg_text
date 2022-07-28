@@ -28,20 +28,21 @@ class HtmlWithPlatformMediumEntity implements EntityBase {
   final String? description;
   final String? html;
   final List<HtmlPlatformMediumEntity>? htmlMedia;
+  final BackgroundEntity? background;
   final StorageConditionsEntity? conditions;
 
-  HtmlWithPlatformMediumEntity({required this.appId, this.description, this.html, this.htmlMedia, this.conditions, });
+  HtmlWithPlatformMediumEntity({required this.appId, this.description, this.html, this.htmlMedia, this.background, this.conditions, });
 
-  HtmlWithPlatformMediumEntity copyWith({String? documentID, String? appId, String? description, String? html, List<HtmlPlatformMediumEntity>? htmlMedia, StorageConditionsEntity? conditions, }) {
-    return HtmlWithPlatformMediumEntity(appId : appId ?? this.appId, description : description ?? this.description, html : html ?? this.html, htmlMedia : htmlMedia ?? this.htmlMedia, conditions : conditions ?? this.conditions, );
+  HtmlWithPlatformMediumEntity copyWith({String? documentID, String? appId, String? description, String? html, List<HtmlPlatformMediumEntity>? htmlMedia, BackgroundEntity? background, StorageConditionsEntity? conditions, }) {
+    return HtmlWithPlatformMediumEntity(appId : appId ?? this.appId, description : description ?? this.description, html : html ?? this.html, htmlMedia : htmlMedia ?? this.htmlMedia, background : background ?? this.background, conditions : conditions ?? this.conditions, );
   }
-  List<Object?> get props => [appId, description, html, htmlMedia, conditions, ];
+  List<Object?> get props => [appId, description, html, htmlMedia, background, conditions, ];
 
   @override
   String toString() {
     String htmlMediaCsv = (htmlMedia == null) ? '' : htmlMedia!.join(', ');
 
-    return 'HtmlWithPlatformMediumEntity{appId: $appId, description: $description, html: $html, htmlMedia: HtmlPlatformMedium[] { $htmlMediaCsv }, conditions: $conditions}';
+    return 'HtmlWithPlatformMediumEntity{appId: $appId, description: $description, html: $html, htmlMedia: HtmlPlatformMedium[] { $htmlMediaCsv }, background: $background, conditions: $conditions}';
   }
 
   static HtmlWithPlatformMediumEntity? fromMap(Object? o) {
@@ -56,6 +57,10 @@ class HtmlWithPlatformMediumEntity implements EntityBase {
         .map((dynamic item) =>
         HtmlPlatformMediumEntity.fromMap(item as Map)!)
         .toList();
+    var backgroundFromMap;
+    backgroundFromMap = map['background'];
+    if (backgroundFromMap != null)
+      backgroundFromMap = BackgroundEntity.fromMap(backgroundFromMap);
     var conditionsFromMap;
     conditionsFromMap = map['conditions'];
     if (conditionsFromMap != null)
@@ -66,6 +71,7 @@ class HtmlWithPlatformMediumEntity implements EntityBase {
       description: map['description'], 
       html: map['html'], 
       htmlMedia: htmlMediaList, 
+      background: backgroundFromMap, 
       conditions: conditionsFromMap, 
     );
   }
@@ -73,6 +79,9 @@ class HtmlWithPlatformMediumEntity implements EntityBase {
   Map<String, Object?> toDocument() {
     final List<Map<String?, dynamic>>? htmlMediaListMap = htmlMedia != null 
         ? htmlMedia!.map((item) => item.toDocument()).toList()
+        : null;
+    final Map<String, dynamic>? backgroundMap = background != null 
+        ? background!.toDocument()
         : null;
     final Map<String, dynamic>? conditionsMap = conditions != null 
         ? conditions!.toDocument()
@@ -87,6 +96,8 @@ class HtmlWithPlatformMediumEntity implements EntityBase {
       else theDocument["html"] = null;
     if (htmlMedia != null) theDocument["htmlMedia"] = htmlMediaListMap;
       else theDocument["htmlMedia"] = null;
+    if (background != null) theDocument["background"] = backgroundMap;
+      else theDocument["background"] = null;
     if (conditions != null) theDocument["conditions"] = conditionsMap;
       else theDocument["conditions"] = null;
     return theDocument;
