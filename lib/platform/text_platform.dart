@@ -1,12 +1,12 @@
 import 'package:eliud_core/model/member_medium_model.dart';
 import 'package:eliud_core/model/storage_conditions_model.dart';
-import 'package:eliud_pkg_text/model/html_platform_medium_model.dart';
 import 'package:eliud_pkg_text/model/html_with_platform_medium_model.dart';
 import 'package:eliud_pkg_text/platform/widgets/handle_member_medium_model.dart';
 import 'package:eliud_pkg_text/platform/widgets/handle_platform_medium_model.dart';
 import 'package:eliud_pkg_text/platform/widgets/html_text_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:eliud_core/model/app_model.dart';
+import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 
 typedef UpdatedHtml(String value);
 
@@ -101,5 +101,8 @@ abstract class AbstractTextPlatform {
         extraIcons: extraIcons);
   }
 
-  Widget htmlWidget(String html);
+
+  Widget htmlWidget(String html) {
+    return HtmlWidget(html);
+  }
 }
