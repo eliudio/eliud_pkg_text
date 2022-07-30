@@ -53,7 +53,7 @@ class HtmlWithPlatformMediumComponent
               app, accessState.getMember(), value.background),
           decoration: BoxDecorationHelper.boxDecoration(
               app, accessState.getMember(), value.background),
-          child: AbstractTextPlatform.platform!.htmlWidget(value.html!));
+          child: AbstractTextPlatform.platform!.htmlWidget(context, app, value.html!));
     }
   }
 }

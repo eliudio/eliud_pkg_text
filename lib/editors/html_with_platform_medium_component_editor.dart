@@ -175,7 +175,7 @@ class _HtmlComponentEditorState extends State<HtmlComponentEditor> {
           collapsible: true,
           collapsed: true,
           children: [
-            _htmlWidget(widget.model),
+            _htmlWidget(context, widget.app, widget.model),
             GestureDetector(
                 child: Icon(Icons.edit),
                 onTap: () {
@@ -207,11 +207,11 @@ class _HtmlComponentEditorState extends State<HtmlComponentEditor> {
     ]);
   }
 
-  Widget _htmlWidget(HtmlWithPlatformMediumModel? value) {
+  Widget _htmlWidget(BuildContext context, AppModel app, HtmlWithPlatformMediumModel? value) {
     if ((value == null) || (value.html == null)) {
       return text(widget.app, context, 'No contents provided');
     } else {
-      return AbstractTextPlatform.platform!.htmlWidget(value.html!);
+      return AbstractTextPlatform.platform!.htmlWidget(context, app, value.html!);
     }
   }
 }
