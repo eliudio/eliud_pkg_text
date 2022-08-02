@@ -44,13 +44,13 @@ class HtmlPlatformMediumModel implements ModelBase {
   static const String id = 'htmlPlatformMediums';
 
   String documentID;
-  MemberMediumModel? medium;
+  PlatformMediumModel? medium;
 
   HtmlPlatformMediumModel({required this.documentID, this.medium, })  {
     assert(documentID != null);
   }
 
-  HtmlPlatformMediumModel copyWith({String? documentID, MemberMediumModel? medium, }) {
+  HtmlPlatformMediumModel copyWith({String? documentID, PlatformMediumModel? medium, }) {
     return HtmlPlatformMediumModel(documentID: documentID ?? this.documentID, medium: medium ?? this.medium, );
   }
 
@@ -73,7 +73,7 @@ class HtmlPlatformMediumModel implements ModelBase {
   Future<List<ModelReference>> collectReferences({String? appId}) async {
     List<ModelReference> referencesCollector = [];
     if (medium != null) {
-      referencesCollector.add(ModelReference(MemberMediumModel.packageName, MemberMediumModel.id, medium!));
+      referencesCollector.add(ModelReference(PlatformMediumModel.packageName, PlatformMediumModel.id, medium!));
     }
     if (medium != null) referencesCollector.addAll(await medium!.collectReferences(appId: appId));
     return referencesCollector;
@@ -96,13 +96,13 @@ class HtmlPlatformMediumModel implements ModelBase {
   static Future<HtmlPlatformMediumModel?> fromEntityPlus(String documentID, HtmlPlatformMediumEntity? entity, { String? appId}) async {
     if (entity == null) return null;
 
-    MemberMediumModel? mediumHolder;
+    PlatformMediumModel? mediumHolder;
     if (entity.mediumId != null) {
       try {
-          mediumHolder = await memberMediumRepository(appId: appId)!.get(entity.mediumId);
+          mediumHolder = await platformMediumRepository(appId: appId)!.get(entity.mediumId);
       } on Exception catch(e) {
         print('Error whilst trying to initialise medium');
-        print('Error whilst retrieving memberMedium with id ${entity.mediumId}');
+        print('Error whilst retrieving platformMedium with id ${entity.mediumId}');
         print('Exception: $e');
       }
     }

@@ -211,7 +211,7 @@ class _HtmlComponentEditorState extends State<HtmlComponentEditor> {
     if ((value == null) || (value.html == null)) {
       return text(widget.app, context, 'No contents provided');
     } else {
-      return AbstractTextPlatform.platform!.htmlWidget(context, app, value.html!);
+      return AbstractTextPlatform.platform!.htmlWidgetWithPlatformMedia(context, app, value.html!, htmlPlatformMedia: value.htmlMedia);
     }
   }
 }

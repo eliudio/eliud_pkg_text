@@ -31,7 +31,7 @@
     {
       "fieldName": "medium",
       "displayName": "Image",
-      "fieldType": "MemberMedium",
+      "fieldType": "PlatformMedium",
       "association": true,
       "group": "image",
       "optional": true

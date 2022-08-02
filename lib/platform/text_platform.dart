@@ -12,6 +12,7 @@ import 'package:eliud_core/core/registry.dart';
 import 'package:eliud_core/tools/action/action_model.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:eliud_pkg_text/model/html_platform_medium_model.dart';
 
 typedef UpdatedHtml(String value);
 
@@ -106,8 +107,11 @@ abstract class AbstractTextPlatform {
         extraIcons: extraIcons);
   }
 
-  @override
-  Widget htmlWidget(BuildContext context, AppModel app, String html) {
+  Widget htmlWidget(BuildContext context, AppModel app, String html, ) {
+    return htmlWidgetWithPlatformMedia(context, app, html, );
+  }
+
+  Widget htmlWidgetWithPlatformMedia(BuildContext context, AppModel app, String html, {List<HtmlPlatformMediumModel>? htmlPlatformMedia}) {
     return HtmlWidget(html, onTapUrl: (url) async {
       var homeURL = app.homeURL;
       if (homeURL != null) {
@@ -146,7 +150,27 @@ abstract class AbstractTextPlatform {
       }
     }, onTapImage: (imageMetadata) {
       var photos = imageMetadata.sources.map((src) => src.url).toList();
-      Registry.registry()!.getMediumApi().showPhotosUrls(context, app, photos, 0);
+      var index = -1;
+      if ((htmlPlatformMedia != null) && (photos.length == 1)) {
+        var photo = photos[0];
+        for (int i = 0; i < htmlPlatformMedia.length; i++) {
+          var htmlPlatformMedium = htmlPlatformMedia[i];
+          var medium = htmlPlatformMedium.medium;
+          if (medium != null) {
+            if (medium.url == photo) {
+              index = i;
+              break;
+            }
+          }
+        }
+      }
+      if (index == -1) {
+        Registry.registry()!.getMediumApi().showPhotosUrls(
+            context, app, photos, 0);
+      } else {
+        Registry.registry()!.getMediumApi().showPhotosPlatform(
+            context, app, htmlPlatformMedia!.map((e) => e.medium!).toList(), index);
+      }
     },);
   }
 }

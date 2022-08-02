@@ -151,10 +151,10 @@ class HtmlPlatformMediumCache implements HtmlPlatformMediumRepository {
 
   static Future<HtmlPlatformMediumModel> refreshRelations(HtmlPlatformMediumModel model) async {
 
-    MemberMediumModel? mediumHolder;
+    PlatformMediumModel? mediumHolder;
     if (model.medium != null) {
       try {
-        await memberMediumRepository()!.get(model.medium!.documentID).then((val) {
+        await platformMediumRepository()!.get(model.medium!.documentID).then((val) {
           mediumHolder = val;
         }).catchError((error) {});
       } catch (_) {}

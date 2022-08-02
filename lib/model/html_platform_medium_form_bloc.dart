@@ -68,7 +68,7 @@ class HtmlPlatformMediumFormBloc extends Bloc<HtmlPlatformMediumFormEvent, HtmlP
       if (state is HtmlPlatformMediumFormInitialized) {
         final currentState = state as HtmlPlatformMediumFormInitialized;
         if (event.value != null)
-          newValue = currentState.value!.copyWith(medium: await memberMediumRepository(appId: appId)!.get(event.value));
+          newValue = currentState.value!.copyWith(medium: await platformMediumRepository(appId: appId)!.get(event.value));
         emit(SubmittableHtmlPlatformMediumForm(value: newValue));
 
       }

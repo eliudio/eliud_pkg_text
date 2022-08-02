@@ -173,7 +173,7 @@ class _MyHtmlPlatformMediumFormState extends State<MyHtmlPlatformMediumForm> {
 
         children.add(
 
-                DropdownButtonComponentFactory().createNew(app: widget.app, id: "memberMediums", value: _medium, trigger: (value, privilegeLevel) => _onMediumSelected(value), optional: true),
+                DropdownButtonComponentFactory().createNew(app: widget.app, id: "platformMediums", value: _medium, trigger: (value, privilegeLevel) => _onMediumSelected(value), optional: true),
           );
 
 
