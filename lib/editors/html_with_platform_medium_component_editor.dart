@@ -1,4 +1,5 @@
 import 'package:eliud_core/core/blocs/access/access_bloc.dart';
+import 'package:eliud_core/core/registry.dart';
 import 'package:eliud_core/model/background_model.dart';
 import 'package:eliud_core/tools/widgets/background_widget.dart';
 import 'package:eliud_core/model/app_model.dart';
@@ -16,17 +17,22 @@ import 'package:eliud_pkg_text/model/abstract_repository_singleton.dart';
 import 'package:eliud_pkg_text/model/html_with_platform_medium_model.dart';
 import 'package:eliud_pkg_text/platform/text_platform.dart';
 import 'package:flutter/material.dart';
+import '../model/html_platform_medium_model.dart';
 
-class HtmlWithPlatformMediumComponentEditorConstructor extends ComponentEditorConstructor {
+class HtmlWithPlatformMediumComponentEditorConstructor
+    extends ComponentEditorConstructor {
   @override
-  void updateComponent(AppModel app, BuildContext context, model, EditorFeedback feedback) {
+  void updateComponent(
+      AppModel app, BuildContext context, model, EditorFeedback feedback) {
     _openIt(app, context, false, model.copyWith(), feedback);
   }
 
   @override
-  void createNewComponent(AppModel app, BuildContext context, EditorFeedback feedback) {
+  void createNewComponent(
+      AppModel app, BuildContext context, EditorFeedback feedback) {
     var appId = app.documentID;
-    _openIt(app,
+    _openIt(
+        app,
         context,
         true,
         HtmlWithPlatformMediumModel(
@@ -40,9 +46,10 @@ class HtmlWithPlatformMediumComponentEditorConstructor extends ComponentEditorCo
   }
 
   @override
-  void updateComponentWithID(AppModel app,
-      BuildContext context, String id, EditorFeedback feedback) async {
-    var html = await htmlWithPlatformMediumRepository(appId: app.documentID)!.get(id);
+  void updateComponentWithID(AppModel app, BuildContext context, String id,
+      EditorFeedback feedback) async {
+    var html =
+        await htmlWithPlatformMediumRepository(appId: app.documentID)!.get(id);
     if (html != null) {
       _openIt(app, context, false, html, feedback);
     } else {
@@ -52,16 +59,17 @@ class HtmlWithPlatformMediumComponentEditorConstructor extends ComponentEditorCo
     }
   }
 
-  void _openIt(AppModel app, BuildContext context, bool create, HtmlWithPlatformMediumModel model,
-      EditorFeedback feedback) {
-    openComplexDialog(app,
+  void _openIt(AppModel app, BuildContext context, bool create,
+      HtmlWithPlatformMediumModel model, EditorFeedback feedback) {
+    openComplexDialog(
+      app,
       context,
       app.documentID + '/divider',
       title: create ? 'Create divider' : 'Update divider',
       includeHeading: false,
       widthFraction: .9,
-      child:
-          HtmlComponentEditor(app: app, model: model, create: create, feedback: feedback),
+      child: HtmlComponentEditor(
+          app: app, model: model, create: create, feedback: feedback),
     );
   }
 }
@@ -97,25 +105,31 @@ class _HtmlComponentEditorState extends State<HtmlComponentEditor> {
         okAction: () async {
           var appId = widget.app.documentID;
           if (widget.create) {
-            var existingModel = await htmlWithPlatformMediumRepository(appId: appId)!
-                .get(widget.model.documentID);
+            var existingModel =
+                await htmlWithPlatformMediumRepository(appId: appId)!
+                    .get(widget.model.documentID);
             if (existingModel == null) {
-              await htmlWithPlatformMediumRepository(appId: appId)!.add(widget.model);
+              await htmlWithPlatformMediumRepository(appId: appId)!
+                  .add(widget.model);
             } else {
-              openErrorDialog(widget.app, context, widget.app.documentID + '/_error',
+              openErrorDialog(
+                  widget.app, context, widget.app.documentID + '/_error',
                   title: 'Error',
                   errorMessage: 'Html with this ID already exists');
               widget.feedback(false);
               return false;
             }
           } else {
-            await htmlWithPlatformMediumRepository(appId: appId)!.update(widget.model);
+            await htmlWithPlatformMediumRepository(appId: appId)!
+                .update(widget.model);
           }
 
           widget.feedback(true);
           return true;
         },
-        cancelAction: () async { return true; },
+        cancelAction: () async {
+          return true;
+        },
       ),
       topicContainer(widget.app, context,
           title: 'General',
@@ -124,11 +138,11 @@ class _HtmlComponentEditorState extends State<HtmlComponentEditor> {
           children: [
             getListTile(context, widget.app,
                 leading: Icon(Icons.vpn_key),
-                title: text(widget.app, context,
-                    widget.model.documentID)),
-            getListTile(context,widget.app,
+                title: text(widget.app, context, widget.model.documentID)),
+            getListTile(context, widget.app,
                 leading: Icon(Icons.description),
-                title: dialogField(widget.app,
+                title: dialogField(
+                  widget.app,
                   context,
                   initialValue: widget.model.description,
                   valueChanged: (description) {
@@ -145,29 +159,21 @@ class _HtmlComponentEditorState extends State<HtmlComponentEditor> {
           collapsible: true,
           collapsed: true,
           children: [
-            checkboxListTile(
-                widget.app,
-                context,
-                'Background?',
-                widget.model.background !=
-                    null, (value) {
+            checkboxListTile(widget.app, context, 'Background?',
+                widget.model.background != null, (value) {
               setState(() {
                 if (value!) {
-                  widget.model.background =
-                      BackgroundModel();
+                  widget.model.background = BackgroundModel();
                 } else {
-                  widget.model.background =
-                  null;
+                  widget.model.background = null;
                 }
               });
             }),
-            if (widget.model.background !=
-                null)
+            if (widget.model.background != null)
               BackgroundWidget(
                   app: widget.app,
                   memberId: ownerId,
-                  value:
-                  widget.model.background!,
+                  value: widget.model.background!,
                   label: 'Background'),
           ]),
       topicContainer(widget.app, context,
@@ -184,10 +190,45 @@ class _HtmlComponentEditorState extends State<HtmlComponentEditor> {
                     widget.app,
                     ownerId,
                     widget.model,
-                    (value) => setState(() {}),
+                    (value) {
+                      var htmlWithPlatformMediumModel = widget.model;
+                      var htmlMedia = htmlWithPlatformMediumModel.htmlMedia;
+                      var htmlPlatformMediumModelWithPosition =
+                          <HtmlPlatformMediumModelWithPosition>[];
+                      if (htmlMedia != null) {
+                        for (var htmlMedium in htmlMedia) {
+                          if ((htmlMedium.medium != null) &&
+                              (htmlMedium.medium!.url != null)) {
+                            var documentID = htmlMedium.medium!.documentID;
+                            var pos = value.indexOf(documentID);
+                            if (pos > 0) {
+                              htmlPlatformMediumModelWithPosition.add(
+                                  HtmlPlatformMediumModelWithPosition(
+                                      htmlMedium, pos));
+                            }
+                          }
+                        }
+                      }
+                      htmlPlatformMediumModelWithPosition
+                          .sort((a, b) => a.position - b.position);
+                      var newHtmlMedia = htmlPlatformMediumModelWithPosition
+                          .map((e) => e.htmlPlatformMediumModel)
+                          .toList();
+                      setState(() {
+                        htmlWithPlatformMediumModel.htmlMedia = newHtmlMedia;
+                      });
+                    },
                     "Document contents",
                   );
                 })
+          ]),
+      topicContainer(widget.app, context,
+          title: 'Images',
+          collapsible: true,
+          collapsed: true,
+          children: [
+            _images(context, widget.model.htmlMedia) ??
+                text(widget.app, context, 'No images'),
           ]),
       topicContainer(widget.app, context,
           title: 'Condition',
@@ -207,11 +248,58 @@ class _HtmlComponentEditorState extends State<HtmlComponentEditor> {
     ]);
   }
 
-  Widget _htmlWidget(BuildContext context, AppModel app, HtmlWithPlatformMediumModel? value) {
+  Widget? _images(BuildContext context,
+      List<HtmlPlatformMediumModel>? htmlPlatformMediumModels) {
+    var widgets = <Widget>[];
+    if (htmlPlatformMediumModels != null) {
+      for (var i = 0; i < htmlPlatformMediumModels.length; i++) {
+        var item = htmlPlatformMediumModels[i];
+        var medium = item.medium;
+        if (medium != null) {
+          widgets.add(GestureDetector(
+              onTap: () {
+                Registry.registry()!.getMediumApi().showPhotosPlatform(
+                    context, widget.app,  htmlPlatformMediumModels.map((e) => e.medium!).toList(), i);
+              },
+              child: Padding(
+                  padding: const EdgeInsets.all(5),
+                  child: Image.network(
+                    medium.url!,
+                    //            height: height,
+                  ))));
+        }
+      }
+
+      return GridView.extent(
+          maxCrossAxisExtent: 200,
+          padding: const EdgeInsets.all(0),
+          mainAxisSpacing: 20,
+          crossAxisSpacing: 20,
+          physics: const ScrollPhysics(),
+          // to disable GridView's scrolling
+          shrinkWrap: true,
+          children: widgets);
+    } else {
+      return null;
+    }
+  }
+
+  Widget _htmlWidget(
+      BuildContext context, AppModel app, HtmlWithPlatformMediumModel? value) {
     if ((value == null) || (value.html == null)) {
       return text(widget.app, context, 'No contents provided');
     } else {
-      return AbstractTextPlatform.platform!.htmlWidgetWithPlatformMedia(context, app, value.html!, htmlPlatformMedia: value.htmlMedia);
+      return AbstractTextPlatform.platform!.htmlWidgetWithPlatformMedia(
+          context, app, value.html!,
+          htmlPlatformMedia: value.htmlMedia);
     }
   }
+}
+
+class HtmlPlatformMediumModelWithPosition {
+  final HtmlPlatformMediumModel htmlPlatformMediumModel;
+  final int position;
+
+  HtmlPlatformMediumModelWithPosition(
+      this.htmlPlatformMediumModel, this.position);
 }

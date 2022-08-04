@@ -14,7 +14,7 @@ dependencies:
   eliud_core:
     path: ../eliud_core
 
-  html_editor_enhanced: 2.4.0+1
+  html_editor_enhanced: 2.5.0
   flutter_widget_from_html_core:
     path: ../../flutter_widget_from_html/packages/core
 
