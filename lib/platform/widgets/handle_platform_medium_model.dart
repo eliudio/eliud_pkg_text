@@ -71,5 +71,5 @@ const kVideoHtml = """
 const kIngHtml = """
 <!--  Platform Medium with ID = '\${IDENTIFIER}'
 -->
-<img src="\${IMG_URL}" width="250" height="171" />
+<img src="\${IMG_URL}"/>
 """;

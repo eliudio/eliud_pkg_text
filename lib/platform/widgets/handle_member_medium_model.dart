@@ -64,10 +64,7 @@ const kVideoHtml = """
 """;
 
 const kIngHtml = """
-<figure>
-  <!--  Member Medium with ID = '\${IDENTIFIER}'
-  -->
-  <img src="\${IMG_URL}" width="250" height="171" />
-    <source src="\${VIDEO_URL}">
-</figure>
+<!--  Member Medium with ID = '\${IDENTIFIER}'
+-->
+<img src="\${IMG_URL}"/>
 """;
