@@ -64,7 +64,7 @@ class HtmlWithPlatformMediumComponentEditorConstructor
     openComplexDialog(
       app,
       context,
-      app.documentID + '/divider',
+      app.documentID + '/html_editor',
       title: create ? 'Create divider' : 'Update divider',
       includeHeading: false,
       widthFraction: .9,

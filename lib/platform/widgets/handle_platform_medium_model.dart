@@ -59,8 +59,6 @@ class HandlePlatformMediumModel extends HandleMediumModel {
 
 const kVideoHtml = """
 <figure>
-  <!--  Platform Medium with ID = '\${IDENTIFIER}'
-  -->
   <video controls width="320" height="176">
     <source src="\${VIDEO_URL}">
     Your browser does not support HTML5 video.
@@ -69,7 +67,5 @@ const kVideoHtml = """
 """;
 
 const kIngHtml = """
-<!--  Platform Medium with ID = '\${IDENTIFIER}'
--->
 <img src="\${IMG_URL}"/>
 """;

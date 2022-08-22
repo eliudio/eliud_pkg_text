@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 import 'builders/page/welcome_page_builder.dart';
 
 class WelcomePageWizard extends NewAppWizardInfoWithActionSpecification {
-  static String welcomePageId = 'welcome';
+  static String welcomePageId = 'page';
 
   WelcomePageWizard() : super('welcome', 'Welcome Page',  'Generate a default Welcome Page');
 
@@ -69,6 +69,7 @@ class WelcomePageWizard extends NewAppWizardInfoWithActionSpecification {
     } else {
       throw Exception('Unexpected class for parameters: ' + parameters.toString());
     }
+    return null;
   }
 
   @override
