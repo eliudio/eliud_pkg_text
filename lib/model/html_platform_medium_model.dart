@@ -44,18 +44,19 @@ class HtmlPlatformMediumModel implements ModelBase {
   static const String id = 'htmlPlatformMediums';
 
   String documentID;
+  String? htmlReference;
   PlatformMediumModel? medium;
 
-  HtmlPlatformMediumModel({required this.documentID, this.medium, })  {
+  HtmlPlatformMediumModel({required this.documentID, this.htmlReference, this.medium, })  {
     assert(documentID != null);
   }
 
-  HtmlPlatformMediumModel copyWith({String? documentID, PlatformMediumModel? medium, }) {
-    return HtmlPlatformMediumModel(documentID: documentID ?? this.documentID, medium: medium ?? this.medium, );
+  HtmlPlatformMediumModel copyWith({String? documentID, String? htmlReference, PlatformMediumModel? medium, }) {
+    return HtmlPlatformMediumModel(documentID: documentID ?? this.documentID, htmlReference: htmlReference ?? this.htmlReference, medium: medium ?? this.medium, );
   }
 
   @override
-  int get hashCode => documentID.hashCode ^ medium.hashCode;
+  int get hashCode => documentID.hashCode ^ htmlReference.hashCode ^ medium.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -63,11 +64,12 @@ class HtmlPlatformMediumModel implements ModelBase {
           other is HtmlPlatformMediumModel &&
           runtimeType == other.runtimeType && 
           documentID == other.documentID &&
+          htmlReference == other.htmlReference &&
           medium == other.medium;
 
   @override
   String toString() {
-    return 'HtmlPlatformMediumModel{documentID: $documentID, medium: $medium}';
+    return 'HtmlPlatformMediumModel{documentID: $documentID, htmlReference: $htmlReference, medium: $medium}';
   }
 
   Future<List<ModelReference>> collectReferences({String? appId}) async {
@@ -81,6 +83,7 @@ class HtmlPlatformMediumModel implements ModelBase {
 
   HtmlPlatformMediumEntity toEntity({String? appId}) {
     return HtmlPlatformMediumEntity(
+          htmlReference: (htmlReference != null) ? htmlReference : null, 
           mediumId: (medium != null) ? medium!.documentID : null, 
     );
   }
@@ -90,6 +93,7 @@ class HtmlPlatformMediumModel implements ModelBase {
     var counter = 0;
     return HtmlPlatformMediumModel(
           documentID: documentID, 
+          htmlReference: entity.htmlReference, 
     );
   }
 
@@ -110,6 +114,7 @@ class HtmlPlatformMediumModel implements ModelBase {
     var counter = 0;
     return HtmlPlatformMediumModel(
           documentID: documentID, 
+          htmlReference: entity.htmlReference, 
           medium: mediumHolder, 
     );
   }

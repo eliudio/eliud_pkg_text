@@ -37,8 +37,8 @@ import 'package:eliud_core/tools/common_tools.dart';
 
 class HtmlWithPlatformMediumFirestore implements HtmlWithPlatformMediumRepository {
   @override
-  HtmlWithPlatformMediumEntity? fromMap(Object? o) {
-    return HtmlWithPlatformMediumEntity.fromMap(o);
+  HtmlWithPlatformMediumEntity? fromMap(Object? o, {Map<String, String>? newDocumentIds}) {
+    return HtmlWithPlatformMediumEntity.fromMap(o, newDocumentIds: newDocumentIds);
   }
 
   Future<HtmlWithPlatformMediumEntity> addEntity(String documentID, HtmlWithPlatformMediumEntity value) {

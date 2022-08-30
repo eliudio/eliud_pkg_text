@@ -12,6 +12,7 @@ import 'package:html_editor_enhanced/html_editor.dart';
 
 import '../text_platform.dart';
 import 'handle_medium_model.dart';
+import 'html_with_platform_medium_components.dart';
 
 class HtmlTextDialog extends StatefulWidget {
   static double width(BuildContext context) =>
@@ -27,6 +28,8 @@ class HtmlTextDialog extends StatefulWidget {
   final String ownerId;
   final List<Widget>? extraIcons;
   final HandleMediumModel handleMediumModel;
+  // action when pressing the media button. If no action is provided then no media button available
+  final VoidCallback? mediaAction;
 
   // Unfortunately when uploading files on web, we can not rely on using the path to upload the files. So in that case we rely on the bytes, not the path.
   // i.e. we use _interceptUploadWithBytes or _interceptUploadWithPath depending on this flag.
@@ -45,6 +48,7 @@ class HtmlTextDialog extends StatefulWidget {
     required this.isWeb,
     this.extraIcons,
     required this.handleMediumModel,
+    required /*temp required*/ this.mediaAction,
   }) : super(key: key);
 
   @override
@@ -58,9 +62,9 @@ class HtmlTextDialog extends StatefulWidget {
     UpdatedHtml updatedHtml,
     String initialValue,
     bool isWeb,
-    HandleMediumModel handleMediumModel,
-     {
+    HandleMediumModel handleMediumModel, {
     List<Widget>? extraIcons,
+    required VoidCallback mediaAction,
   }) {
     if ((initialValue == null) || (initialValue.length == 0))
       initialValue = ' ';
@@ -71,21 +75,21 @@ class HtmlTextDialog extends StatefulWidget {
         .dialogStyle()
         .openWidgetDialog(app, context, app.documentID + '/html',
             child: HtmlTextDialog(
-              title: title,
-              updatedHtml: updatedHtml,
-              initialValue: initialValue,
-              app: app,
-              ownerId: ownerId,
-              isWeb: isWeb,
-              extraIcons: extraIcons,
-              handleMediumModel: handleMediumModel,));
+                title: title,
+                updatedHtml: updatedHtml,
+                initialValue: initialValue,
+                app: app,
+                ownerId: ownerId,
+                isWeb: isWeb,
+                extraIcons: extraIcons,
+                handleMediumModel: handleMediumModel,
+                mediaAction: mediaAction));
   }
 }
 
 class _HtmlTextDialogState extends State<HtmlTextDialog> {
   final HtmlEditorController controller = HtmlEditorController();
   bool isHtml = false;
-  double? _progress;
 
   @override
   void initState() {
@@ -106,112 +110,77 @@ class _HtmlTextDialogState extends State<HtmlTextDialog> {
   }
 
   List<Widget> _buttons() {
-    if (_progress != null) {
-      return [progressIndicatorWithValue(widget.app, context, value: _progress!)];
-    } else {
-      List<Widget> buttons = <Widget>[];
-      if (isHtml) {
-        buttons.add(dialogButton(widget.app, context, onPressed: () {
-          isHtml = false;
-          controller.toggleCodeView();
-          setState(() {});
-        }, label: 'Visual'));
-      } else {
-        buttons.add(dialogButton(widget.app, context, label: 'Html', onPressed: () {
-          isHtml = true;
-          controller.toggleCodeView();
-          setState(() {});
-        }));
-      }
-      buttons.add(Spacer());
-      if (widget.extraIcons != null) {
-        buttons.addAll(widget.extraIcons!);
-        buttons.add(Spacer());
-      }
+    List<Widget> buttons = <Widget>[];
+    if (isHtml) {
       buttons.add(dialogButton(widget.app, context, onPressed: () {
-        Navigator.pop(context);
-      }, label: 'Cancel'));
-      buttons.add(dialogButton(widget.app, context, onPressed: () async {
-        Navigator.pop(context);
-        widget.updatedHtml(await controller.getText());
-      }, label: 'Done'));
-      return buttons;
+        isHtml = false;
+        controller.toggleCodeView();
+        setState(() {});
+      }, label: 'Visual'));
+    } else {
+      buttons
+          .add(dialogButton(widget.app, context, label: 'Html', onPressed: () {
+        isHtml = true;
+        controller.toggleCodeView();
+        setState(() {});
+      }));
     }
+    buttons.add(Spacer());
+    if (widget.extraIcons != null) {
+      buttons.addAll(widget.extraIcons!);
+      buttons.add(Spacer());
+    }
+    buttons.add(dialogButton(widget.app, context, onPressed: () {
+      Navigator.pop(context);
+    }, label: 'Cancel'));
+    buttons.add(dialogButton(widget.app, context, onPressed: () async {
+      Navigator.pop(context);
+      widget.updatedHtml(await controller.getText());
+    }, label: 'Done'));
+    return buttons;
+  }
+
+  Widget _mediaButton() {
+    return iconButton(widget.app, context,
+        icon: Icon(Icons.perm_media_outlined), onPressed: widget.mediaAction);
   }
 
   Widget _child() {
-    if (_progress != null) {
-      return HtmlEditor(
-        controller: controller,
-        callbacks: Callbacks(onInit: () {
-          controller.setFullScreen();
-        }),
-        htmlEditorOptions: HtmlEditorOptions(
-          shouldEnsureVisible: true,
-          autoAdjustHeight: false,
-          initialText: widget.initialValue,
-        ),
-        htmlToolbarOptions: HtmlToolbarOptions(
-            toolbarPosition: ToolbarPosition.aboveEditor,
-            customToolbarButtons: [
-              progressIndicatorWithValue(widget.app, context, value: _progress!),
-              Spacer(),
-            ],
-            customToolbarInsertionIndices: [0, 1],
-            defaultToolbarButtons: [],
-            toolbarType: _shouldUseNativeGrid(context)
-                ? ToolbarType.nativeGrid
-                : ToolbarType.nativeScrollable,
-            mediaUploadInterceptor: (platformFile, insertFileType) =>
+    return HtmlEditor(
+      controller: controller,
+      callbacks: Callbacks(onInit: () {
+        controller.setFullScreen();
+      }),
+      htmlEditorOptions: HtmlEditorOptions(
+        shouldEnsureVisible: true,
+        autoAdjustHeight: false,
+        initialText: widget.initialValue,
+      ),
+      htmlToolbarOptions: HtmlToolbarOptions(
+        customToolbarButtons:
+            (widget.mediaAction != null) ? [_mediaButton()] : [],
+        toolbarPosition: ToolbarPosition.aboveEditor,
+        defaultToolbarButtons: [
+          StyleButtons(),
+          FontSettingButtons(),
+          FontButtons(),
+          ColorButtons(),
+          ListButtons(),
+          ParagraphButtons(),
+          // Actually it seems video is SUPER unstable and even on mobile sometimes works and sometimes doesn't work. So, I'm disabling this by default
+          InsertButtons(audio: false, picture: false, video: false),
+          OtherButtons(codeview: false, fullscreen: false)
+        ],
+        toolbarType: _shouldUseNativeGrid(context)
+            ? ToolbarType.nativeGrid
+            : ToolbarType.nativeScrollable,
+        mediaUploadInterceptor:
+            null, /*(platformFile, insertFileType) =>
                 widget.isWeb
                     ? widget.handleMediumModel.interceptUploadWithBytes(controller, platformFile, insertFileType, setProgress)
-                    : widget.handleMediumModel.interceptUploadWithPath(controller, platformFile, insertFileType, setProgress)),
-        otherOptions:
-            OtherOptions(height: HtmlTextDialog.height(context) - 130),
-      );
-    } else {
-      return HtmlEditor(
-        controller: controller,
-        callbacks: Callbacks(onInit: () {
-          controller.setFullScreen();
-        }),
-        htmlEditorOptions: HtmlEditorOptions(
-          shouldEnsureVisible: true,
-          autoAdjustHeight: false,
-          initialText: widget.initialValue,
-        ),
-        htmlToolbarOptions: HtmlToolbarOptions(
-            toolbarPosition: ToolbarPosition.aboveEditor,
-            defaultToolbarButtons: [
-              StyleButtons(),
-              FontSettingButtons(),
-              FontButtons(),
-              ColorButtons(),
-              ListButtons(),
-              ParagraphButtons(),
-              // Actually it seems video is SUPER unstable and even on mobile sometimes works and sometimes doesn't work. So, I'm disabling this by default
-              InsertButtons(audio: false, video: true),
-              OtherButtons(codeview: false, fullscreen: false)
-            ],
-            toolbarType: _shouldUseNativeGrid(context)
-                ? ToolbarType.nativeGrid
-                : ToolbarType.nativeScrollable,
-            mediaUploadInterceptor: (platformFile, insertFileType) =>
-                widget.isWeb
-                    ? widget.handleMediumModel.interceptUploadWithBytes(controller, platformFile, insertFileType, setProgress)
-                    : widget.handleMediumModel.interceptUploadWithPath(controller, platformFile, insertFileType, setProgress)),
-        otherOptions:
-            OtherOptions(height: HtmlTextDialog.height(context) - 130),
-      );
-    }
+                    : widget.handleMediumModel.interceptUploadWithPath(controller, platformFile, insertFileType, setProgress)*/
+      ),
+      otherOptions: OtherOptions(height: HtmlTextDialog.height(context) - 130),
+    );
   }
-
-  void setProgress(double? progress) {
-    if (!kIsWeb) {
-      setState(() {
-        _progress = progress;
-      });
-    }
-  }
-
 }

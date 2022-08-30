@@ -122,6 +122,7 @@ class _MyHtmlPlatformMediumFormState extends State<MyHtmlPlatformMediumForm> {
   late HtmlPlatformMediumFormBloc _myFormBloc;
 
   final TextEditingController _documentIDController = TextEditingController();
+  final TextEditingController _htmlReferenceController = TextEditingController();
   String? _medium;
 
 
@@ -132,6 +133,7 @@ class _MyHtmlPlatformMediumFormState extends State<MyHtmlPlatformMediumForm> {
     super.initState();
     _myFormBloc = BlocProvider.of<HtmlPlatformMediumFormBloc>(context);
     _documentIDController.addListener(_onDocumentIDChanged);
+    _htmlReferenceController.addListener(_onHtmlReferenceChanged);
   }
 
   @override
@@ -147,6 +149,10 @@ class _MyHtmlPlatformMediumFormState extends State<MyHtmlPlatformMediumForm> {
           _documentIDController.text = state.value!.documentID.toString();
         else
           _documentIDController.text = "";
+        if (state.value!.htmlReference != null)
+          _htmlReferenceController.text = state.value!.htmlReference.toString();
+        else
+          _htmlReferenceController.text = "";
         if (state.value!.medium != null)
           _medium= state.value!.medium!.documentID;
         else
@@ -191,12 +197,14 @@ class _MyHtmlPlatformMediumFormState extends State<MyHtmlPlatformMediumForm> {
                         BlocProvider.of<HtmlPlatformMediumListBloc>(context).add(
                           UpdateHtmlPlatformMediumList(value: state.value!.copyWith(
                               documentID: state.value!.documentID, 
+                              htmlReference: state.value!.htmlReference, 
                               medium: state.value!.medium, 
                         )));
                       } else {
                         BlocProvider.of<HtmlPlatformMediumListBloc>(context).add(
                           AddHtmlPlatformMediumList(value: HtmlPlatformMediumModel(
                               documentID: state.value!.documentID, 
+                              htmlReference: state.value!.htmlReference, 
                               medium: state.value!.medium, 
                           )));
                       }
@@ -229,6 +237,11 @@ class _MyHtmlPlatformMediumFormState extends State<MyHtmlPlatformMediumForm> {
   }
 
 
+  void _onHtmlReferenceChanged() {
+    _myFormBloc.add(ChangedHtmlPlatformMediumHtmlReference(value: _htmlReferenceController.text));
+  }
+
+
   void _onMediumSelected(String? val) {
     setState(() {
       _medium = val;
@@ -241,6 +254,7 @@ class _MyHtmlPlatformMediumFormState extends State<MyHtmlPlatformMediumForm> {
   @override
   void dispose() {
     _documentIDController.dispose();
+    _htmlReferenceController.dispose();
     super.dispose();
   }
 

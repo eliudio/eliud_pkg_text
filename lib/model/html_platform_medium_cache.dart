@@ -121,8 +121,8 @@ class HtmlPlatformMediumCache implements HtmlPlatformMediumRepository {
   }
 
   @override
-  HtmlPlatformMediumEntity? fromMap(Object? o) {
-    return reference.fromMap(o);
+  HtmlPlatformMediumEntity? fromMap(Object? o, {Map<String, String>? newDocumentIds}) {
+    return reference.fromMap(o, newDocumentIds: newDocumentIds);
   }
 
   Future<void> deleteAll() {

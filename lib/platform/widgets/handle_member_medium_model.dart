@@ -1,13 +1,15 @@
 import 'package:eliud_core/model/app_model.dart';
 import 'package:eliud_core/model/member_medium_model.dart';
+import 'package:eliud_core/tools/random.dart';
 import 'package:eliud_core/tools/storage/medium_helper.dart';
 import 'package:eliud_core/tools/tool_set.dart';
 import 'package:html_editor_enhanced/html_editor.dart';
 import 'package:eliud_core/tools/storage/member_medium_helper.dart';
 
 import 'handle_medium_model.dart';
+import 'html_util.dart';
 
-typedef MemberMediumModelCallback(MemberMediumModel memberMediumModel);
+typedef MemberMediumModelCallback(String memberMediumDocumentId, MemberMediumModel memberMediumModel);
 
 class HandleMemberMediumModel extends HandleMediumModel {
   final MemberMediumModelCallback memberMediumModelCallback;
@@ -33,34 +35,16 @@ class HandleMemberMediumModel extends HandleMediumModel {
       InsertFileType insertFileType,
       dynamic memberMediumModel) async {
     String htmlCode;
+    var htmlReference = newRandomKey();
     if (insertFileType == InsertFileType.video) {
-      htmlCode = process(kVideoHtml, parameters: <String, String>{
-        '\${VIDEO_URL}': memberMediumModel.url!,
-        '\${IDENTIFIER}': memberMediumModel.documentID,
-      });
+      htmlCode = constructHtmlForVideo(memberMediumModel.url!, kDOCUMENT_LABEL_MEMBER, htmlReference);
     } else {
-      htmlCode = process(kIngHtml, parameters: <String, String>{
-        '\${IMG_URL}': memberMediumModel.url!,
-        '\${IDENTIFIER}': memberMediumModel.documentID,
-      });
+      htmlCode = constructHtmlForImg(memberMediumModel.url!, kDOCUMENT_LABEL_MEMBER, htmlReference);
     }
 
-    memberMediumModelCallback(memberMediumModel);
+    memberMediumModelCallback(htmlReference, memberMediumModel,);
 
     controller.insertHtml(htmlCode);
     return false;
   }
 }
-
-const kVideoHtml = """
-<figure>
-  <video controls width="320" height="176">
-    <source src="\${VIDEO_URL}">
-    Your browser does not support HTML5 video.
-  </video>
-</figure>
-""";
-
-const kIngHtml = """
-<img src="\${IMG_URL}"/>
-""";

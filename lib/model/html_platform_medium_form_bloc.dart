@@ -49,6 +49,7 @@ class HtmlPlatformMediumFormBloc extends Bloc<HtmlPlatformMediumFormEvent, HtmlP
       on <InitialiseNewHtmlPlatformMediumFormEvent> ((event, emit) {
         HtmlPlatformMediumFormLoaded loaded = HtmlPlatformMediumFormLoaded(value: HtmlPlatformMediumModel(
                                                documentID: "IDENTIFIER", 
+                                 htmlReference: "",
 
         ));
         emit(loaded);

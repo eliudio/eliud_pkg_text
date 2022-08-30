@@ -168,7 +168,7 @@ class HtmlPlatformMediumInMemoryRepository implements HtmlPlatformMediumReposito
   }
 
   @override
-  HtmlPlatformMediumEntity? fromMap(Object? o) {
+  HtmlPlatformMediumEntity? fromMap(Object? o, {Map<String, String>? newDocumentIds}) {
     throw UnimplementedError();
   }
 

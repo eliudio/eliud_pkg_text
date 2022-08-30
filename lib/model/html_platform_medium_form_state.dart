@@ -79,6 +79,22 @@ class DocumentIDHtmlPlatformMediumFormError extends HtmlPlatformMediumFormError 
 }
 
 
+class HtmlReferenceHtmlPlatformMediumFormError extends HtmlPlatformMediumFormError { 
+  const HtmlReferenceHtmlPlatformMediumFormError({ String? message, HtmlPlatformMediumModel? value }): super(message: message, value: value);
+
+  @override
+  List<Object?> get props => [ message, value ];
+
+  @override
+  String toString() {
+    return '''HtmlReferenceHtmlPlatformMediumFormError {
+      value: $value,
+      message: $message,
+    }''';
+  }
+}
+
+
 class MediumHtmlPlatformMediumFormError extends HtmlPlatformMediumFormError { 
   const MediumHtmlPlatformMediumFormError({ String? message, HtmlPlatformMediumModel? value }): super(message: message, value: value);
 

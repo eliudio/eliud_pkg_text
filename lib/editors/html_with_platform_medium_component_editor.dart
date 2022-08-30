@@ -1,6 +1,8 @@
 import 'package:eliud_core/core/blocs/access/access_bloc.dart';
 import 'package:eliud_core/core/registry.dart';
 import 'package:eliud_core/model/background_model.dart';
+import 'package:eliud_core/model/platform_medium_model.dart';
+import 'package:eliud_core/style/frontend/has_button.dart';
 import 'package:eliud_core/tools/widgets/background_widget.dart';
 import 'package:eliud_core/model/app_model.dart';
 import 'package:eliud_core/model/storage_conditions_model.dart';
@@ -18,6 +20,8 @@ import 'package:eliud_pkg_text/model/html_with_platform_medium_model.dart';
 import 'package:eliud_pkg_text/platform/text_platform.dart';
 import 'package:flutter/material.dart';
 import '../model/html_platform_medium_model.dart';
+import '../platform/widgets/handle_platform_medium_model.dart';
+import '../platform/widgets/html_util.dart';
 
 class HtmlWithPlatformMediumComponentEditorConstructor
     extends ComponentEditorConstructor {
@@ -71,6 +75,12 @@ class HtmlWithPlatformMediumComponentEditorConstructor
       child: HtmlComponentEditor(
           app: app, model: model, create: create, feedback: feedback),
     );
+  }
+
+  @override
+  revalidateModel(AppModel app, model) async {
+    var myModel = model as HtmlWithPlatformMediumModel;
+    return reviewLinksForHtmlWithPlatformMediumModel(myModel);
   }
 }
 
@@ -223,6 +233,49 @@ class _HtmlComponentEditorState extends State<HtmlComponentEditor> {
                 })
           ]),
       topicContainer(widget.app, context,
+          title: 'Html as text',
+          collapsible: true,
+          collapsed: true,
+          children: [
+            getListTile(context, widget.app,
+                leading: Icon(Icons.description),
+                title: dialogField(
+                  widget.app,
+                  context,
+                  maxLines: 20,
+                  initialValue: widget.model.html,
+                  valueChanged: (html) {
+                    setState(() {
+                      widget.model.html = html;
+                    });
+                  },
+                  decoration: const InputDecoration(
+                    hintText: 'Html',
+                    labelText: 'Html',
+                  ),
+                )),
+          ]),
+/*
+      button(widget.app, context, label: 'Test html parsing', onPressed: () {
+        var myModel = widget.model;
+        if (myModel.htmlMedia != null) {
+          var newHtml = myModel.html;
+          if (newHtml != null) {
+            for (var platformMedium in myModel.htmlMedia!) {
+              newHtml = replacePlatformMedium(
+                  PlatformMediumType.Photo,
+                  myModel.html!,
+                  platformMedium.documentID,
+                  platformMedium.medium!.url!);
+            }
+          }
+          setState(() {
+            widget.model.html = newHtml;
+          });
+        }
+      }),
+*/
+      topicContainer(widget.app, context,
           title: 'Images',
           collapsible: true,
           collapsed: true,
@@ -259,14 +312,20 @@ class _HtmlComponentEditorState extends State<HtmlComponentEditor> {
           widgets.add(GestureDetector(
               onTap: () {
                 Registry.registry()!.getMediumApi().showPhotosPlatform(
-                    context, widget.app,  htmlPlatformMediumModels.map((e) => e.medium!).toList(), i);
+                    context,
+                    widget.app,
+                    htmlPlatformMediumModels.map((e) => e.medium!).toList(),
+                    i);
               },
               child: Padding(
                   padding: const EdgeInsets.all(5),
-                  child: Image.network(
+                  child: Tooltip(
+                      message: medium.documentID + " - " + medium.url!,
+                      child: Image.network(
                     medium.url!,
+
                     //            height: height,
-                  ))));
+                  )))));
         }
       }
 

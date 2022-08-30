@@ -71,6 +71,18 @@ class ChangedHtmlPlatformMediumDocumentID extends HtmlPlatformMediumFormEvent {
   String toString() => 'ChangedHtmlPlatformMediumDocumentID{ value: $value }';
 }
 
+class ChangedHtmlPlatformMediumHtmlReference extends HtmlPlatformMediumFormEvent {
+  final String? value;
+
+  ChangedHtmlPlatformMediumHtmlReference({this.value});
+
+  @override
+  List<Object?> get props => [ value ];
+
+  @override
+  String toString() => 'ChangedHtmlPlatformMediumHtmlReference{ value: $value }';
+}
+
 class ChangedHtmlPlatformMediumMedium extends HtmlPlatformMediumFormEvent {
   final String? value;
 
