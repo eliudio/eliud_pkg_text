@@ -12,6 +12,9 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../model/html_platform_medium_model.dart';
+import 'html_solution.dart';
+
 class MobileTextPlatform extends AbstractTextPlatform {
   @override
   void updateHtmlWithMemberMediumCallback(
@@ -72,6 +75,25 @@ class MobileTextPlatform extends AbstractTextPlatform {
   String url = "";
   double progress = 0;
   final urlController = TextEditingController();
+
+  @override
+  Widget htmlWidget(
+      BuildContext context,
+      AppModel app,
+      String html,
+      ) {
+    return htmlWidgetWithPlatformMedia(
+      context,
+      app,
+      html,
+    );
+  }
+
+  Widget htmlWidgetWithPlatformMedia(
+      BuildContext context, AppModel app, String html,
+      {List<HtmlPlatformMediumModel>? htmlPlatformMedia}) {
+    return htmlSolution(context, app, html, htmlPlatformMedia: htmlPlatformMedia);
+  }
 
 
 }

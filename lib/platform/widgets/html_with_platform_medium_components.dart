@@ -2,11 +2,17 @@ import 'package:eliud_core/core/blocs/access/access_bloc.dart';
 import 'package:eliud_core/core/editor/ext_editor_base_bloc/ext_editor_base_event.dart';
 import 'package:eliud_core/core/editor/ext_editor_base_bloc/ext_editor_base_state.dart';
 import 'package:eliud_core/model/app_model.dart';
+import 'package:eliud_core/model/platform_medium_model.dart';
+import 'package:eliud_core/style/frontend/has_button.dart';
 import 'package:eliud_core/style/frontend/has_container.dart';
+import 'package:eliud_core/tools/component/component_spec.dart';
+import 'package:pointer_interceptor/pointer_interceptor.dart';
 import 'package:eliud_core/style/frontend/has_dialog.dart';
 import 'package:eliud_core/style/frontend/has_progress_indicator.dart';
 import 'package:eliud_core/style/frontend/has_text.dart';
+import 'package:eliud_core/tools/random.dart';
 import 'package:eliud_core/tools/widgets/header_widget.dart';
+import 'package:eliud_pkg_medium/tools/media_buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:eliud_core/core/registry.dart';
@@ -14,37 +20,59 @@ import 'package:eliud_pkg_text/model/html_with_platform_medium_model.dart';
 
 import '../../model/html_platform_medium_model.dart';
 import 'bloc/html_with_platform_medium_component_bloc.dart';
+import 'html_text_dialog.dart';
+import 'html_util.dart';
 
-/*
-      controller.insertHtml("<img src='https://via.placeholder.com/150'/>");
-      HtmlWithPlatformMediumComponents.openIt(widget.app, context, model);
- */
 class HtmlWithPlatformMediumComponents extends StatefulWidget {
-  static void openIt(
-      AppModel app, BuildContext context, HtmlWithPlatformMediumModel model) {
-    openComplexDialog(
+  static Future<void> openIt(
+    AppModel app,
+    BuildContext context,
+    HtmlWithPlatformMediumModel model,
+    EditorFeedback editorFeedback, {
+    AddMediaHtml? addMediaHtml,
+  }) async {
+    await openComplexDialog(
       app,
       context,
       app.documentID + '/html_components',
       title: 'Images and Videos',
       includeHeading: false,
       widthFraction: .9,
-      child: BlocProvider<HtmlPlatformMediumBloc>(
-          create: (context) => HtmlPlatformMediumBloc(
-                app.documentID,
-              )..add(
-                  ExtEditorBaseInitialise<HtmlWithPlatformMediumModel>(model)),
-          child: HtmlWithPlatformMediumComponents(
-            app: app,
-          )),
+      child: getWidget(app, context, model, editorFeedback,
+          addMediaHtml: addMediaHtml),
     );
   }
 
-  final AppModel app;
+  static Widget getWidget(
+    AppModel app,
+    BuildContext context,
+    HtmlWithPlatformMediumModel model,
+    EditorFeedback editorFeedback, {
+    AddMediaHtml? addMediaHtml,
+  }) {
+    return PointerInterceptor(
+        child: BlocProvider<HtmlPlatformMediumBloc>(
+            create: (context) => HtmlPlatformMediumBloc(
+                  app.documentID,
+                )..add(ExtEditorBaseInitialise<HtmlWithPlatformMediumModel>(
+                    model,
+                    reretrieveModel: false)),
+            child: HtmlWithPlatformMediumComponents._(
+              app: app,
+              addMediaHtml: addMediaHtml,
+              editorFeedback: editorFeedback,
+            )));
+  }
 
-  const HtmlWithPlatformMediumComponents({
+  final AppModel app;
+  final AddMediaHtml? addMediaHtml;
+  final EditorFeedback editorFeedback;
+
+  const HtmlWithPlatformMediumComponents._({
     Key? key,
     required this.app,
+    this.addMediaHtml,
+    required this.editorFeedback,
   }) : super(key: key);
 
   @override
@@ -54,30 +82,32 @@ class HtmlWithPlatformMediumComponents extends StatefulWidget {
 
 class _HtmlWithPlatformMediumComponentsState
     extends State<HtmlWithPlatformMediumComponents> {
+  double? uploadingProgress;
+
   @override
   Widget build(BuildContext context) {
-    var ownerId = AccessBloc.member(context)!.documentID;
     return BlocBuilder<HtmlPlatformMediumBloc,
             ExtEditorBaseState<HtmlWithPlatformMediumModel>>(
         builder: (ppContext, htmlWithPMM) {
       if (htmlWithPMM
           is ExtEditorBaseInitialised<HtmlWithPlatformMediumModel, dynamic>) {
         return ListView(shrinkWrap: true, physics: ScrollPhysics(), children: [
-          HeaderWidget(
-            title: 'Images and Videos',
-            app: widget.app,
-            cancelAction: () async {
-              return true;
-            },
-          ),
-          topicContainer(widget.app, context,
-              title: 'Images',
-              collapsible: true,
-              collapsed: true,
-              children: [
-                _images(context, htmlWithPMM.model.htmlMedia) ??
-                    text(widget.app, context, 'No images'),
-              ]),
+          if (widget.addMediaHtml != null)
+            HeaderWidget(
+              title: 'Media',
+              app: widget.app,
+              okAction: () async {
+                widget.editorFeedback(true, htmlWithPMM.model);
+                return true;
+              },
+              cancelAction: () async {
+                widget.editorFeedback(false, null);
+                return true;
+              },
+            ),
+          _images(context, htmlWithPMM.model, htmlWithPMM.model.htmlMedia,
+                  htmlWithPMM) ??
+              text(widget.app, context, 'No media'),
         ]);
       } else {
         return progressIndicator(widget.app, context);
@@ -85,8 +115,11 @@ class _HtmlWithPlatformMediumComponentsState
     });
   }
 
-  Widget? _images(BuildContext context,
-      List<HtmlPlatformMediumModel>? htmlPlatformMediumModels) {
+  Widget? _images(
+      BuildContext context,
+      HtmlWithPlatformMediumModel htmlWithPlatformMediumModel,
+      List<HtmlPlatformMediumModel>? htmlPlatformMediumModels,
+      ExtEditorBaseInitialised htmlWithPMM) {
     var widgets = <Widget>[];
     if (htmlPlatformMediumModels != null) {
       for (var i = 0; i < htmlPlatformMediumModels.length; i++) {
@@ -94,23 +127,128 @@ class _HtmlWithPlatformMediumComponentsState
         var medium = item.medium;
         if (medium != null) {
           widgets.add(GestureDetector(
-              onTap: () {
-                Registry.registry()!.getMediumApi().showPhotosPlatform(
-                    context,
-                    widget.app,
-                    htmlPlatformMediumModels.map((e) => e.medium!).toList(),
-                    i);
-              },
-              child: Padding(
-                  padding: const EdgeInsets.all(5),
-                  child: Tooltip(
-                      message: medium.documentID + " - " + medium.url!,
-                      child: Image.network(
-                        medium.url!,
+              onTap: () async {
+                var value = await showMenu<int>(
+                  context: context,
+                  position: RelativeRect.fromLTRB(100, 100, 100, 100),
+                  items: [
+                    if (widget.addMediaHtml != null)
+                      PopupMenuItem<int>(child: const Text('Select'), value: 0),
+                    if (widget.addMediaHtml == null)
+                      PopupMenuItem<int>(child: const Text('View'), value: 1),
+                    PopupMenuItem<int>(child: const Text('Move up'), value: 2),
+                    PopupMenuItem<int>(
+                        child: const Text('Move down'), value: 3),
+                    PopupMenuItem<int>(
+                        child: const Text('Delete'), value: 4),
+                  ],
+                  elevation: 8.0,
+                );
 
+                switch (value) {
+                  case 0:
+                    widget.editorFeedback(true, htmlWithPlatformMediumModel);
+                    if (medium.mediumType == PlatformMediumType.Photo) {
+                      var htmlCode = constructHtmlForImg(medium.url!,
+                          kDOCUMENT_LABEL_PLATFORM, item.htmlReference!);
+                      widget.addMediaHtml!(htmlCode);
+                    } else {
+                      var htmlCode = constructHtmlForVideo(medium.url!,
+                          kDOCUMENT_LABEL_PLATFORM, item.htmlReference!);
+                      widget.addMediaHtml!(htmlCode);
+                    }
+                    Navigator.of(context).pop();
+                    break;
+                  case 1:
+                    Registry.registry()!.getMediumApi().showPhotosPlatform(
+                        context,
+                        widget.app,
+                        htmlPlatformMediumModels.map((e) => e.medium!).toList(),
+                        i);
+                    break;
+                  case 2:
+                    BlocProvider.of<HtmlPlatformMediumBloc>(context).add(
+                        HtmlMediaMoveEvent(
+                            isUp: true, item: item));
+                    break;
+                  case 3:
+                    BlocProvider.of<HtmlPlatformMediumBloc>(context).add(
+                        HtmlMediaMoveEvent(
+                            isUp: false, item: item));
+                    break;
+                  case 4:
+                    if (!htmlWithPMM.model.html.contains(item.htmlReference)) {
+                      BlocProvider.of<HtmlPlatformMediumBloc>(context).add(
+                          DeleteItemEvent<HtmlWithPlatformMediumModel,
+                              HtmlPlatformMediumModel>(
+                              itemModel: item));
+                    } else {
+                      openErrorDialog(widget.app, context, widget.app.documentID + '/_error', title: 'Problem', errorMessage: "This medium is used in the html so I can't delete it");
+                    }
+                    break;
+                }
+              },
+              child: item == htmlWithPMM.currentEdit
+                  ? Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.red, width: 1),
+                      ),
+                      child: Image.network(
+                        medium.urlThumbnail!,
                         //            height: height,
-                      )))));
+                      ))
+                  : Image.network(
+                      medium.urlThumbnail!,
+                      //            height: height,
+                    )));
         }
+      }
+      if (uploadingProgress == null) {
+        widgets.add(MediaButtons.platformMediaButtons(
+          context,
+          widget.app,
+          () => htmlWithPlatformMediumModel.conditions!.privilegeLevelRequired!,
+          allowCrop: false,
+          tooltip: 'Add photo',
+          photoFeedbackFunction: (photo) {
+            if (photo != null) {
+              var newKey = newRandomKey();
+              BlocProvider.of<HtmlPlatformMediumBloc>(context).add(AddItemEvent(
+                  itemModel: HtmlPlatformMediumModel(
+                      documentID: newKey,
+                      htmlReference: newKey,
+                      medium: photo)));
+            }
+            uploadingProgress = null;
+          },
+          photoFeedbackProgress: (progress) {
+            setState(() {
+              uploadingProgress = progress;
+            });
+          },
+          videoFeedbackFunction: (video) {
+            if (video != null) {
+              var newKey = newRandomKey();
+              BlocProvider.of<HtmlPlatformMediumBloc>(context).add(AddItemEvent(
+                  itemModel: HtmlPlatformMediumModel(
+                      documentID: newKey,
+                      htmlReference: newKey,
+                      medium: video)));
+            }
+            uploadingProgress = null;
+          },
+          videoFeedbackProgress: (progress) {
+            setState(() {
+              uploadingProgress = progress;
+            });
+          },
+          icon: Icon(
+            Icons.add,
+          ),
+        ));
+      } else {
+        widgets.add(progressIndicatorWithValue(widget.app, context,
+            value: uploadingProgress!));
       }
 
       return GridView.extent(

@@ -14,9 +14,13 @@ dependencies:
   eliud_core:
     path: ../eliud_core
 
+  eliud_pkg_medium:
+    path: ../eliud_pkg_medium
+
   html_editor_enhanced: 2.5.0
-  flutter_widget_from_html_core:
-    path: ../../flutter_widget_from_html/packages/core
+  flutter_widget_from_html: any
+  flutter_widget_from_html_core: any
+  pointer_interceptor: 0.9.3+3
 
   url_launcher: 6.1.5
 

@@ -22,6 +22,7 @@ import 'package:flutter/material.dart';
 import '../model/html_platform_medium_model.dart';
 import '../platform/widgets/handle_platform_medium_model.dart';
 import '../platform/widgets/html_util.dart';
+import '../platform/widgets/html_with_platform_medium_components.dart';
 
 class HtmlWithPlatformMediumComponentEditorConstructor
     extends ComponentEditorConstructor {
@@ -59,7 +60,7 @@ class HtmlWithPlatformMediumComponentEditorConstructor
     } else {
       openErrorDialog(app, context, app.documentID + '/_error',
           title: 'Error', errorMessage: 'Cannot find html with id $id');
-      feedback(false);
+      feedback(false, null);
     }
   }
 
@@ -126,7 +127,7 @@ class _HtmlComponentEditorState extends State<HtmlComponentEditor> {
                   widget.app, context, widget.app.documentID + '/_error',
                   title: 'Error',
                   errorMessage: 'Html with this ID already exists');
-              widget.feedback(false);
+              widget.feedback(false, null);
               return false;
             }
           } else {
@@ -134,7 +135,7 @@ class _HtmlComponentEditorState extends State<HtmlComponentEditor> {
                 .update(widget.model);
           }
 
-          widget.feedback(true);
+          widget.feedback(true, widget.model);
           return true;
         },
         cancelAction: () async {
@@ -191,46 +192,9 @@ class _HtmlComponentEditorState extends State<HtmlComponentEditor> {
           collapsible: true,
           collapsed: true,
           children: [
+            _editButtons(ownerId),
             _htmlWidget(context, widget.app, widget.model),
-            GestureDetector(
-                child: Icon(Icons.edit),
-                onTap: () {
-                  AbstractTextPlatform.platform!.updateHtmlWithPlatformMedium(
-                    context,
-                    widget.app,
-                    ownerId,
-                    widget.model,
-                    (value) {
-                      var htmlWithPlatformMediumModel = widget.model;
-                      var htmlMedia = htmlWithPlatformMediumModel.htmlMedia;
-                      var htmlPlatformMediumModelWithPosition =
-                          <HtmlPlatformMediumModelWithPosition>[];
-                      if (htmlMedia != null) {
-                        for (var htmlMedium in htmlMedia) {
-                          if ((htmlMedium.medium != null) &&
-                              (htmlMedium.medium!.url != null)) {
-                            var documentID = htmlMedium.medium!.documentID;
-                            var pos = value.indexOf(documentID);
-                            if (pos > 0) {
-                              htmlPlatformMediumModelWithPosition.add(
-                                  HtmlPlatformMediumModelWithPosition(
-                                      htmlMedium, pos));
-                            }
-                          }
-                        }
-                      }
-                      htmlPlatformMediumModelWithPosition
-                          .sort((a, b) => a.position - b.position);
-                      var newHtmlMedia = htmlPlatformMediumModelWithPosition
-                          .map((e) => e.htmlPlatformMediumModel)
-                          .toList();
-                      setState(() {
-                        htmlWithPlatformMediumModel.htmlMedia = newHtmlMedia;
-                      });
-                    },
-                    "Document contents",
-                  );
-                })
+            _editButtons(ownerId),
           ]),
       topicContainer(widget.app, context,
           title: 'Html as text',
@@ -256,33 +220,21 @@ class _HtmlComponentEditorState extends State<HtmlComponentEditor> {
                 )),
           ]),
 /*
-      button(widget.app, context, label: 'Test html parsing', onPressed: () {
-        var myModel = widget.model;
-        if (myModel.htmlMedia != null) {
-          var newHtml = myModel.html;
-          if (newHtml != null) {
-            for (var platformMedium in myModel.htmlMedia!) {
-              newHtml = replacePlatformMedium(
-                  PlatformMediumType.Photo,
-                  myModel.html!,
-                  platformMedium.documentID,
-                  platformMedium.medium!.url!);
-            }
-          }
-          setState(() {
-            widget.model.html = newHtml;
-          });
-        }
-      }),
-*/
       topicContainer(widget.app, context,
-          title: 'Images',
+          title: 'Media',
           collapsible: true,
           collapsed: true,
           children: [
-            _images(context, widget.model.htmlMedia) ??
-                text(widget.app, context, 'No images'),
+            HtmlWithPlatformMediumComponents.getWidget(
+              widget.app,
+              context,
+              widget.model,
+              (accepted, model) {
+                widget.model.htmlMedia = model.htmlMedia;
+              },
+            ),
           ]),
+*/
       topicContainer(widget.app, context,
           title: 'Condition',
           collapsible: true,
@@ -290,57 +242,35 @@ class _HtmlComponentEditorState extends State<HtmlComponentEditor> {
           children: [
             if (readOnlyConditions)
               text(widget.app, context,
-                  'Access rights can not be changed because the html component contains images'),
+                  'Access rights can not be changed because the html component contains media (which have inherited these rights)'),
             getListTile(context, widget.app,
                 leading: Icon(Icons.security),
                 title: ConditionsSimpleWidget(
                   app: widget.app,
                   value: widget.model.conditions!,
+                  readOnly: readOnlyConditions
                 )),
           ]),
     ]);
   }
 
-  Widget? _images(BuildContext context,
-      List<HtmlPlatformMediumModel>? htmlPlatformMediumModels) {
-    var widgets = <Widget>[];
-    if (htmlPlatformMediumModels != null) {
-      for (var i = 0; i < htmlPlatformMediumModels.length; i++) {
-        var item = htmlPlatformMediumModels[i];
-        var medium = item.medium;
-        if (medium != null) {
-          widgets.add(GestureDetector(
-              onTap: () {
-                Registry.registry()!.getMediumApi().showPhotosPlatform(
-                    context,
-                    widget.app,
-                    htmlPlatformMediumModels.map((e) => e.medium!).toList(),
-                    i);
-              },
-              child: Padding(
-                  padding: const EdgeInsets.all(5),
-                  child: Tooltip(
-                      message: medium.documentID + " - " + medium.url!,
-                      child: Image.network(
-                    medium.url!,
+  Widget _editButtons(String ownerId) {
+    return Row(children: [Spacer(), GestureDetector(
+        child: Icon(Icons.edit),
+        onTap: () {
+          AbstractTextPlatform.platform!.updateHtmlWithPlatformMedium(
+            context,
+            widget.app,
+            ownerId,
+            widget.model,
+                (valueX) {
 
-                    //            height: height,
-                  )))));
-        }
-      }
-
-      return GridView.extent(
-          maxCrossAxisExtent: 200,
-          padding: const EdgeInsets.all(0),
-          mainAxisSpacing: 20,
-          crossAxisSpacing: 20,
-          physics: const ScrollPhysics(),
-          // to disable GridView's scrolling
-          shrinkWrap: true,
-          children: widgets);
-    } else {
-      return null;
-    }
+              setState(() {
+              });
+            },
+            "Document contents",
+          );
+        })]);
   }
 
   Widget _htmlWidget(
