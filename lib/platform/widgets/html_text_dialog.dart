@@ -15,7 +15,7 @@ import 'handle_medium_model.dart';
 import 'html_with_platform_medium_components.dart';
 
 typedef void AddMediaHtml(String html);
-typedef Future<void> MediaAction(AddMediaHtml addMediaHtml);
+typedef Future<void> MediaAction(AddMediaHtml addMediaHtml, String html);
 
 class HtmlTextDialog extends StatefulWidget {
   static double width(BuildContext context) =>
@@ -142,7 +142,7 @@ class _HtmlTextDialogState extends State<HtmlTextDialog> {
 
   Widget _mediaButton() {
     return iconButton(widget.app, context,
-        icon: Icon(Icons.perm_media_outlined), onPressed: () async => await widget.mediaAction!((String value) => addHtml(value)));
+        icon: Icon(Icons.perm_media_outlined), onPressed: () async => await widget.mediaAction!((String value) => addHtml(value, ), await controller.getText()));
   }
 
   void addHtml(String html) {

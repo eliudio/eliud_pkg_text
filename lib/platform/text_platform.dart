@@ -88,13 +88,15 @@ abstract class AbstractTextPlatform {
       updatedHtml(value);
     }, htmlModel.html ?? '', isWeb,
         extraIcons: extraIcons,
-        mediaAction: (AddMediaHtml addMediaHtml) async =>
-            await HtmlWithPlatformMediumComponents.openIt(
-                app, context, htmlModel, (accepted, model) {
-                  if (accepted) {
-                    htmlModel.htmlMedia = model.htmlMedia;
-                  }
-              }, addMediaHtml: addMediaHtml));
+        mediaAction: (AddMediaHtml addMediaHtml, String html) async {
+          htmlModel.html = html;
+          await HtmlWithPlatformMediumComponents.openIt(
+              app, context, htmlModel, (accepted, model) {
+            if (accepted) {
+              htmlModel.htmlMedia = model.htmlMedia;
+            }
+          }, addMediaHtml: addMediaHtml);
+        });
   }
 
   Widget htmlWidget(
