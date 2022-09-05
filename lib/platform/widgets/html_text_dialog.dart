@@ -62,8 +62,7 @@ class HtmlTextDialog extends StatefulWidget {
     String title,
     UpdatedHtml updatedHtml,
     String initialValue,
-    bool isWeb,
-     {
+    bool isWeb, {
     List<Widget>? extraIcons,
     required MediaAction? mediaAction,
   }) {
@@ -142,7 +141,17 @@ class _HtmlTextDialogState extends State<HtmlTextDialog> {
 
   Widget _mediaButton() {
     return iconButton(widget.app, context,
-        icon: Icon(Icons.perm_media_outlined), onPressed: () async => await widget.mediaAction!((String value) => addHtml(value, ), await controller.getText()));
+        icon: Icon(Icons.perm_media_outlined), onPressed: () async {
+      try {
+        await widget.mediaAction!(
+            (String value) => addHtml(
+                  value,
+                ),
+            await controller.getText());
+      } catch (e) {
+        print(e);
+      }
+    });
   }
 
   void addHtml(String html) {

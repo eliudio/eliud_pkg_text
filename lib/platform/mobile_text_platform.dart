@@ -6,6 +6,7 @@ import 'package:eliud_core/tools/action/action_model.dart';
 import 'package:eliud_pkg_text/model/html_with_platform_medium_model.dart';
 import 'package:eliud_pkg_text/platform/text_platform.dart';
 import 'package:eliud_pkg_text/platform/widgets/handle_member_medium_model.dart';
+import 'package:eliud_pkg_text/platform/widgets/html_text_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
@@ -21,9 +22,8 @@ class MobileTextPlatform extends AbstractTextPlatform {
     BuildContext context,
     AppModel app,
     String ownerId,
-    MemberMediumModelCallback memberMediumModelCallback,
-    MemberMediumAccessibleByGroup accessibleByGroup,
     UpdatedHtml updatedHtml,
+    MediaAction mediaAction,
     String title,
     String initialValue, {
     List<Widget>? extraIcons,
@@ -33,9 +33,8 @@ class MobileTextPlatform extends AbstractTextPlatform {
       context,
       app,
       ownerId,
-      memberMediumModelCallback,
-      accessibleByGroup,
       updatedHtml,
+      mediaAction,
       title,
       initialValue,
       false,

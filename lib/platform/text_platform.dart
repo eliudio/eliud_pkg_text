@@ -1,5 +1,6 @@
 import 'package:eliud_core/model/member_medium_model.dart';
 import 'package:eliud_core/model/storage_conditions_model.dart';
+import 'package:eliud_core/tools/random.dart';
 import 'package:eliud_pkg_text/model/html_with_platform_medium_model.dart';
 import 'package:eliud_pkg_text/platform/widgets/handle_member_medium_model.dart';
 import 'package:eliud_pkg_text/platform/widgets/handle_platform_medium_model.dart';
@@ -25,9 +26,8 @@ abstract class AbstractTextPlatform {
     BuildContext context,
     AppModel app,
     String ownerId,
-    MemberMediumModelCallback memberMediumModelCallback,
-    MemberMediumAccessibleByGroup accessibleByGroup,
     UpdatedHtml updatedHtml,
+    MediaAction mediaAction,
     String title,
     String initialValue, {
     List<Widget>? extraIcons,
@@ -55,9 +55,8 @@ abstract class AbstractTextPlatform {
     BuildContext context,
     AppModel app,
     String ownerId,
-    MemberMediumModelCallback memberMediumModelCallback,
-    MemberMediumAccessibleByGroup accessibleByGroup,
     UpdatedHtml updatedHtml,
+    MediaAction mediaAction,
     String title,
     String initialValue,
     bool isWeb, {
@@ -66,7 +65,7 @@ abstract class AbstractTextPlatform {
   }) {
     HtmlTextDialog.open(
         context, app, ownerId, title, updatedHtml, initialValue, isWeb,
-        extraIcons: extraIcons, mediaAction: null);
+        extraIcons: extraIcons, mediaAction: mediaAction);
   }
 
   /* Protected updateHtmlWithPlatformMediumWebYesNo
@@ -89,9 +88,10 @@ abstract class AbstractTextPlatform {
     }, htmlModel.html ?? '', isWeb,
         extraIcons: extraIcons,
         mediaAction: (AddMediaHtml addMediaHtml, String html) async {
-          htmlModel.html = html;
+          var tempModel = HtmlWithPlatformMediumModel(documentID: newRandomKey(), appId: app.documentID, html: html, htmlMedia: htmlModel.htmlMedia, conditions: htmlModel.conditions);
+          // the HtmlWithPlatformMediumComponents uses (unfortunately) a HtmlWithPlatformMediumModel, so we create one, just to be able to function, and to capture htmlMedia
           await HtmlWithPlatformMediumComponents.openIt(
-              app, context, htmlModel, (accepted, model) {
+              app, context, tempModel, (accepted, model) {
             if (accepted) {
               htmlModel.htmlMedia = model.htmlMedia;
             }

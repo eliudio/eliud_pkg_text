@@ -8,6 +8,7 @@ import 'package:eliud_pkg_text/model/html_platform_medium_model.dart';
 import 'package:eliud_pkg_text/model/html_with_platform_medium_model.dart';
 import 'package:eliud_pkg_text/platform/text_platform.dart';
 import 'package:eliud_pkg_text/platform/widgets/handle_member_medium_model.dart';
+import 'package:eliud_pkg_text/platform/widgets/html_text_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
@@ -25,9 +26,8 @@ class WebTextPlatform extends AbstractTextPlatform {
     BuildContext context,
     AppModel app,
     String ownerId,
-    MemberMediumModelCallback memberMediumModelCallback,
-    MemberMediumAccessibleByGroup accessibleByGroup,
     UpdatedHtml updatedHtml,
+    MediaAction mediaAction,
     String title,
     String initialValue, {
     List<Widget>? extraIcons,
@@ -37,9 +37,8 @@ class WebTextPlatform extends AbstractTextPlatform {
       context,
       app,
       ownerId,
-      memberMediumModelCallback,
-      accessibleByGroup,
       updatedHtml,
+      mediaAction,
       title,
       initialValue,
       false,
