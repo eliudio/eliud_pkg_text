@@ -7,7 +7,7 @@ import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:eliud_core/core/navigate/router.dart' as router;
 import 'package:url_launcher/url_launcher.dart';
 
-Widget htmlSolution(
+Widget mobileHtmlSolution(
     BuildContext context, AppModel app, String html,
     {List<HtmlPlatformMediumModel>? htmlPlatformMedia, bool? webView}) {
   return HtmlWidget(
