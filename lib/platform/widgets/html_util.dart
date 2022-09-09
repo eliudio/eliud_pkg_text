@@ -103,7 +103,7 @@ const kVideoHtml = """
 """;
 
 const kImgHtml = """
-<img src="\${IMG_URL}" \${HTML_REF_LABEL}="\${HTML_REF_ID}"/> -->
+<img src="\${IMG_URL}" \${HTML_REF_LABEL}="\${HTML_REF_ID}"/> 
 """;
 
 String constructHtmlForImg(String url, String htmlRefLabel, String htmlReference) {

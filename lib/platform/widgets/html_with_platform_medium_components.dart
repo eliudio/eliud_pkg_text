@@ -7,6 +7,7 @@ import 'package:eliud_core/model/storage_conditions_model.dart';
 import 'package:eliud_core/style/frontend/has_button.dart';
 import 'package:eliud_core/style/frontend/has_container.dart';
 import 'package:eliud_core/tools/component/component_spec.dart';
+import 'package:eliud_core/tools/screen_size.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
 import 'package:eliud_core/style/frontend/has_dialog.dart';
 import 'package:eliud_core/style/frontend/has_progress_indicator.dart';
@@ -84,6 +85,7 @@ class HtmlWithPlatformMediumComponents extends StatefulWidget {
 class _HtmlWithPlatformMediumComponentsState
     extends State<HtmlWithPlatformMediumComponents> {
   double? uploadingProgress;
+  Offset? onTapPosition = null;
 
   @override
   Widget build(BuildContext context) {
@@ -128,10 +130,17 @@ class _HtmlWithPlatformMediumComponentsState
         var medium = item.medium;
         if (medium != null) {
           widgets.add(GestureDetector(
+              onTapDown: (TapDownDetails details) => onTapPosition = details.globalPosition,
               onTap: () async {
+                var x = onTapPosition == null
+                    ? fullScreenWidth(context) / 2
+                    : onTapPosition!.dx;
+                var y = onTapPosition == null
+                    ? fullScreenHeight(context) / 2
+                    : onTapPosition!.dy;
                 var value = await showMenu<int>(
                   context: context,
-                  position: RelativeRect.fromLTRB(100, 100, 100, 100),
+                  position: RelativeRect.fromLTRB(x, y, x, y),
                   items: [
                     if (widget.addMediaHtml != null)
                       PopupMenuItem<int>(child: const Text('Select'), value: 0),
@@ -178,7 +187,7 @@ class _HtmlWithPlatformMediumComponentsState
                             isUp: false, item: item));
                     break;
                   case 4:
-                    if (!htmlWithPMM.model.html.contains(item.htmlReference)) {
+                    if ((item.htmlReference == null) || ((htmlWithPMM.model.html != null) && (!htmlWithPMM.model.html.contains(item.htmlReference)))) {
                       BlocProvider.of<HtmlPlatformMediumBloc>(context).add(
                           DeleteItemEvent<HtmlWithPlatformMediumModel,
                               HtmlPlatformMediumModel>(
@@ -189,7 +198,8 @@ class _HtmlWithPlatformMediumComponentsState
                     break;
                 }
               },
-              child: item == htmlWithPMM.currentEdit
+              child: Tooltip(
+                  message: _message(item), child : (item == htmlWithPMM.currentEdit
                   ? Container(
                       decoration: BoxDecoration(
                         border: Border.all(color: Colors.red, width: 1),
@@ -201,7 +211,7 @@ class _HtmlWithPlatformMediumComponentsState
                   : Image.network(
                       medium.urlThumbnail!,
                       //            height: height,
-                    )));
+                    )))));
         }
       }
       if (uploadingProgress == null) {
@@ -263,6 +273,14 @@ class _HtmlWithPlatformMediumComponentsState
           children: widgets);
     } else {
       return null;
+    }
+  }
+
+  String _message(HtmlPlatformMediumModel? item) {
+    if (item == null) {
+      return '?';
+    } else {
+      return (((item.medium == null) || (item.medium!.base == null)) ? 'no name' : item.medium!.base!) + '.' + (((item.medium == null) || (item.medium!.ext == null)) ? 'no ext' : item.medium!.ext!);
     }
   }
 }
