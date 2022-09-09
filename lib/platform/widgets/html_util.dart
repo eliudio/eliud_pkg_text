@@ -23,9 +23,12 @@ HtmlWithPlatformMediumModel reviewLinksForHtmlWithPlatformMediumModel(HtmlWithPl
                 medium.url!);
           }
           var newHtml = document.outerHtml;
-          return htmlWithPlatformMediumModel.copyWith(html: newHtml);
+          print("NEW: " + newHtml);
+          print("OLD: " + html!);
+          html = newHtml;
         }
       }
+      return htmlWithPlatformMediumModel.copyWith(html: html);
     }
   }
   return htmlWithPlatformMediumModel;

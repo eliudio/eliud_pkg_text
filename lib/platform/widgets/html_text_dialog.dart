@@ -11,7 +11,6 @@ import 'package:flutter/material.dart';
 import 'package:html_editor_enhanced/html_editor.dart';
 
 import '../text_platform.dart';
-import 'handle_medium_model.dart';
 import 'html_with_platform_medium_components.dart';
 
 typedef void AddMediaHtml(String html);

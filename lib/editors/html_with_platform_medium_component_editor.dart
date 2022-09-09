@@ -20,7 +20,6 @@ import 'package:eliud_pkg_text/model/html_with_platform_medium_model.dart';
 import 'package:eliud_pkg_text/platform/text_platform.dart';
 import 'package:flutter/material.dart';
 import '../model/html_platform_medium_model.dart';
-import '../platform/widgets/handle_platform_medium_model.dart';
 import '../platform/widgets/html_util.dart';
 import '../platform/widgets/html_with_platform_medium_components.dart';
 
