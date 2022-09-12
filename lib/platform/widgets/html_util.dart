@@ -23,8 +23,6 @@ HtmlWithPlatformMediumModel reviewLinksForHtmlWithPlatformMediumModel(HtmlWithPl
                 medium.url!);
           }
           var newHtml = document.outerHtml;
-          print("NEW: " + newHtml);
-          print("OLD: " + html!);
           html = newHtml;
         }
       }
