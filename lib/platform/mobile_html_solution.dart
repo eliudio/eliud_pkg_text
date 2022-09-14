@@ -33,7 +33,7 @@ Widget mobileHtmlSolution(
               print("Splitting $rest didn't give 2 items");
             } else {
               var appId = split[0];
-              if (appId != '#' + app.documentID) {
+              if (appId.toUpperCase() != '#' + app.documentID.toUpperCase()) {
                 print("appId is " + appId + " which isn't expected");
               }
               var pageId = split[1];
