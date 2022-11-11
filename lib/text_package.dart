@@ -12,6 +12,10 @@ import 'model/abstract_repository_singleton.dart';
 import 'model/component_registry.dart';
 import 'model/repository_singleton.dart';
 
+import 'package:eliud_pkg_text/text_package_stub.dart'
+if (dart.library.io) 'text_mobile_package.dart'
+if (dart.library.html) 'text_web_package.dart';
+
 abstract class TextPackage extends Package {
   TextPackage() : super('eliud_pkg_text');
 
@@ -33,4 +37,6 @@ abstract class TextPackage extends Package {
 
     AbstractRepositorySingleton.singleton = RepositorySingleton();
   }
+
+  static TextPackage instance() => getTextPackage();
 }

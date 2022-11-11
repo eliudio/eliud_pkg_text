@@ -2,6 +2,8 @@ import 'package:eliud_pkg_text/platform/text_platform.dart';
 import 'package:eliud_pkg_text/platform/web_text_platform.dart';
 import 'package:eliud_pkg_text/text_package.dart';
 
+TextPackage getTextPackage() => TextWebPackage();
+
 class TextWebPackage extends TextPackage {
   @override
   void init() {
@@ -19,4 +21,5 @@ class TextWebPackage extends TextPackage {
       identical(this, other) ||
           other is TextWebPackage &&
               runtimeType == other.runtimeType;
+
 }
