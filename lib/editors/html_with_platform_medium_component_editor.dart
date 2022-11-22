@@ -20,6 +20,7 @@ import 'package:eliud_pkg_text/model/html_with_platform_medium_model.dart';
 import 'package:eliud_pkg_text/platform/text_platform.dart';
 import 'package:flutter/material.dart';
 import '../model/html_platform_medium_model.dart';
+import '../model/html_with_platform_medium_entity.dart';
 import '../platform/widgets/html_util.dart';
 import '../platform/widgets/html_with_platform_medium_components.dart';
 
@@ -78,9 +79,9 @@ class HtmlWithPlatformMediumComponentEditorConstructor
   }
 
   @override
-  revalidateModel(AppModel app, model) async {
-    var myModel = model as HtmlWithPlatformMediumModel;
-    return reviewLinksForHtmlWithPlatformMediumModel(myModel);
+  revalidateEntity(AppModel app, entity) async {
+    var myEntity = entity as HtmlWithPlatformMediumEntity;
+    return reviewLinksForHtmlWithPlatformMediumEntity(app, myEntity);
   }
 }
 

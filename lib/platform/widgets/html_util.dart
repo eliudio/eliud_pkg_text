@@ -1,3 +1,5 @@
+import 'package:eliud_core/model/abstract_repository_singleton.dart';
+import 'package:eliud_core/model/app_model.dart';
 import 'package:eliud_core/model/platform_medium_model.dart';
 import 'package:eliud_core/model/member_medium_model.dart';
 import 'package:eliud_core/tools/tool_set.dart';
@@ -5,17 +7,18 @@ import 'package:html/parser.dart' show parse;
 
 import 'package:html/dom.dart';
 
+import '../../model/html_with_platform_medium_entity.dart';
 import '../../model/html_with_platform_medium_model.dart';
 
-HtmlWithPlatformMediumModel reviewLinksForHtmlWithPlatformMediumModel(HtmlWithPlatformMediumModel htmlWithPlatformMediumModel) {
-  if (htmlWithPlatformMediumModel.htmlMedia != null) {
-    var html = htmlWithPlatformMediumModel.html;
+Future<HtmlWithPlatformMediumEntity> reviewLinksForHtmlWithPlatformMediumEntity(AppModel app, HtmlWithPlatformMediumEntity htmlWithPlatformMediumEntity) async {
+  if (htmlWithPlatformMediumEntity.htmlMedia != null) {
+    var html = htmlWithPlatformMediumEntity.html;
     if (html != null) {
       var document = parse(html);
-      for (var platformMedium in htmlWithPlatformMediumModel.htmlMedia!) {
+      for (var platformMedium in htmlWithPlatformMediumEntity.htmlMedia!) {
         var htmlReference = platformMedium.htmlReference;
         if (htmlReference != null) {
-          var medium = platformMedium.medium;
+          var medium = await platformMediumRepository(appId: app.documentID)!.get(platformMedium.mediumId);
           if ((medium != null) && (medium.mediumType != null)) {
             document = replaceMedium(platformMediumTypeToHtmlMediumType(
                 medium.mediumType!), document,
@@ -26,10 +29,10 @@ HtmlWithPlatformMediumModel reviewLinksForHtmlWithPlatformMediumModel(HtmlWithPl
           html = newHtml;
         }
       }
-      return htmlWithPlatformMediumModel.copyWith(html: html);
+      return htmlWithPlatformMediumEntity.copyWith(html: html);
     }
   }
-  return htmlWithPlatformMediumModel;
+  return htmlWithPlatformMediumEntity;
 }
 
 // replaces existing link with a new link
