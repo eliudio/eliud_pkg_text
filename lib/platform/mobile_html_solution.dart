@@ -9,10 +9,9 @@ import 'package:url_launcher/url_launcher.dart';
 
 Widget mobileHtmlSolution(
     BuildContext context, AppModel app, String html,
-    {List<HtmlPlatformMediumModel>? htmlPlatformMedia, bool? webView}) {
+    {List<HtmlPlatformMediumModel>? htmlPlatformMedia}) {
   return HtmlWidget(
     html,
-    webView: webView == null? false : webView,
     onTapUrl: (url) async {
       var homeURL = app.homeURL;
       if (homeURL != null) {
