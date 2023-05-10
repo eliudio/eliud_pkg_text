@@ -17,7 +17,9 @@ dependencies:
   eliud_pkg_medium:
     path: ../eliud_pkg_medium
 
-  html_editor_enhanced: 2.5.0
+  html_editor_enhanced:
+    path: ../../html-editor-enhanced
+
   flutter_widget_from_html: any
   flutter_widget_from_html_core: any
   pointer_interceptor: 0.9.3+3
