@@ -4,7 +4,7 @@ Eliud text package
 
 ## Dependency diagram
 
-![Dependency diagram](https://github.com/eliudio/eliud_pkg_text/blob/main/depends.jpg)
+![Dependency diagram](https://github.com/eliudio/eliud_pkg_text/raw/main/depends.jpg)
 
 ## eliud.io
 
