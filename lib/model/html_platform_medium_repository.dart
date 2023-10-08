@@ -36,6 +36,7 @@ import 'package:eliud_core/core/base/repository_base.dart';
 
 typedef HtmlPlatformMediumModelTrigger(List<HtmlPlatformMediumModel?> list);
 typedef HtmlPlatformMediumChanged(HtmlPlatformMediumModel? value);
+typedef HtmlPlatformMediumErrorHandler(o, e);
 
 abstract class HtmlPlatformMediumRepository extends RepositoryBase<HtmlPlatformMediumModel, HtmlPlatformMediumEntity> {
   Future<HtmlPlatformMediumEntity> addEntity(String documentID, HtmlPlatformMediumEntity value);
@@ -52,7 +53,7 @@ abstract class HtmlPlatformMediumRepository extends RepositoryBase<HtmlPlatformM
 
   StreamSubscription<List<HtmlPlatformMediumModel?>> listen(HtmlPlatformMediumModelTrigger trigger, {String? orderBy, bool? descending, Object? startAfter, int? limit, int? privilegeLevel, EliudQuery? eliudQuery });
   StreamSubscription<List<HtmlPlatformMediumModel?>> listenWithDetails(HtmlPlatformMediumModelTrigger trigger, {String? orderBy, bool? descending, Object? startAfter, int? limit, int? privilegeLevel, EliudQuery? eliudQuery });
-  StreamSubscription<HtmlPlatformMediumModel?> listenTo(String documentId, HtmlPlatformMediumChanged changed);
+  StreamSubscription<HtmlPlatformMediumModel?> listenTo(String documentId, HtmlPlatformMediumChanged changed, {HtmlPlatformMediumErrorHandler? errorHandler});
   void flush();
   
   String? timeStampToString(dynamic timeStamp);

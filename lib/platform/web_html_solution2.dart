@@ -8,6 +8,7 @@ import 'dart:ui' as ui;
 
 /*
  * See: webHtmlSolution in web_html_solution.dart
+ * This has now become obsolete as apparently the latest version of HtmlWidget works fine on web and mobile without the below funny stuff
  *
  * webHtmlSolution provide similar functionality, ie present html. However
  *    webHtmlSolution does not support video.

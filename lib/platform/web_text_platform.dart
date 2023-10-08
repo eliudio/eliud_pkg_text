@@ -13,6 +13,8 @@ import 'package:html_editor_enhanced/utils/utils.dart';
 import 'dart:html' as html;
 import 'dart:ui' as ui;
 
+import 'mobile_html_solution.dart';
+
 class WebTextPlatform extends AbstractTextPlatform {
   @override
   void updateHtmlWithMemberMediumCallback(
@@ -63,6 +65,9 @@ class WebTextPlatform extends AbstractTextPlatform {
   Widget htmlWidgetWithPlatformMedia(
       BuildContext context, AppModel app, String html,
       {List<HtmlPlatformMediumModel>? htmlPlatformMedia}) {
+    return mobileHtmlSolution(context, app, html, htmlPlatformMedia: htmlPlatformMedia);
+/*
+    * This has now become obsolete as apparently the latest version of HtmlWidget works fine on web and mobile without the below funny stuff
     if (html.toUpperCase().contains("<VIDEO")) {
       return webHtmlSolution2(
           context, html, );
@@ -70,5 +75,6 @@ class WebTextPlatform extends AbstractTextPlatform {
       return webHtmlSolution(
           context, app, html, htmlPlatformMedia: htmlPlatformMedia);
     }
+*/
   }
 }

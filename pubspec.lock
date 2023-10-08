@@ -413,26 +413,26 @@ packages:
     dependency: "direct main"
     description:
       name: eliud_core
-      sha256: d4519206f17b8778f7e1b0a2cf2ca97f97e27baa083039d3f29b80934d5a812b
+      sha256: "89952d9b8b20188615e6e65c6581804778bf82b8992ff641f69f21c933053e48"
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.14"
+    version: "1.0.16+2"
   eliud_generator:
     dependency: "direct dev"
     description:
       name: eliud_generator
-      sha256: "78ab7af510b91918ee8c2b9d1221c3a0b7fafb09ee9fab5394a81c6a2ed5b9c4"
+      sha256: "4618a1a464c3526557ebe808c3c626925d67c413eb094f6855ad5a49c4da5df9"
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.6"
+    version: "1.0.7"
   eliud_pkg_medium:
     dependency: "direct main"
     description:
       name: eliud_pkg_medium
-      sha256: "2f8c7b76178dc25a2ae0ec5cfe798bff42d968d4416fc7368f20d3ebeff29f1d"
+      sha256: "792db63fe48e91883b6964cde0a25d2d18c9f754da1ae5f544c86e29813c9770"
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.1+12"
+    version: "1.0.1+17"
   equatable:
     dependency: "direct main"
     description:
@@ -674,10 +674,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_inappwebview
-      sha256: f73505c792cf083d5566e1a94002311be497d984b5607f25be36d685cf6361cf
+      sha256: d198297060d116b94048301ee6749cd2e7d03c1f2689783f52d210a6b7aba350
       url: "https://pub.dev"
     source: hosted
-    version: "5.7.2+3"
+    version: "5.8.0"
   flutter_keyboard_visibility:
     dependency: transitive
     description:
@@ -772,18 +772,18 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_widget_from_html
-      sha256: "6c2e29e9b44a1afe3a21bf4feb47ed67e9aef43c303e7888131842fbcbb7fd37"
+      sha256: b1e35ab3137cbc313c2545c47713f3dedbcb3605b1bcf1aa82f2c2fddaaded7c
       url: "https://pub.dev"
     source: hosted
-    version: "0.10.3"
+    version: "0.10.5+3"
   flutter_widget_from_html_core:
     dependency: "direct main"
     description:
       name: flutter_widget_from_html_core
-      sha256: b733a240388736fcf40692920033dc3a749155dc49c840f6c0e4a732f553908b
+      sha256: a7dc9eb4bfdef4ea06d114528bf52a7efcdfc6ba46d933957c25067f17c1c6b4
       url: "https://pub.dev"
     source: hosted
-    version: "0.10.3"
+    version: "0.10.5"
   font_awesome_flutter:
     dependency: transitive
     description:
@@ -804,58 +804,50 @@ packages:
     dependency: transitive
     description:
       name: fwfh_cached_network_image
-      sha256: "396ebb3a01978aa75cad416656abef6ffa31e12de71cf2ccf5ff4173bd35a3eb"
+      sha256: "3de22aa3a6943c968e0d9fbcba4463b3dbbf7103171d62c84b6c672fb83eebdf"
       url: "https://pub.dev"
     source: hosted
-    version: "0.7.0+5"
+    version: "0.7.0+7"
   fwfh_chewie:
     dependency: transitive
     description:
       name: fwfh_chewie
-      sha256: "6474630c084cc90fbd348cea007d3cb41d62478460f75364e591f2baf26abccd"
+      sha256: "0b51a1c976bb74da5e8e45d545c74cb54a7168ad3938dd77103a7aee485f55fa"
       url: "https://pub.dev"
     source: hosted
-    version: "0.7.1+2"
+    version: "0.7.1+4"
   fwfh_just_audio:
     dependency: transitive
     description:
       name: fwfh_just_audio
-      sha256: "7b97696c264f36f7921c2f94e95c1d4186021699d85ca19aaa280f6b9700fb35"
+      sha256: "237b93a4cb9f0495a4b51940f361adda2a5abd57231dd44f07459db00144a6cd"
       url: "https://pub.dev"
     source: hosted
-    version: "0.9.0+2"
+    version: "0.9.0+3"
   fwfh_svg:
     dependency: transitive
     description:
       name: fwfh_svg
-      sha256: "398e8eec980e7b2868481489fd423634f7e337bc04c37508db6f84868b982120"
+      sha256: "176b3c1e47fe88dae0a033bd893e0ace03601784ab74af7826607346e50f5718"
       url: "https://pub.dev"
     source: hosted
-    version: "0.8.0+2"
-  fwfh_text_style:
-    dependency: transitive
-    description:
-      name: fwfh_text_style
-      sha256: f0883ccb64b7bb3f2a7a091542c2e834fc3e2a6aa54158f46b3c43b55675d8f7
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.22.8+3"
+    version: "0.8.0+3"
   fwfh_url_launcher:
     dependency: transitive
     description:
       name: fwfh_url_launcher
-      sha256: ff7f7a877c20fdbea24b453a0cd846a03ef1ea6b933943a7d37082388c27e849
+      sha256: e2b377dce049d58d8cb9573773d94ca3015f3372cf84f6b5dbcf089a2ea43436
       url: "https://pub.dev"
     source: hosted
-    version: "0.9.0+2"
+    version: "0.9.0+3"
   fwfh_webview:
     dependency: transitive
     description:
       name: fwfh_webview
-      sha256: "7ebd3dff551d7281dd3fbb9f5523a8455592665ff75459ca84871ebbebe864a8"
+      sha256: "90a8dda0695403cf57abd7e8b83f6fb1f1a12933930a0bf9cac7cafb06e06a18"
       url: "https://pub.dev"
     source: hosted
-    version: "0.7.0+2"
+    version: "0.9.0+2"
   glob:
     dependency: transitive
     description:
@@ -1761,10 +1753,10 @@ packages:
     dependency: transitive
     description:
       name: webview_flutter_android
-      sha256: bca797abba472868655b5f1a6029c1132385685ee9db4713cb0e7f33076210c6
+      sha256: ddc167c6676f57c8b367d19fcbee267d6dc6adf81bd6c3cb87981d30746e0a6d
       url: "https://pub.dev"
     source: hosted
-    version: "3.9.3"
+    version: "3.10.1"
   webview_flutter_platform_interface:
     dependency: transitive
     description:

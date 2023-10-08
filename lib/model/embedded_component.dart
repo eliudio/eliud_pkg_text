@@ -153,7 +153,7 @@ class HtmlPlatformMediumInMemoryRepository implements HtmlPlatformMediumReposito
   }
   
   @override
-  StreamSubscription<HtmlPlatformMediumModel> listenTo(String documentId, HtmlPlatformMediumChanged changed) {
+  StreamSubscription<HtmlPlatformMediumModel> listenTo(String documentId, HtmlPlatformMediumChanged changed, {HtmlPlatformMediumErrorHandler? errorHandler}) {
     throw UnimplementedError();
   }
 

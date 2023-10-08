@@ -140,13 +140,13 @@ class HtmlWithPlatformMediumCache implements HtmlWithPlatformMediumRepository {
   }
 
   @override
-  StreamSubscription<HtmlWithPlatformMediumModel?> listenTo(String documentId, HtmlWithPlatformMediumChanged changed) {
+  StreamSubscription<HtmlWithPlatformMediumModel?> listenTo(String documentId, HtmlWithPlatformMediumChanged changed, {HtmlWithPlatformMediumErrorHandler? errorHandler}) {
     return reference.listenTo(documentId, ((value) {
       if (value != null) {
         fullCache[value.documentID] = value;
       }
       changed(value);
-    }));
+    }), errorHandler: errorHandler);
   }
 
   static Future<HtmlWithPlatformMediumModel> refreshRelations(HtmlWithPlatformMediumModel model) async {

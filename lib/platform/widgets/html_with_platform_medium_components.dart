@@ -109,8 +109,7 @@ class _HtmlWithPlatformMediumComponentsState
               },
             ),
           _images(context, htmlWithPMM.model, htmlWithPMM.model.htmlMedia,
-                  htmlWithPMM) ??
-              text(widget.app, context, 'No media'),
+                  htmlWithPMM),
         ]);
       } else {
         return progressIndicator(widget.app, context);
@@ -118,7 +117,7 @@ class _HtmlWithPlatformMediumComponentsState
     });
   }
 
-  Widget? _images(
+  Widget _images(
       BuildContext context,
       HtmlWithPlatformMediumModel htmlWithPlatformMediumModel,
       List<HtmlPlatformMediumModel>? htmlPlatformMediumModels,
@@ -130,7 +129,8 @@ class _HtmlWithPlatformMediumComponentsState
         var medium = item.medium;
         if (medium != null) {
           widgets.add(GestureDetector(
-              onTapDown: (TapDownDetails details) => onTapPosition = details.globalPosition,
+              onTapDown: (TapDownDetails details) =>
+              onTapPosition = details.globalPosition,
               onTap: () async {
                 var x = onTapPosition == null
                     ? fullScreenWidth(context) / 2
@@ -187,20 +187,26 @@ class _HtmlWithPlatformMediumComponentsState
                             isUp: false, item: item));
                     break;
                   case 4:
-                    if ((item.htmlReference == null) || ((htmlWithPMM.model.html != null) && (!htmlWithPMM.model.html.contains(item.htmlReference)))) {
+                    if ((item.htmlReference == null) ||
+                        ((htmlWithPMM.model.html != null) &&
+                            (!htmlWithPMM.model.html.contains(
+                                item.htmlReference)))) {
                       BlocProvider.of<HtmlPlatformMediumBloc>(context).add(
                           DeleteItemEvent<HtmlWithPlatformMediumModel,
                               HtmlPlatformMediumModel>(
                               itemModel: item));
                     } else {
-                      openErrorDialog(widget.app, context, widget.app.documentID + '/_error', title: 'Problem', errorMessage: "This medium is used in the html so I can't delete it");
+                      openErrorDialog(widget.app, context,
+                          widget.app.documentID + '/_error', title: 'Problem',
+                          errorMessage: "This medium is used in the html so I can't delete it");
                     }
                     break;
                 }
               },
               child: Tooltip(
-                  message: _message(item), child : (item == htmlWithPMM.currentEdit
-                  ? Container(
+                  message: _message(item),
+                  child: (item == htmlWithPMM.currentEdit
+                      ? Container(
                       decoration: BoxDecoration(
                         border: Border.all(color: Colors.red, width: 1),
                       ),
@@ -208,12 +214,13 @@ class _HtmlWithPlatformMediumComponentsState
                         medium.urlThumbnail!,
                         //            height: height,
                       ))
-                  : Image.network(
-                      medium.urlThumbnail!,
-                      //            height: height,
-                    )))));
+                      : Image.network(
+                    medium.urlThumbnail!,
+                    //            height: height,
+                  )))));
         }
       }
+    }
       if (uploadingProgress == null) {
         widgets.add(MediaButtons.platformMediaButtons(
           context,
@@ -271,9 +278,6 @@ class _HtmlWithPlatformMediumComponentsState
           // to disable GridView's scrolling
           shrinkWrap: true,
           children: widgets);
-    } else {
-      return null;
-    }
   }
 
   String _message(HtmlPlatformMediumModel? item) {

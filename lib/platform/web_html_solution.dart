@@ -10,6 +10,8 @@ import 'package:url_launcher/url_launcher.dart';
 /*
  * See: mobileHtmlSolution in mobile_html_solution.dart
  *
+ * This has now become obsolete as apparently the latest version of HtmlWidget works fine on web and mobile without the below funny stuff
+ *
  * mobileHtmlSolution and webHtmlSolution are almost identical with the exception of
  *    mobileHtmlSolution imports package:flutter_widget_from_html/flutter_widget_from_html.dart which supports flutterweb, and
  *    webHtmlSolution imports flutter_widget_from_html_core/flutter_widget_from_html_core.dart which does not support flutterweb
