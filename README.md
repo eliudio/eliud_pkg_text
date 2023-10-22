@@ -19,4 +19,3 @@ Eliud text package
 This package / app is part of the eliud.io project
 
 More information, see https://eliud.io
-
