@@ -8,7 +8,6 @@ import 'package:html/parser.dart' show parse;
 import 'package:html/dom.dart';
 
 import '../../model/html_with_platform_medium_entity.dart';
-import '../../model/html_with_platform_medium_model.dart';
 
 Future<HtmlWithPlatformMediumEntity> reviewLinksForHtmlWithPlatformMediumEntity(AppModel app, HtmlWithPlatformMediumEntity htmlWithPlatformMediumEntity) async {
   if (htmlWithPlatformMediumEntity.htmlMedia != null) {

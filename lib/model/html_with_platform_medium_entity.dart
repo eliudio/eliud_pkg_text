@@ -15,15 +15,10 @@
 
 import 'dart:collection';
 import 'dart:convert';
-import 'package:eliud_core/tools/random.dart';
-import 'abstract_repository_singleton.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eliud_core/core/base/entity_base.dart';
 import 'package:eliud_core/model/entity_export.dart';
-import '../tools/bespoke_entities.dart';
 import 'package:eliud_pkg_text/model/entity_export.dart';
 
-import 'package:eliud_core/tools/common_tools.dart';
 class HtmlWithPlatformMediumEntity implements EntityBase {
   final String? appId;
   final String? description;
@@ -52,12 +47,15 @@ class HtmlWithPlatformMediumEntity implements EntityBase {
 
     var htmlMediaFromMap;
     htmlMediaFromMap = map['htmlMedia'];
-    var htmlMediaList;
-    if (htmlMediaFromMap != null)
+    List<HtmlPlatformMediumEntity> htmlMediaList;
+    if (htmlMediaFromMap != null) {
       htmlMediaList = (map['htmlMedia'] as List<dynamic>)
         .map((dynamic item) =>
         HtmlPlatformMediumEntity.fromMap(item as Map, newDocumentIds: newDocumentIds)!)
         .toList();
+    } else {
+      htmlMediaList = [];
+    }
     var backgroundFromMap;
     backgroundFromMap = map['background'];
     if (backgroundFromMap != null)

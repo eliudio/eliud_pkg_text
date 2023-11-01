@@ -15,16 +15,20 @@
 
 import 'dart:async';
 import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
 
 import 'package:eliud_pkg_text/model/html_with_platform_medium_repository.dart';
 import 'package:eliud_pkg_text/model/html_with_platform_medium_list_event.dart';
 import 'package:eliud_pkg_text/model/html_with_platform_medium_list_state.dart';
 import 'package:eliud_core/tools/query/query_tools.dart';
 
+import 'html_with_platform_medium_model.dart';
+
+typedef List<HtmlWithPlatformMediumModel?> FilterHtmlWithPlatformMediumModels(List<HtmlWithPlatformMediumModel?> values);
+
 
 
 class HtmlWithPlatformMediumListBloc extends Bloc<HtmlWithPlatformMediumListEvent, HtmlWithPlatformMediumListState> {
+  final FilterHtmlWithPlatformMediumModels? filter;
   final HtmlWithPlatformMediumRepository _htmlWithPlatformMediumRepository;
   StreamSubscription? _htmlWithPlatformMediumsListSubscription;
   EliudQuery? eliudQuery;
@@ -35,9 +39,8 @@ class HtmlWithPlatformMediumListBloc extends Bloc<HtmlWithPlatformMediumListEven
   final bool? detailed;
   final int htmlWithPlatformMediumLimit;
 
-  HtmlWithPlatformMediumListBloc({this.paged, this.orderBy, this.descending, this.detailed, this.eliudQuery, required HtmlWithPlatformMediumRepository htmlWithPlatformMediumRepository, this.htmlWithPlatformMediumLimit = 5})
-      : assert(htmlWithPlatformMediumRepository != null),
-        _htmlWithPlatformMediumRepository = htmlWithPlatformMediumRepository,
+  HtmlWithPlatformMediumListBloc({this.filter, this.paged, this.orderBy, this.descending, this.detailed, this.eliudQuery, required HtmlWithPlatformMediumRepository htmlWithPlatformMediumRepository, this.htmlWithPlatformMediumLimit = 5})
+      : _htmlWithPlatformMediumRepository = htmlWithPlatformMediumRepository,
         super(HtmlWithPlatformMediumListLoading()) {
     on <LoadHtmlWithPlatformMediumList> ((event, emit) {
       if ((detailed == null) || (!detailed!)) {
@@ -78,11 +81,19 @@ class HtmlWithPlatformMediumListBloc extends Bloc<HtmlWithPlatformMediumListEven
     });
   }
 
+  List<HtmlWithPlatformMediumModel?> _filter(List<HtmlWithPlatformMediumModel?> original) {
+    if (filter != null) {
+      return filter!(original);
+    } else {
+      return original;
+    }
+  }
+
   Future<void> _mapLoadHtmlWithPlatformMediumListToState() async {
     int amountNow =  (state is HtmlWithPlatformMediumListLoaded) ? (state as HtmlWithPlatformMediumListLoaded).values!.length : 0;
     _htmlWithPlatformMediumsListSubscription?.cancel();
     _htmlWithPlatformMediumsListSubscription = _htmlWithPlatformMediumRepository.listen(
-          (list) => add(HtmlWithPlatformMediumListUpdated(value: list, mightHaveMore: amountNow != list.length)),
+          (list) => add(HtmlWithPlatformMediumListUpdated(value: _filter(list), mightHaveMore: amountNow != list.length)),
       orderBy: orderBy,
       descending: descending,
       eliudQuery: eliudQuery,
@@ -94,7 +105,7 @@ class HtmlWithPlatformMediumListBloc extends Bloc<HtmlWithPlatformMediumListEven
     int amountNow =  (state is HtmlWithPlatformMediumListLoaded) ? (state as HtmlWithPlatformMediumListLoaded).values!.length : 0;
     _htmlWithPlatformMediumsListSubscription?.cancel();
     _htmlWithPlatformMediumsListSubscription = _htmlWithPlatformMediumRepository.listenWithDetails(
-            (list) => add(HtmlWithPlatformMediumListUpdated(value: list, mightHaveMore: amountNow != list.length)),
+            (list) => add(HtmlWithPlatformMediumListUpdated(value: _filter(list), mightHaveMore: amountNow != list.length)),
         orderBy: orderBy,
         descending: descending,
         eliudQuery: eliudQuery,

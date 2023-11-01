@@ -14,29 +14,16 @@
 */
 
 import 'package:collection/collection.dart';
-import 'package:eliud_core/tools/common_tools.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eliud_core/core/base/model_base.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-import 'package:eliud_core/model/app_model.dart';
 
-import 'package:eliud_core/model/repository_export.dart';
-import 'package:eliud_core/model/abstract_repository_singleton.dart';
-import 'package:eliud_core/tools/main_abstract_repository_singleton.dart';
-import 'package:eliud_pkg_text/model/abstract_repository_singleton.dart';
-import 'package:eliud_pkg_text/model/repository_export.dart';
 import 'package:eliud_core/model/model_export.dart';
-import '../tools/bespoke_models.dart';
 import 'package:eliud_pkg_text/model/model_export.dart';
-import 'package:eliud_core/model/entity_export.dart';
-import '../tools/bespoke_entities.dart';
 import 'package:eliud_pkg_text/model/entity_export.dart';
 
 
 import 'package:eliud_pkg_text/model/html_with_platform_medium_entity.dart';
 
-import 'package:eliud_core/tools/random.dart';
 
 
 
@@ -53,7 +40,6 @@ class HtmlWithPlatformMediumModel implements ModelBase, WithAppId {
   StorageConditionsModel? conditions;
 
   HtmlWithPlatformMediumModel({required this.documentID, required this.appId, this.description, this.html, this.htmlMedia, this.background, this.conditions, })  {
-    assert(documentID != null);
   }
 
   HtmlWithPlatformMediumModel copyWith({String? documentID, String? appId, String? description, String? html, List<HtmlPlatformMediumModel>? htmlMedia, BackgroundModel? background, StorageConditionsModel? conditions, }) {

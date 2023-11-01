@@ -5,10 +5,8 @@ import 'package:eliud_core/eliud.dart';
 import 'package:eliud_core/model/app_model.dart';
 import 'package:eliud_core/model/member_model.dart';
 import 'package:eliud_core/package/package.dart';
-import 'package:eliud_core/wizards/member_dashboard_dialog_wizard.dart';
 import 'package:eliud_pkg_medium/medium_package.dart';
 import 'package:eliud_pkg_text/wizards/welcome_page_wizard.dart';
-import 'package:flutter_bloc/src/bloc_provider.dart';
 import 'package:eliud_core/model/access_model.dart';
 
 import 'model/abstract_repository_singleton.dart';

@@ -1,8 +1,5 @@
 import 'package:eliud_core/core/blocs/access/access_bloc.dart';
-import 'package:eliud_core/core/registry.dart';
 import 'package:eliud_core/model/background_model.dart';
-import 'package:eliud_core/model/platform_medium_model.dart';
-import 'package:eliud_core/style/frontend/has_button.dart';
 import 'package:eliud_core/tools/widgets/background_widget.dart';
 import 'package:eliud_core/model/app_model.dart';
 import 'package:eliud_core/model/storage_conditions_model.dart';
@@ -22,7 +19,6 @@ import 'package:flutter/material.dart';
 import '../model/html_platform_medium_model.dart';
 import '../model/html_with_platform_medium_entity.dart';
 import '../platform/widgets/html_util.dart';
-import '../platform/widgets/html_with_platform_medium_components.dart';
 
 class HtmlWithPlatformMediumComponentEditorConstructor
     extends ComponentEditorConstructor {

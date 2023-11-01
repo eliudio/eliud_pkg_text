@@ -73,6 +73,7 @@ class MemberDashboardDialogWizard extends NewAppWizardInfoWithActionSpecificatio
     } else {
       throw Exception('Unexpected class for parameters: ' + parameters.toString());
     }
+    return null;
   }
 
   @override

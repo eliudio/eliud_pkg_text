@@ -16,11 +16,9 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 
-import 'package:eliud_pkg_text/model/html_with_platform_medium_model.dart';
 import 'package:eliud_pkg_text/model/html_with_platform_medium_component_event.dart';
 import 'package:eliud_pkg_text/model/html_with_platform_medium_component_state.dart';
 import 'package:eliud_pkg_text/model/html_with_platform_medium_repository.dart';
-import 'package:flutter/services.dart';
 
 class HtmlWithPlatformMediumComponentBloc extends Bloc<HtmlWithPlatformMediumComponentEvent, HtmlWithPlatformMediumComponentState> {
   final HtmlWithPlatformMediumRepository? htmlWithPlatformMediumRepository;

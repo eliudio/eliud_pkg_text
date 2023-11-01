@@ -1,17 +1,10 @@
-import 'dart:convert';
 
 import 'package:eliud_core/model/app_model.dart';
-import 'package:eliud_core/tools/screen_size.dart';
 import 'package:eliud_pkg_text/model/html_platform_medium_model.dart';
 import 'package:eliud_pkg_text/model/html_with_platform_medium_model.dart';
 import 'package:eliud_pkg_text/platform/text_platform.dart';
-import 'package:eliud_pkg_text/platform/web_html_solution.dart';
-import 'package:eliud_pkg_text/platform/web_html_solution2.dart';
 import 'package:eliud_pkg_text/platform/widgets/html_text_dialog.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:html_editor_enhanced/utils/utils.dart';
-import 'dart:html' as html;
-import 'dart:ui' as ui;
 
 import 'mobile_html_solution.dart';
 

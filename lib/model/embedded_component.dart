@@ -23,7 +23,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:eliud_core/core/blocs/access/access_bloc.dart';
 
 import '../model/html_platform_medium_list_bloc.dart';
 import '../model/html_platform_medium_list.dart';
@@ -62,7 +61,7 @@ class HtmlPlatformMediumInMemoryRepository implements HtmlPlatformMediumReposito
 
     HtmlPlatformMediumInMemoryRepository(this.trigger, this.items) {
         List<List<HtmlPlatformMediumModel>> myList = <List<HtmlPlatformMediumModel>>[];
-        if (items != null) myList.add(items);
+        myList.add(items);
         theValues = Stream<List<HtmlPlatformMediumModel>>.fromIterable(myList);
     }
 

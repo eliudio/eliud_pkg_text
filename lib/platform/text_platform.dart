@@ -1,18 +1,11 @@
-import 'package:eliud_core/model/member_medium_model.dart';
-import 'package:eliud_core/model/storage_conditions_model.dart';
 import 'package:eliud_core/tools/random.dart';
 import 'package:eliud_pkg_text/model/html_with_platform_medium_model.dart';
 import 'package:eliud_pkg_text/platform/widgets/html_text_dialog.dart';
 import 'package:eliud_pkg_text/platform/widgets/html_with_platform_medium_components.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:eliud_core/model/app_model.dart';
-import 'package:eliud_core/core/navigate/router.dart' as router;
-import 'package:eliud_core/core/registry.dart';
-import 'package:eliud_core/tools/action/action_model.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 //import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:eliud_pkg_text/model/html_platform_medium_model.dart';
 
 typedef UpdatedHtml(String value);
