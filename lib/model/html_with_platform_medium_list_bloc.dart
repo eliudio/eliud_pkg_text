@@ -23,11 +23,11 @@ import 'package:eliud_core/tools/query/query_tools.dart';
 
 import 'html_with_platform_medium_model.dart';
 
-typedef List<HtmlWithPlatformMediumModel?> FilterHtmlWithPlatformMediumModels(List<HtmlWithPlatformMediumModel?> values);
+typedef FilterHtmlWithPlatformMediumModels = List<HtmlWithPlatformMediumModel?>
+    Function(List<HtmlWithPlatformMediumModel?> values);
 
-
-
-class HtmlWithPlatformMediumListBloc extends Bloc<HtmlWithPlatformMediumListEvent, HtmlWithPlatformMediumListState> {
+class HtmlWithPlatformMediumListBloc extends Bloc<
+    HtmlWithPlatformMediumListEvent, HtmlWithPlatformMediumListState> {
   final FilterHtmlWithPlatformMediumModels? filter;
   final HtmlWithPlatformMediumRepository _htmlWithPlatformMediumRepository;
   StreamSubscription? _htmlWithPlatformMediumsListSubscription;
@@ -39,23 +39,33 @@ class HtmlWithPlatformMediumListBloc extends Bloc<HtmlWithPlatformMediumListEven
   final bool? detailed;
   final int htmlWithPlatformMediumLimit;
 
-  HtmlWithPlatformMediumListBloc({this.filter, this.paged, this.orderBy, this.descending, this.detailed, this.eliudQuery, required HtmlWithPlatformMediumRepository htmlWithPlatformMediumRepository, this.htmlWithPlatformMediumLimit = 5})
+  HtmlWithPlatformMediumListBloc(
+      {this.filter,
+      this.paged,
+      this.orderBy,
+      this.descending,
+      this.detailed,
+      this.eliudQuery,
+      required HtmlWithPlatformMediumRepository
+          htmlWithPlatformMediumRepository,
+      this.htmlWithPlatformMediumLimit = 5})
       : _htmlWithPlatformMediumRepository = htmlWithPlatformMediumRepository,
         super(HtmlWithPlatformMediumListLoading()) {
-    on <LoadHtmlWithPlatformMediumList> ((event, emit) {
+    on<LoadHtmlWithPlatformMediumList>((event, emit) {
       if ((detailed == null) || (!detailed!)) {
         _mapLoadHtmlWithPlatformMediumListToState();
       } else {
         _mapLoadHtmlWithPlatformMediumListWithDetailsToState();
       }
     });
-    
-    on <NewPage> ((event, emit) {
-      pages = pages + 1; // it doesn't matter so much if we increase pages beyond the end
+
+    on<NewPage>((event, emit) {
+      pages = pages +
+          1; // it doesn't matter so much if we increase pages beyond the end
       _mapLoadHtmlWithPlatformMediumListWithDetailsToState();
     });
-    
-    on <HtmlWithPlatformMediumChangeQuery> ((event, emit) {
+
+    on<HtmlWithPlatformMediumChangeQuery>((event, emit) {
       eliudQuery = event.newQuery;
       if ((detailed == null) || (!detailed!)) {
         _mapLoadHtmlWithPlatformMediumListToState();
@@ -63,25 +73,26 @@ class HtmlWithPlatformMediumListBloc extends Bloc<HtmlWithPlatformMediumListEven
         _mapLoadHtmlWithPlatformMediumListWithDetailsToState();
       }
     });
-      
-    on <AddHtmlWithPlatformMediumList> ((event, emit) async {
+
+    on<AddHtmlWithPlatformMediumList>((event, emit) async {
       await _mapAddHtmlWithPlatformMediumListToState(event);
     });
-    
-    on <UpdateHtmlWithPlatformMediumList> ((event, emit) async {
+
+    on<UpdateHtmlWithPlatformMediumList>((event, emit) async {
       await _mapUpdateHtmlWithPlatformMediumListToState(event);
     });
-    
-    on <DeleteHtmlWithPlatformMediumList> ((event, emit) async {
+
+    on<DeleteHtmlWithPlatformMediumList>((event, emit) async {
       await _mapDeleteHtmlWithPlatformMediumListToState(event);
     });
-    
-    on <HtmlWithPlatformMediumListUpdated> ((event, emit) {
+
+    on<HtmlWithPlatformMediumListUpdated>((event, emit) {
       emit(_mapHtmlWithPlatformMediumListUpdatedToState(event));
     });
   }
 
-  List<HtmlWithPlatformMediumModel?> _filter(List<HtmlWithPlatformMediumModel?> original) {
+  List<HtmlWithPlatformMediumModel?> _filter(
+      List<HtmlWithPlatformMediumModel?> original) {
     if (filter != null) {
       return filter!(original);
     } else {
@@ -90,44 +101,57 @@ class HtmlWithPlatformMediumListBloc extends Bloc<HtmlWithPlatformMediumListEven
   }
 
   Future<void> _mapLoadHtmlWithPlatformMediumListToState() async {
-    int amountNow =  (state is HtmlWithPlatformMediumListLoaded) ? (state as HtmlWithPlatformMediumListLoaded).values!.length : 0;
+    int amountNow = (state is HtmlWithPlatformMediumListLoaded)
+        ? (state as HtmlWithPlatformMediumListLoaded).values!.length
+        : 0;
     _htmlWithPlatformMediumsListSubscription?.cancel();
-    _htmlWithPlatformMediumsListSubscription = _htmlWithPlatformMediumRepository.listen(
-          (list) => add(HtmlWithPlatformMediumListUpdated(value: _filter(list), mightHaveMore: amountNow != list.length)),
-      orderBy: orderBy,
-      descending: descending,
-      eliudQuery: eliudQuery,
-      limit: ((paged != null) && paged!) ? pages * htmlWithPlatformMediumLimit : null
-    );
+    _htmlWithPlatformMediumsListSubscription =
+        _htmlWithPlatformMediumRepository.listen(
+            (list) => add(HtmlWithPlatformMediumListUpdated(
+                value: _filter(list), mightHaveMore: amountNow != list.length)),
+            orderBy: orderBy,
+            descending: descending,
+            eliudQuery: eliudQuery,
+            limit: ((paged != null) && paged!)
+                ? pages * htmlWithPlatformMediumLimit
+                : null);
   }
 
   Future<void> _mapLoadHtmlWithPlatformMediumListWithDetailsToState() async {
-    int amountNow =  (state is HtmlWithPlatformMediumListLoaded) ? (state as HtmlWithPlatformMediumListLoaded).values!.length : 0;
+    int amountNow = (state is HtmlWithPlatformMediumListLoaded)
+        ? (state as HtmlWithPlatformMediumListLoaded).values!.length
+        : 0;
     _htmlWithPlatformMediumsListSubscription?.cancel();
-    _htmlWithPlatformMediumsListSubscription = _htmlWithPlatformMediumRepository.listenWithDetails(
-            (list) => add(HtmlWithPlatformMediumListUpdated(value: _filter(list), mightHaveMore: amountNow != list.length)),
-        orderBy: orderBy,
-        descending: descending,
-        eliudQuery: eliudQuery,
-        limit: ((paged != null) && paged!) ? pages * htmlWithPlatformMediumLimit : null
-    );
+    _htmlWithPlatformMediumsListSubscription =
+        _htmlWithPlatformMediumRepository.listenWithDetails(
+            (list) => add(HtmlWithPlatformMediumListUpdated(
+                value: _filter(list), mightHaveMore: amountNow != list.length)),
+            orderBy: orderBy,
+            descending: descending,
+            eliudQuery: eliudQuery,
+            limit: ((paged != null) && paged!)
+                ? pages * htmlWithPlatformMediumLimit
+                : null);
   }
 
-  Future<void> _mapAddHtmlWithPlatformMediumListToState(AddHtmlWithPlatformMediumList event) async {
+  Future<void> _mapAddHtmlWithPlatformMediumListToState(
+      AddHtmlWithPlatformMediumList event) async {
     var value = event.value;
     if (value != null) {
       await _htmlWithPlatformMediumRepository.add(value);
     }
   }
 
-  Future<void> _mapUpdateHtmlWithPlatformMediumListToState(UpdateHtmlWithPlatformMediumList event) async {
+  Future<void> _mapUpdateHtmlWithPlatformMediumListToState(
+      UpdateHtmlWithPlatformMediumList event) async {
     var value = event.value;
     if (value != null) {
       await _htmlWithPlatformMediumRepository.update(value);
     }
   }
 
-  Future<void> _mapDeleteHtmlWithPlatformMediumListToState(DeleteHtmlWithPlatformMediumList event) async {
+  Future<void> _mapDeleteHtmlWithPlatformMediumListToState(
+      DeleteHtmlWithPlatformMediumList event) async {
     var value = event.value;
     if (value != null) {
       await _htmlWithPlatformMediumRepository.delete(value);
@@ -135,7 +159,9 @@ class HtmlWithPlatformMediumListBloc extends Bloc<HtmlWithPlatformMediumListEven
   }
 
   HtmlWithPlatformMediumListLoaded _mapHtmlWithPlatformMediumListUpdatedToState(
-      HtmlWithPlatformMediumListUpdated event) => HtmlWithPlatformMediumListLoaded(values: event.value, mightHaveMore: event.mightHaveMore);
+          HtmlWithPlatformMediumListUpdated event) =>
+      HtmlWithPlatformMediumListLoaded(
+          values: event.value, mightHaveMore: event.mightHaveMore);
 
   @override
   Future<void> close() {
@@ -143,5 +169,3 @@ class HtmlWithPlatformMediumListBloc extends Bloc<HtmlWithPlatformMediumListEven
     return super.close();
   }
 }
-
-

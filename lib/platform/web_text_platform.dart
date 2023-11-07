@@ -1,4 +1,3 @@
-
 import 'package:eliud_core/model/app_model.dart';
 import 'package:eliud_pkg_text/model/html_platform_medium_model.dart';
 import 'package:eliud_pkg_text/model/html_with_platform_medium_model.dart';
@@ -58,7 +57,8 @@ class WebTextPlatform extends AbstractTextPlatform {
   Widget htmlWidgetWithPlatformMedia(
       BuildContext context, AppModel app, String html,
       {List<HtmlPlatformMediumModel>? htmlPlatformMedia}) {
-    return mobileHtmlSolution(context, app, html, htmlPlatformMedia: htmlPlatformMedia);
+    return mobileHtmlSolution(context, app, html,
+        htmlPlatformMedia: htmlPlatformMedia);
 /*
     * This has now become obsolete as apparently the latest version of HtmlWidget works fine on web and mobile without the below funny stuff
     if (html.toUpperCase().contains("<VIDEO")) {

@@ -18,7 +18,6 @@ import 'package:meta/meta.dart';
 import 'package:eliud_core/model/model_export.dart';
 import 'package:eliud_pkg_text/model/model_export.dart';
 
-
 @immutable
 abstract class HtmlWithPlatformMediumFormEvent extends Equatable {
   const HtmlWithPlatformMediumFormEvent();
@@ -27,109 +26,121 @@ abstract class HtmlWithPlatformMediumFormEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class InitialiseNewHtmlWithPlatformMediumFormEvent extends HtmlWithPlatformMediumFormEvent {
-}
+class InitialiseNewHtmlWithPlatformMediumFormEvent
+    extends HtmlWithPlatformMediumFormEvent {}
 
-
-class InitialiseHtmlWithPlatformMediumFormEvent extends HtmlWithPlatformMediumFormEvent {
+class InitialiseHtmlWithPlatformMediumFormEvent
+    extends HtmlWithPlatformMediumFormEvent {
   final HtmlWithPlatformMediumModel? value;
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   InitialiseHtmlWithPlatformMediumFormEvent({this.value});
 }
 
-class InitialiseHtmlWithPlatformMediumFormNoLoadEvent extends HtmlWithPlatformMediumFormEvent {
+class InitialiseHtmlWithPlatformMediumFormNoLoadEvent
+    extends HtmlWithPlatformMediumFormEvent {
   final HtmlWithPlatformMediumModel? value;
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   InitialiseHtmlWithPlatformMediumFormNoLoadEvent({this.value});
 }
 
-class ChangedHtmlWithPlatformMediumDocumentID extends HtmlWithPlatformMediumFormEvent {
+class ChangedHtmlWithPlatformMediumDocumentID
+    extends HtmlWithPlatformMediumFormEvent {
   final String? value;
 
   ChangedHtmlWithPlatformMediumDocumentID({this.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
-  String toString() => 'ChangedHtmlWithPlatformMediumDocumentID{ value: $value }';
+  String toString() =>
+      'ChangedHtmlWithPlatformMediumDocumentID{ value: $value }';
 }
 
-class ChangedHtmlWithPlatformMediumAppId extends HtmlWithPlatformMediumFormEvent {
+class ChangedHtmlWithPlatformMediumAppId
+    extends HtmlWithPlatformMediumFormEvent {
   final String? value;
 
   ChangedHtmlWithPlatformMediumAppId({this.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
   String toString() => 'ChangedHtmlWithPlatformMediumAppId{ value: $value }';
 }
 
-class ChangedHtmlWithPlatformMediumDescription extends HtmlWithPlatformMediumFormEvent {
+class ChangedHtmlWithPlatformMediumDescription
+    extends HtmlWithPlatformMediumFormEvent {
   final String? value;
 
   ChangedHtmlWithPlatformMediumDescription({this.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
-  String toString() => 'ChangedHtmlWithPlatformMediumDescription{ value: $value }';
+  String toString() =>
+      'ChangedHtmlWithPlatformMediumDescription{ value: $value }';
 }
 
-class ChangedHtmlWithPlatformMediumHtml extends HtmlWithPlatformMediumFormEvent {
+class ChangedHtmlWithPlatformMediumHtml
+    extends HtmlWithPlatformMediumFormEvent {
   final String? value;
 
   ChangedHtmlWithPlatformMediumHtml({this.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
   String toString() => 'ChangedHtmlWithPlatformMediumHtml{ value: $value }';
 }
 
-class ChangedHtmlWithPlatformMediumHtmlMedia extends HtmlWithPlatformMediumFormEvent {
+class ChangedHtmlWithPlatformMediumHtmlMedia
+    extends HtmlWithPlatformMediumFormEvent {
   final List<HtmlPlatformMediumModel>? value;
 
   ChangedHtmlWithPlatformMediumHtmlMedia({this.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
-  String toString() => 'ChangedHtmlWithPlatformMediumHtmlMedia{ value: $value }';
+  String toString() =>
+      'ChangedHtmlWithPlatformMediumHtmlMedia{ value: $value }';
 }
 
-class ChangedHtmlWithPlatformMediumBackground extends HtmlWithPlatformMediumFormEvent {
+class ChangedHtmlWithPlatformMediumBackground
+    extends HtmlWithPlatformMediumFormEvent {
   final BackgroundModel? value;
 
   ChangedHtmlWithPlatformMediumBackground({this.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
-  String toString() => 'ChangedHtmlWithPlatformMediumBackground{ value: $value }';
+  String toString() =>
+      'ChangedHtmlWithPlatformMediumBackground{ value: $value }';
 }
 
-class ChangedHtmlWithPlatformMediumConditions extends HtmlWithPlatformMediumFormEvent {
+class ChangedHtmlWithPlatformMediumConditions
+    extends HtmlWithPlatformMediumFormEvent {
   final StorageConditionsModel? value;
 
   ChangedHtmlWithPlatformMediumConditions({this.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
-  String toString() => 'ChangedHtmlWithPlatformMediumConditions{ value: $value }';
+  String toString() =>
+      'ChangedHtmlWithPlatformMediumConditions{ value: $value }';
 }
-

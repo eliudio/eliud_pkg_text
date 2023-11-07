@@ -22,19 +22,34 @@ class HtmlPlatformMediumEntity implements EntityBase {
   final String? htmlReference;
   final String? mediumId;
 
-  HtmlPlatformMediumEntity({this.htmlReference, this.mediumId, });
+  HtmlPlatformMediumEntity({
+    this.htmlReference,
+    this.mediumId,
+  });
 
-  HtmlPlatformMediumEntity copyWith({String? documentID, String? htmlReference, String? mediumId, }) {
-    return HtmlPlatformMediumEntity(htmlReference : htmlReference ?? this.htmlReference, mediumId : mediumId ?? this.mediumId, );
+  HtmlPlatformMediumEntity copyWith({
+    String? documentID,
+    String? htmlReference,
+    String? mediumId,
+  }) {
+    return HtmlPlatformMediumEntity(
+      htmlReference: htmlReference ?? this.htmlReference,
+      mediumId: mediumId ?? this.mediumId,
+    );
   }
-  List<Object?> get props => [htmlReference, mediumId, ];
+
+  List<Object?> get props => [
+        htmlReference,
+        mediumId,
+      ];
 
   @override
   String toString() {
     return 'HtmlPlatformMediumEntity{htmlReference: $htmlReference, mediumId: $mediumId}';
   }
 
-  static HtmlPlatformMediumEntity? fromMap(Object? o, {Map<String, String>? newDocumentIds}) {
+  static HtmlPlatformMediumEntity? fromMap(Object? o,
+      {Map<String, String>? newDocumentIds}) {
     if (o == null) return null;
     var map = o as Map<String, dynamic>;
 
@@ -45,17 +60,24 @@ class HtmlPlatformMediumEntity implements EntityBase {
       newDocumentIds[mediumIdOldDocmentId] = mediumIdNewDocmentId;
     }
     return HtmlPlatformMediumEntity(
-      htmlReference: map['htmlReference'], 
-      mediumId: mediumIdNewDocmentId, 
+      htmlReference: map['htmlReference'],
+      mediumId: mediumIdNewDocmentId,
     );
   }
 
+  @override
   Map<String, Object?> toDocument() {
     Map<String, Object?> theDocument = HashMap();
-    if (htmlReference != null) theDocument["htmlReference"] = htmlReference;
-      else theDocument["htmlReference"] = null;
-    if (mediumId != null) theDocument["mediumId"] = mediumId;
-      else theDocument["mediumId"] = null;
+    if (htmlReference != null) {
+      theDocument["htmlReference"] = htmlReference;
+    } else {
+      theDocument["htmlReference"] = null;
+    }
+    if (mediumId != null) {
+      theDocument["mediumId"] = mediumId;
+    } else {
+      theDocument["mediumId"] = null;
+    }
     return theDocument;
   }
 
@@ -65,7 +87,8 @@ class HtmlPlatformMediumEntity implements EntityBase {
     return newEntity;
   }
 
-  static HtmlPlatformMediumEntity? fromJsonString(String json, {Map<String, String>? newDocumentIds}) {
+  static HtmlPlatformMediumEntity? fromJsonString(String json,
+      {Map<String, String>? newDocumentIds}) {
     Map<String, dynamic>? generationSpecificationMap = jsonDecode(json);
     return fromMap(generationSpecificationMap, newDocumentIds: newDocumentIds);
   }
@@ -74,9 +97,9 @@ class HtmlPlatformMediumEntity implements EntityBase {
     return jsonEncode(toDocument());
   }
 
-  Future<Map<String, Object?>> enrichedDocument(Map<String, Object?> theDocument) async {
+  @override
+  Future<Map<String, Object?>> enrichedDocument(
+      Map<String, Object?> theDocument) async {
     return theDocument;
   }
-
 }
-

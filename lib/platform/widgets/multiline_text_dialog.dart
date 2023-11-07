@@ -22,17 +22,17 @@ class MultilineTextDialog extends StatefulWidget {
   final List<String> readAccess;
 
   MultilineTextDialog({
-    Key? key,
+    super.key,
     required this.title,
     required this.updatedHtml,
     required this.initialValue,
     required this.app,
     required this.ownerId,
     required this.readAccess,
-  }) : super(key: key);
+  });
 
   @override
-  _MultilineTextDialogState createState() => _MultilineTextDialogState();
+  State<MultilineTextDialog> createState() => _MultilineTextDialogState();
 
   static void open(
       BuildContext context,
@@ -42,10 +42,8 @@ class MultilineTextDialog extends StatefulWidget {
       String title,
       UpdatedHtml updatedHtml,
       String initialValue) {
-    openWidgetDialog(app, context,
-        app.documentID + '/multilinetext',
-        child:
-        MultilineTextDialog(
+    openWidgetDialog(app, context, '${app.documentID}/multilinetext',
+        child: MultilineTextDialog(
           title: title,
           updatedHtml: updatedHtml,
           initialValue: initialValue,
@@ -62,11 +60,8 @@ class _MultilineTextDialogState extends State<MultilineTextDialog> {
   final DialogStateHelper dialogHelper = DialogStateHelper();
   @override
   Widget build(BuildContext context) {
-    return flexibleDialog(widget.app,
-        context,
-        title: widget.title,
-        buttons: _buttons(),
-        child: _child());
+    return flexibleDialog(widget.app, context,
+        title: widget.title, buttons: _buttons(), child: _child());
   }
 
   @override
@@ -81,11 +76,10 @@ class _MultilineTextDialogState extends State<MultilineTextDialog> {
       dialogButton(widget.app, context, onPressed: () {
         Navigator.pop(context);
       }, label: 'Cancel'),
-      dialogButton(widget.app, context,
-          onPressed: () async {
-            Navigator.pop(context);
-            widget.updatedHtml(controller.text);
-          }, label: 'Done'),
+      dialogButton(widget.app, context, onPressed: () async {
+        Navigator.pop(context);
+        widget.updatedHtml(controller.text);
+      }, label: 'Done'),
     ];
   }
 
@@ -94,8 +88,6 @@ class _MultilineTextDialogState extends State<MultilineTextDialog> {
         keyboardType: TextInputType.multiline,
         minLines: 4,
         maxLines: null,
-        controller: controller
-    );
+        controller: controller);
   }
-
 }

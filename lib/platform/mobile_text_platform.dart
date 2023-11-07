@@ -69,10 +69,10 @@ class MobileTextPlatform extends AbstractTextPlatform {
 
   @override
   Widget htmlWidget(
-      BuildContext context,
-      AppModel app,
-      String html,
-      ) {
+    BuildContext context,
+    AppModel app,
+    String html,
+  ) {
     return htmlWidgetWithPlatformMedia(
       context,
       app,
@@ -80,11 +80,11 @@ class MobileTextPlatform extends AbstractTextPlatform {
     );
   }
 
+  @override
   Widget htmlWidgetWithPlatformMedia(
       BuildContext context, AppModel app, String html,
       {List<HtmlPlatformMediumModel>? htmlPlatformMedia}) {
-    return mobileHtmlSolution(context, app, html, htmlPlatformMedia: htmlPlatformMedia);
+    return mobileHtmlSolution(context, app, html,
+        htmlPlatformMedia: htmlPlatformMedia);
   }
-
-
 }

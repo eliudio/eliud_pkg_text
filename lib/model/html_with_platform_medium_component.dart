@@ -13,7 +13,6 @@
 
 */
 
-
 import 'package:eliud_pkg_text/model/html_with_platform_medium_component_bloc.dart';
 import 'package:eliud_pkg_text/model/html_with_platform_medium_component_event.dart';
 import 'package:eliud_pkg_text/model/html_with_platform_medium_model.dart';
@@ -31,20 +30,24 @@ abstract class AbstractHtmlWithPlatformMediumComponent extends StatelessWidget {
   final AppModel app;
   final String htmlWithPlatformMediumId;
 
-  AbstractHtmlWithPlatformMediumComponent({Key? key, required this.app, required this.htmlWithPlatformMediumId}): super(key: key);
+  AbstractHtmlWithPlatformMediumComponent(
+      {super.key, required this.app, required this.htmlWithPlatformMediumId});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<HtmlWithPlatformMediumComponentBloc> (
-          create: (context) => HtmlWithPlatformMediumComponentBloc(
-            htmlWithPlatformMediumRepository: htmlWithPlatformMediumRepository(appId: app.documentID)!)
-        ..add(FetchHtmlWithPlatformMediumComponent(id: htmlWithPlatformMediumId)),
+    return BlocProvider<HtmlWithPlatformMediumComponentBloc>(
+      create: (context) => HtmlWithPlatformMediumComponentBloc(
+          htmlWithPlatformMediumRepository:
+              htmlWithPlatformMediumRepository(appId: app.documentID)!)
+        ..add(
+            FetchHtmlWithPlatformMediumComponent(id: htmlWithPlatformMediumId)),
       child: _htmlWithPlatformMediumBlockBuilder(context),
     );
   }
 
   Widget _htmlWithPlatformMediumBlockBuilder(BuildContext context) {
-    return BlocBuilder<HtmlWithPlatformMediumComponentBloc, HtmlWithPlatformMediumComponentState>(builder: (context, state) {
+    return BlocBuilder<HtmlWithPlatformMediumComponentBloc,
+        HtmlWithPlatformMediumComponentState>(builder: (context, state) {
       if (state is HtmlWithPlatformMediumComponentLoaded) {
         return yourWidget(context, state.value);
       } else if (state is HtmlWithPlatformMediumComponentPermissionDenied) {
@@ -57,7 +60,11 @@ abstract class AbstractHtmlWithPlatformMediumComponent extends StatelessWidget {
         return AlertWidget(app: app, title: 'Error', content: state.message);
       } else {
         return Center(
-          child: StyleRegistry.registry().styleWithApp(app).frontEndStyle().progressIndicatorStyle().progressIndicator(app, context),
+          child: StyleRegistry.registry()
+              .styleWithApp(app)
+              .frontEndStyle()
+              .progressIndicatorStyle()
+              .progressIndicator(app, context),
         );
       }
     });
@@ -65,4 +72,3 @@ abstract class AbstractHtmlWithPlatformMediumComponent extends StatelessWidget {
 
   Widget yourWidget(BuildContext context, HtmlWithPlatformMediumModel value);
 }
-

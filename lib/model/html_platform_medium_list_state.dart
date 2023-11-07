@@ -30,21 +30,24 @@ class HtmlPlatformMediumListLoaded extends HtmlPlatformMediumListState {
   final List<HtmlPlatformMediumModel?>? values;
   final bool? mightHaveMore;
 
-  const HtmlPlatformMediumListLoaded({this.mightHaveMore, this.values = const []});
+  const HtmlPlatformMediumListLoaded(
+      {this.mightHaveMore, this.values = const []});
 
   @override
-  List<Object?> get props => [ values, mightHaveMore ];
+  List<Object?> get props => [values, mightHaveMore];
 
   @override
   String toString() => 'HtmlPlatformMediumListLoaded { values: $values }';
 
   @override
-  bool operator ==(Object other) => 
-          other is HtmlPlatformMediumListLoaded &&
-              runtimeType == other.runtimeType &&
-              ListEquality().equals(values, other.values) &&
-              mightHaveMore == other.mightHaveMore;
+  bool operator ==(Object other) =>
+      other is HtmlPlatformMediumListLoaded &&
+      runtimeType == other.runtimeType &&
+      ListEquality().equals(values, other.values) &&
+      mightHaveMore == other.mightHaveMore;
+
+  @override
+  int get hashCode => values.hashCode ^ mightHaveMore.hashCode;
 }
 
 class HtmlPlatformMediumNotLoaded extends HtmlPlatformMediumListState {}
-

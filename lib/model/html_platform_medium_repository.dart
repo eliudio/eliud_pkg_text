@@ -13,45 +13,108 @@
 
 */
 
-
-
 import 'package:eliud_pkg_text/model/model_export.dart';
 import 'package:eliud_pkg_text/model/entity_export.dart';
-
 
 import 'dart:async';
 import 'package:eliud_core/tools/query/query_tools.dart';
 import 'package:eliud_core/tools/common_tools.dart';
 import 'package:eliud_core/core/base/repository_base.dart';
 
-typedef HtmlPlatformMediumModelTrigger(List<HtmlPlatformMediumModel?> list);
-typedef HtmlPlatformMediumChanged(HtmlPlatformMediumModel? value);
-typedef HtmlPlatformMediumErrorHandler(o, e);
+typedef HtmlPlatformMediumModelTrigger = Function(
+    List<HtmlPlatformMediumModel?> list);
+typedef HtmlPlatformMediumChanged = Function(HtmlPlatformMediumModel? value);
+typedef HtmlPlatformMediumErrorHandler = Function(dynamic o, dynamic e);
 
-abstract class HtmlPlatformMediumRepository extends RepositoryBase<HtmlPlatformMediumModel, HtmlPlatformMediumEntity> {
-  Future<HtmlPlatformMediumEntity> addEntity(String documentID, HtmlPlatformMediumEntity value);
-  Future<HtmlPlatformMediumEntity> updateEntity(String documentID, HtmlPlatformMediumEntity value);
+abstract class HtmlPlatformMediumRepository
+    extends RepositoryBase<HtmlPlatformMediumModel, HtmlPlatformMediumEntity> {
+  @override
+  Future<HtmlPlatformMediumEntity> addEntity(
+      String documentID, HtmlPlatformMediumEntity value);
+  @override
+  Future<HtmlPlatformMediumEntity> updateEntity(
+      String documentID, HtmlPlatformMediumEntity value);
+  @override
   Future<HtmlPlatformMediumModel> add(HtmlPlatformMediumModel value);
+  @override
   Future<void> delete(HtmlPlatformMediumModel value);
-  Future<HtmlPlatformMediumModel?> get(String? id, { Function(Exception)? onError });
+  @override
+  Future<HtmlPlatformMediumModel?> get(String? id,
+      {Function(Exception)? onError});
+  @override
   Future<HtmlPlatformMediumModel> update(HtmlPlatformMediumModel value);
 
-  Stream<List<HtmlPlatformMediumModel?>> values({String? orderBy, bool? descending, Object? startAfter, int? limit, SetLastDoc? setLastDoc, int? privilegeLevel, EliudQuery? eliudQuery });
-  Stream<List<HtmlPlatformMediumModel?>> valuesWithDetails({String? orderBy, bool? descending, Object? startAfter, int? limit, SetLastDoc? setLastDoc, int? privilegeLevel, EliudQuery? eliudQuery });
-  Future<List<HtmlPlatformMediumModel?>> valuesList({String? orderBy, bool? descending, Object? startAfter, int? limit, SetLastDoc? setLastDoc, int? privilegeLevel, EliudQuery? eliudQuery });
-  Future<List<HtmlPlatformMediumModel?>> valuesListWithDetails({String? orderBy, bool? descending, Object? startAfter, int? limit, SetLastDoc? setLastDoc, int? privilegeLevel, EliudQuery? eliudQuery });
+  @override
+  Stream<List<HtmlPlatformMediumModel?>> values(
+      {String? orderBy,
+      bool? descending,
+      Object? startAfter,
+      int? limit,
+      SetLastDoc? setLastDoc,
+      int? privilegeLevel,
+      EliudQuery? eliudQuery});
+  @override
+  Stream<List<HtmlPlatformMediumModel?>> valuesWithDetails(
+      {String? orderBy,
+      bool? descending,
+      Object? startAfter,
+      int? limit,
+      SetLastDoc? setLastDoc,
+      int? privilegeLevel,
+      EliudQuery? eliudQuery});
+  @override
+  Future<List<HtmlPlatformMediumModel?>> valuesList(
+      {String? orderBy,
+      bool? descending,
+      Object? startAfter,
+      int? limit,
+      SetLastDoc? setLastDoc,
+      int? privilegeLevel,
+      EliudQuery? eliudQuery});
+  @override
+  Future<List<HtmlPlatformMediumModel?>> valuesListWithDetails(
+      {String? orderBy,
+      bool? descending,
+      Object? startAfter,
+      int? limit,
+      SetLastDoc? setLastDoc,
+      int? privilegeLevel,
+      EliudQuery? eliudQuery});
 
-  StreamSubscription<List<HtmlPlatformMediumModel?>> listen(HtmlPlatformMediumModelTrigger trigger, {String? orderBy, bool? descending, Object? startAfter, int? limit, int? privilegeLevel, EliudQuery? eliudQuery });
-  StreamSubscription<List<HtmlPlatformMediumModel?>> listenWithDetails(HtmlPlatformMediumModelTrigger trigger, {String? orderBy, bool? descending, Object? startAfter, int? limit, int? privilegeLevel, EliudQuery? eliudQuery });
-  StreamSubscription<HtmlPlatformMediumModel?> listenTo(String documentId, HtmlPlatformMediumChanged changed, {HtmlPlatformMediumErrorHandler? errorHandler});
+  @override
+  StreamSubscription<List<HtmlPlatformMediumModel?>> listen(
+      HtmlPlatformMediumModelTrigger trigger,
+      {String? orderBy,
+      bool? descending,
+      Object? startAfter,
+      int? limit,
+      int? privilegeLevel,
+      EliudQuery? eliudQuery});
+  @override
+  StreamSubscription<List<HtmlPlatformMediumModel?>> listenWithDetails(
+      HtmlPlatformMediumModelTrigger trigger,
+      {String? orderBy,
+      bool? descending,
+      Object? startAfter,
+      int? limit,
+      int? privilegeLevel,
+      EliudQuery? eliudQuery});
+  @override
+  StreamSubscription<HtmlPlatformMediumModel?> listenTo(
+      String documentId, HtmlPlatformMediumChanged changed,
+      {HtmlPlatformMediumErrorHandler? errorHandler});
+  @override
   void flush();
-  
+
+  @override
   String? timeStampToString(dynamic timeStamp);
 
+  @override
   dynamic getSubCollection(String documentId, String name);
-  Future<HtmlPlatformMediumModel?> changeValue(String documentId, String fieldName, num changeByThisValue);
+  @override
+  Future<HtmlPlatformMediumModel?> changeValue(
+      String documentId, String fieldName, num changeByThisValue);
 
+  @override
   Future<void> deleteAll();
 }
-
-

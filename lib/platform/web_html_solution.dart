@@ -19,8 +19,7 @@ import 'package:url_launcher/url_launcher.dart';
  * However, core does not support video.
  *
  */
-Widget webHtmlSolution(
-    BuildContext context, AppModel app, String html,
+Widget webHtmlSolution(BuildContext context, AppModel app, String html,
     {List<HtmlPlatformMediumModel>? htmlPlatformMedia}) {
   return HtmlWidget(
     html,
@@ -35,7 +34,7 @@ Widget webHtmlSolution(
             router.Router.navigateTo(
               context,
               InternalAction(app,
-                  internalActionEnum: InternalActionEnum.GoHome),
+                  internalActionEnum: InternalActionEnum.goHome),
             );
           } else {
             var rest = url.substring(homeURL.length + 1);
@@ -44,8 +43,8 @@ Widget webHtmlSolution(
               print("Splitting $rest didn't give 2 items");
             } else {
               var appId = split[0];
-              if (appId != '#' + app.documentID) {
-                print("appId is " + appId + " which isn't expected");
+              if (appId != '#${app.documentID}') {
+                print("appId is $appId which isn't expected");
               }
               var pageId = split[1];
               router.Router.navigateTo(
@@ -56,11 +55,12 @@ Widget webHtmlSolution(
           }
         } else {
           var uri = Uri.parse(url);
-          if (await canLaunchUrl(uri))
+          if (await canLaunchUrl(uri)) {
             return await launchUrl(uri);
-          else
+          } else {
             // can't launch url, there is some error
             print("Could not launch $url");
+          }
         }
         return true; // if handled
       } else {

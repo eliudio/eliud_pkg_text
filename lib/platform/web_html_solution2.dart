@@ -19,18 +19,17 @@ import 'dart:ui' as ui;
  *    implement VIDEO support on WEB.
  *
  */
-Widget webHtmlSolution2(
-    BuildContext context, String html) {
+Widget webHtmlSolution2(BuildContext context, String html) {
   return MyHtmlWidget(html: html);
 }
 
 class MyHtmlWidget extends StatefulWidget {
   final String html;
 
-  const MyHtmlWidget({Key? key, required this.html}) : super(key: key);
+  const MyHtmlWidget({super.key, required this.html});
 
   @override
-  _MyHtmlState createState() => _MyHtmlState();
+  State<MyHtmlWidget> createState() => _MyHtmlState();
 }
 
 class _MyHtmlState extends State<MyHtmlWidget> {
@@ -48,7 +47,7 @@ class _MyHtmlState extends State<MyHtmlWidget> {
     final iframe = html.IFrameElement()
       ..width = fullScreenWidth(context).toString() //'800'
       ..height = fullScreenHeight(context).toString()
-    // ignore: unsafe_html, necessary to load HTML string
+      // ignore: unsafe_html, necessary to load HTML string
       ..srcdoc = constructHtml(viewId, widget.html)
       ..style.border = 'none'
       ..style.overflow = 'hidden'

@@ -42,7 +42,7 @@ class HtmlWithPlatformMediumComponentEditorConstructor
             description: 'New html',
             conditions: StorageConditionsModel(
                 privilegeLevelRequired:
-                    PrivilegeLevelRequiredSimple.NoPrivilegeRequiredSimple)),
+                    PrivilegeLevelRequiredSimple.noPrivilegeRequiredSimple)),
         feedback);
   }
 
@@ -54,7 +54,7 @@ class HtmlWithPlatformMediumComponentEditorConstructor
     if (html != null) {
       _openIt(app, context, false, html, feedback);
     } else {
-      openErrorDialog(app, context, app.documentID + '/_error',
+      openErrorDialog(app, context, '${app.documentID}/_error',
           title: 'Error', errorMessage: 'Cannot find html with id $id');
       feedback(false, null);
     }
@@ -65,7 +65,7 @@ class HtmlWithPlatformMediumComponentEditorConstructor
     openComplexDialog(
       app,
       context,
-      app.documentID + '/html_editor',
+      '${app.documentID}/html_editor',
       title: create ? 'Create divider' : 'Update divider',
       includeHeading: false,
       widthFraction: .9,
@@ -88,12 +88,11 @@ class HtmlComponentEditor extends StatefulWidget {
   final EditorFeedback feedback;
 
   const HtmlComponentEditor(
-      {Key? key,
+      {super.key,
       required this.app,
       required this.model,
       required this.create,
-      required this.feedback})
-      : super(key: key);
+      required this.feedback});
 
   @override
   State<StatefulWidget> createState() => _HtmlComponentEditorState();
@@ -104,7 +103,7 @@ class _HtmlComponentEditorState extends State<HtmlComponentEditor> {
   Widget build(BuildContext context) {
     var ownerId = AccessBloc.member(context)!.documentID;
     var readOnlyConditions =
-        widget.model.htmlMedia != null && !widget.model.htmlMedia!.isEmpty;
+        widget.model.htmlMedia != null && widget.model.htmlMedia!.isNotEmpty;
     return ListView(shrinkWrap: true, physics: ScrollPhysics(), children: [
       HeaderWidget(
         title: 'Html',
@@ -120,7 +119,7 @@ class _HtmlComponentEditorState extends State<HtmlComponentEditor> {
                   .add(widget.model);
             } else {
               openErrorDialog(
-                  widget.app, context, widget.app.documentID + '/_error',
+                  widget.app, context, '${widget.app.documentID}/_error',
                   title: 'Error',
                   errorMessage: 'Html with this ID already exists');
               widget.feedback(false, null);
@@ -242,31 +241,31 @@ class _HtmlComponentEditorState extends State<HtmlComponentEditor> {
             getListTile(context, widget.app,
                 leading: Icon(Icons.security),
                 title: ConditionsSimpleWidget(
-                  app: widget.app,
-                  value: widget.model.conditions!,
-                  readOnly: readOnlyConditions
-                )),
+                    app: widget.app,
+                    value: widget.model.conditions!,
+                    readOnly: readOnlyConditions)),
           ]),
     ]);
   }
 
   Widget _editButtons(String ownerId) {
-    return Row(children: [Spacer(), GestureDetector(
-        child: Icon(Icons.edit),
-        onTap: () {
-          AbstractTextPlatform.platform!.updateHtmlWithPlatformMedium(
-            context,
-            widget.app,
-            ownerId,
-            widget.model,
-                (valueX) {
-
-              setState(() {
-              });
-            },
-            "Document contents",
-          );
-        })]);
+    return Row(children: [
+      Spacer(),
+      GestureDetector(
+          child: Icon(Icons.edit),
+          onTap: () {
+            AbstractTextPlatform.platform!.updateHtmlWithPlatformMedium(
+              context,
+              widget.app,
+              ownerId,
+              widget.model,
+              (valueX) {
+                setState(() {});
+              },
+              "Document contents",
+            );
+          })
+    ]);
   }
 
   Widget _htmlWidget(

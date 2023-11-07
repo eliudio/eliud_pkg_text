@@ -41,19 +41,20 @@ class HtmlPlatformMediumFormInitialized extends HtmlPlatformMediumFormState {
   final HtmlPlatformMediumModel? value;
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
-  const HtmlPlatformMediumFormInitialized({ this.value });
+  const HtmlPlatformMediumFormInitialized({this.value});
 }
 
 // Menu has been initialised and hence a menu is available
-abstract class HtmlPlatformMediumFormError extends HtmlPlatformMediumFormInitialized {
+abstract class HtmlPlatformMediumFormError
+    extends HtmlPlatformMediumFormInitialized {
   final String? message;
 
   @override
-  List<Object?> get props => [ message, value ];
+  List<Object?> get props => [message, value];
 
-  const HtmlPlatformMediumFormError({this.message, HtmlPlatformMediumModel? value }) : super(value: value);
+  const HtmlPlatformMediumFormError({this.message, super.value});
 
   @override
   String toString() {
@@ -63,11 +64,13 @@ abstract class HtmlPlatformMediumFormError extends HtmlPlatformMediumFormInitial
     }''';
   }
 }
-class DocumentIDHtmlPlatformMediumFormError extends HtmlPlatformMediumFormError { 
-  const DocumentIDHtmlPlatformMediumFormError({ String? message, HtmlPlatformMediumModel? value }): super(message: message, value: value);
+
+class DocumentIDHtmlPlatformMediumFormError
+    extends HtmlPlatformMediumFormError {
+  const DocumentIDHtmlPlatformMediumFormError({super.message, super.value});
 
   @override
-  List<Object?> get props => [ message, value ];
+  List<Object?> get props => [message, value];
 
   @override
   String toString() {
@@ -78,12 +81,12 @@ class DocumentIDHtmlPlatformMediumFormError extends HtmlPlatformMediumFormError 
   }
 }
 
-
-class HtmlReferenceHtmlPlatformMediumFormError extends HtmlPlatformMediumFormError { 
-  const HtmlReferenceHtmlPlatformMediumFormError({ String? message, HtmlPlatformMediumModel? value }): super(message: message, value: value);
+class HtmlReferenceHtmlPlatformMediumFormError
+    extends HtmlPlatformMediumFormError {
+  const HtmlReferenceHtmlPlatformMediumFormError({super.message, super.value});
 
   @override
-  List<Object?> get props => [ message, value ];
+  List<Object?> get props => [message, value];
 
   @override
   String toString() {
@@ -94,12 +97,11 @@ class HtmlReferenceHtmlPlatformMediumFormError extends HtmlPlatformMediumFormErr
   }
 }
 
-
-class MediumHtmlPlatformMediumFormError extends HtmlPlatformMediumFormError { 
-  const MediumHtmlPlatformMediumFormError({ String? message, HtmlPlatformMediumModel? value }): super(message: message, value: value);
+class MediumHtmlPlatformMediumFormError extends HtmlPlatformMediumFormError {
+  const MediumHtmlPlatformMediumFormError({super.message, super.value});
 
   @override
-  List<Object?> get props => [ message, value ];
+  List<Object?> get props => [message, value];
 
   @override
   String toString() {
@@ -110,12 +112,11 @@ class MediumHtmlPlatformMediumFormError extends HtmlPlatformMediumFormError {
   }
 }
 
-
-class HtmlPlatformMediumFormLoaded extends HtmlPlatformMediumFormInitialized { 
-  const HtmlPlatformMediumFormLoaded({ HtmlPlatformMediumModel? value }): super(value: value);
+class HtmlPlatformMediumFormLoaded extends HtmlPlatformMediumFormInitialized {
+  const HtmlPlatformMediumFormLoaded({super.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
   String toString() {
@@ -125,12 +126,12 @@ class HtmlPlatformMediumFormLoaded extends HtmlPlatformMediumFormInitialized {
   }
 }
 
-
-class SubmittableHtmlPlatformMediumForm extends HtmlPlatformMediumFormInitialized { 
-  const SubmittableHtmlPlatformMediumForm({ HtmlPlatformMediumModel? value }): super(value: value);
+class SubmittableHtmlPlatformMediumForm
+    extends HtmlPlatformMediumFormInitialized {
+  const SubmittableHtmlPlatformMediumForm({super.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
   String toString() {
@@ -139,5 +140,3 @@ class SubmittableHtmlPlatformMediumForm extends HtmlPlatformMediumFormInitialize
     }''';
   }
 }
-
-

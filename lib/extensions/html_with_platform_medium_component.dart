@@ -28,8 +28,8 @@ class HtmlWithPlatformMediumComponentConstructorDefault
 class HtmlWithPlatformMediumComponent
     extends AbstractHtmlWithPlatformMediumComponent {
   HtmlWithPlatformMediumComponent(
-      {Key? key, required AppModel app, required String htmlId})
-      : super(key: key, app: app, htmlWithPlatformMediumId: htmlId);
+      {super.key, required super.app, required String htmlId})
+      : super(htmlWithPlatformMediumId: htmlId);
 
   @override
   Widget yourWidget(BuildContext context, HtmlWithPlatformMediumModel? value) {
@@ -46,7 +46,9 @@ class HtmlWithPlatformMediumComponent
               app, accessState.getMember(), value.background),
           decoration: BoxDecorationHelper.boxDecoration(
               app, accessState.getMember(), value.background),
-          child: AbstractTextPlatform.platform!.htmlWidgetWithPlatformMedia(context, app, value.html!, htmlPlatformMedia: value.htmlMedia));
+          child: AbstractTextPlatform.platform!.htmlWidgetWithPlatformMedia(
+              context, app, value.html!,
+              htmlPlatformMedia: value.htmlMedia));
     }
   }
 }

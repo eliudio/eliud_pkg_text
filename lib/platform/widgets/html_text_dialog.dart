@@ -9,8 +9,9 @@ import 'package:html_editor_enhanced/html_editor.dart';
 
 import '../text_platform.dart';
 
-typedef void AddMediaHtml(String html);
-typedef Future<void> MediaAction(AddMediaHtml addMediaHtml, String html);
+typedef AddMediaHtml = void Function(String html);
+typedef MediaAction = Future<void> Function(
+    AddMediaHtml addMediaHtml, String html);
 
 class HtmlTextDialog extends StatefulWidget {
   static double width(BuildContext context) =>
@@ -36,7 +37,7 @@ class HtmlTextDialog extends StatefulWidget {
   final bool isWeb;
 
   HtmlTextDialog({
-    Key? key,
+    super.key,
     required this.title,
     required this.updatedHtml,
     required this.initialValue,
@@ -45,10 +46,10 @@ class HtmlTextDialog extends StatefulWidget {
     required this.isWeb,
     this.extraIcons,
     required /*temp required*/ this.mediaAction,
-  }) : super(key: key);
+  });
 
   @override
-  _HtmlTextDialogState createState() => _HtmlTextDialogState();
+  State<HtmlTextDialog> createState() => _HtmlTextDialogState();
 
   static void open(
     BuildContext context,
@@ -61,14 +62,15 @@ class HtmlTextDialog extends StatefulWidget {
     List<Widget>? extraIcons,
     required MediaAction? mediaAction,
   }) {
-    if ((initialValue == null) || (initialValue.length == 0))
+    if (initialValue.isEmpty) {
       initialValue = ' ';
+    }
 
     StyleRegistry.registry()
         .styleWithApp(app)
         .frontEndStyle()
         .dialogStyle()
-        .openWidgetDialog(app, context, app.documentID + '/html',
+        .openWidgetDialog(app, context, '${app.documentID}/html',
             child: HtmlTextDialog(
                 title: title,
                 updatedHtml: updatedHtml,

@@ -30,10 +30,10 @@ class NewPage extends HtmlPlatformMediumListEvent {}
 class AddHtmlPlatformMediumList extends HtmlPlatformMediumListEvent {
   final HtmlPlatformMediumModel? value;
 
-  const AddHtmlPlatformMediumList({ this.value });
+  const AddHtmlPlatformMediumList({this.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
   String toString() => 'AddHtmlPlatformMediumList{ value: $value }';
@@ -42,10 +42,10 @@ class AddHtmlPlatformMediumList extends HtmlPlatformMediumListEvent {
 class UpdateHtmlPlatformMediumList extends HtmlPlatformMediumListEvent {
   final HtmlPlatformMediumModel? value;
 
-  const UpdateHtmlPlatformMediumList({ this.value });
+  const UpdateHtmlPlatformMediumList({this.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
   String toString() => 'UpdateHtmlPlatformMediumList{ value: $value }';
@@ -54,10 +54,10 @@ class UpdateHtmlPlatformMediumList extends HtmlPlatformMediumListEvent {
 class DeleteHtmlPlatformMediumList extends HtmlPlatformMediumListEvent {
   final HtmlPlatformMediumModel? value;
 
-  const DeleteHtmlPlatformMediumList({ this.value });
+  const DeleteHtmlPlatformMediumList({this.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
   String toString() => 'DeleteHtmlPlatformMediumList{ value: $value }';
@@ -67,24 +67,24 @@ class HtmlPlatformMediumListUpdated extends HtmlPlatformMediumListEvent {
   final List<HtmlPlatformMediumModel?>? value;
   final bool? mightHaveMore;
 
-  const HtmlPlatformMediumListUpdated({ this.value, this.mightHaveMore });
+  const HtmlPlatformMediumListUpdated({this.value, this.mightHaveMore});
 
   @override
-  List<Object?> get props => [ value, mightHaveMore ];
+  List<Object?> get props => [value, mightHaveMore];
 
   @override
-  String toString() => 'HtmlPlatformMediumListUpdated{ value: $value, mightHaveMore: $mightHaveMore }';
+  String toString() =>
+      'HtmlPlatformMediumListUpdated{ value: $value, mightHaveMore: $mightHaveMore }';
 }
 
 class HtmlPlatformMediumChangeQuery extends HtmlPlatformMediumListEvent {
   final EliudQuery? newQuery;
 
-  const HtmlPlatformMediumChangeQuery({ required this.newQuery });
+  const HtmlPlatformMediumChangeQuery({required this.newQuery});
 
   @override
-  List<Object?> get props => [ newQuery ];
+  List<Object?> get props => [newQuery];
 
   @override
   String toString() => 'HtmlPlatformMediumChangeQuery{ value: $newQuery }';
 }
-

@@ -34,55 +34,69 @@ import 'package:eliud_pkg_text/model/html_with_platform_medium_model.dart';
 
 import 'package:eliud_core/model/app_model.dart';
 
-
 import 'html_with_platform_medium_form.dart';
 
-
-typedef HtmlWithPlatformMediumWidgetProvider(HtmlWithPlatformMediumModel? value);
+typedef HtmlWithPlatformMediumWidgetProvider = Function(
+    HtmlWithPlatformMediumModel? value);
 
 class HtmlWithPlatformMediumListWidget extends StatefulWidget with HasFab {
-  AppModel app;
-  BackgroundModel? listBackground;
-  HtmlWithPlatformMediumWidgetProvider? widgetProvider;
-  bool? readOnly;
-  String? form;
-  HtmlWithPlatformMediumListWidgetState? state;
-  bool? isEmbedded;
+  final AppModel app;
+  final BackgroundModel? listBackground;
+  final HtmlWithPlatformMediumWidgetProvider? widgetProvider;
+  final bool? readOnly;
+  final String? form;
+  //final HtmlWithPlatformMediumListWidgetState? state;
+  final bool? isEmbedded;
 
-  HtmlWithPlatformMediumListWidget({ Key? key, required this.app, this.readOnly, this.form, this.widgetProvider, this.isEmbedded, this.listBackground }): super(key: key);
+  HtmlWithPlatformMediumListWidget(
+      {super.key,
+      required this.app,
+      this.readOnly,
+      this.form,
+      this.widgetProvider,
+      this.isEmbedded,
+      this.listBackground});
 
   @override
   HtmlWithPlatformMediumListWidgetState createState() {
-    state ??= HtmlWithPlatformMediumListWidgetState();
-    return state!;
+    return HtmlWithPlatformMediumListWidgetState();
   }
 
   @override
   Widget? fab(BuildContext context) {
     if ((readOnly != null) && readOnly!) return null;
-    state ??= HtmlWithPlatformMediumListWidgetState();
+    var state = HtmlWithPlatformMediumListWidgetState();
     var accessState = AccessBloc.getState(context);
-    return state!.fab(context, accessState);
+    return state.fab(context, accessState);
   }
 }
 
-class HtmlWithPlatformMediumListWidgetState extends State<HtmlWithPlatformMediumListWidget> {
-  @override
+class HtmlWithPlatformMediumListWidgetState
+    extends State<HtmlWithPlatformMediumListWidget> {
   Widget? fab(BuildContext aContext, AccessState accessState) {
-    return !accessState.memberIsOwner(widget.app.documentID) 
-      ? null
-      : StyleRegistry.registry().styleWithApp(widget.app).adminListStyle().floatingActionButton(widget.app, context, 'PageFloatBtnTag', Icon(Icons.add),
-      onPressed: () {
-        Navigator.of(context).push(
-          pageRouteBuilder(widget.app, page: BlocProvider.value(
-              value: BlocProvider.of<HtmlWithPlatformMediumListBloc>(context),
-              child: HtmlWithPlatformMediumForm(app:widget.app,
-                  value: null,
-                  formAction: FormAction.AddAction)
-          )),
-        );
-      },
-    );
+    return !accessState.memberIsOwner(widget.app.documentID)
+        ? null
+        : StyleRegistry.registry()
+            .styleWithApp(widget.app)
+            .adminListStyle()
+            .floatingActionButton(
+            widget.app,
+            context,
+            'PageFloatBtnTag',
+            Icon(Icons.add),
+            onPressed: () {
+              Navigator.of(context).push(
+                pageRouteBuilder(widget.app,
+                    page: BlocProvider.value(
+                        value: BlocProvider.of<HtmlWithPlatformMediumListBloc>(
+                            context),
+                        child: HtmlWithPlatformMediumForm(
+                            app: widget.app,
+                            value: null,
+                            formAction: FormAction.addAction))),
+              );
+            },
+          );
   }
 
   @override
@@ -90,105 +104,132 @@ class HtmlWithPlatformMediumListWidgetState extends State<HtmlWithPlatformMedium
     return BlocBuilder<AccessBloc, AccessState>(
         builder: (context, accessState) {
       if (accessState is AccessDetermined) {
-        return BlocBuilder<HtmlWithPlatformMediumListBloc, HtmlWithPlatformMediumListState>(builder: (context, state) {
+        return BlocBuilder<HtmlWithPlatformMediumListBloc,
+            HtmlWithPlatformMediumListState>(builder: (context, state) {
           if (state is HtmlWithPlatformMediumListLoading) {
-            return StyleRegistry.registry().styleWithApp(widget.app).adminListStyle().progressIndicator(widget.app, context);
+            return StyleRegistry.registry()
+                .styleWithApp(widget.app)
+                .adminListStyle()
+                .progressIndicator(widget.app, context);
           } else if (state is HtmlWithPlatformMediumListLoaded) {
             final values = state.values;
             if ((widget.isEmbedded != null) && widget.isEmbedded!) {
               var children = <Widget>[];
               children.add(theList(context, values, accessState));
-              children.add(
-                  StyleRegistry.registry().styleWithApp(widget.app).adminFormStyle().button(widget.app,
-                      context, label: 'Add',
-                      onPressed: () {
-                        Navigator.of(context).push(
-                                  pageRouteBuilder(widget.app, page: BlocProvider.value(
-                                      value: BlocProvider.of<HtmlWithPlatformMediumListBloc>(context),
-                                      child: HtmlWithPlatformMediumForm(app:widget.app,
-                                          value: null,
-                                          formAction: FormAction.AddAction)
-                                  )),
-                                );
-                      },
-                    ));
+              children.add(StyleRegistry.registry()
+                  .styleWithApp(widget.app)
+                  .adminFormStyle()
+                  .button(
+                widget.app,
+                context,
+                label: 'Add',
+                onPressed: () {
+                  Navigator.of(context).push(
+                    pageRouteBuilder(widget.app,
+                        page: BlocProvider.value(
+                            value:
+                                BlocProvider.of<HtmlWithPlatformMediumListBloc>(
+                                    context),
+                            child: HtmlWithPlatformMediumForm(
+                                app: widget.app,
+                                value: null,
+                                formAction: FormAction.addAction))),
+                  );
+                },
+              ));
               return ListView(
-                padding: const EdgeInsets.all(8),
-                physics: ScrollPhysics(),
-                shrinkWrap: true,
-                children: children
-              );
+                  padding: const EdgeInsets.all(8),
+                  physics: ScrollPhysics(),
+                  shrinkWrap: true,
+                  children: children);
             } else {
               return theList(context, values, accessState);
             }
           } else {
-            return StyleRegistry.registry().styleWithApp(widget.app).adminListStyle().progressIndicator(widget.app, context);
+            return StyleRegistry.registry()
+                .styleWithApp(widget.app)
+                .adminListStyle()
+                .progressIndicator(widget.app, context);
           }
         });
       } else {
-        return StyleRegistry.registry().styleWithApp(widget.app).adminListStyle().progressIndicator(widget.app, context);
+        return StyleRegistry.registry()
+            .styleWithApp(widget.app)
+            .adminListStyle()
+            .progressIndicator(widget.app, context);
       }
     });
   }
-  
+
   Widget theList(BuildContext context, values, AccessState accessState) {
     return Container(
-      decoration: widget.listBackground == null ? StyleRegistry.registry().styleWithApp(widget.app).adminListStyle().boxDecorator(widget.app, context, accessState.getMember()) : BoxDecorationHelper.boxDecoration(widget.app, accessState.getMember(), widget.listBackground),
-      child: ListView.separated(
-        separatorBuilder: (context, index) => StyleRegistry.registry().styleWithApp(widget.app).adminListStyle().divider(widget.app, context),
-        shrinkWrap: true,
-        physics: ScrollPhysics(),
-        itemCount: values.length,
-        itemBuilder: (context, index) {
-          final value = values[index];
-          
-          if (widget.widgetProvider != null) return widget.widgetProvider!(value);
+        decoration: widget.listBackground == null
+            ? StyleRegistry.registry()
+                .styleWithApp(widget.app)
+                .adminListStyle()
+                .boxDecorator(widget.app, context, accessState.getMember())
+            : BoxDecorationHelper.boxDecoration(
+                widget.app, accessState.getMember(), widget.listBackground),
+        child: ListView.separated(
+            separatorBuilder: (context, index) => StyleRegistry.registry()
+                .styleWithApp(widget.app)
+                .adminListStyle()
+                .divider(widget.app, context),
+            shrinkWrap: true,
+            physics: ScrollPhysics(),
+            itemCount: values.length,
+            itemBuilder: (context, index) {
+              final value = values[index];
 
-          return HtmlWithPlatformMediumListItem(app: widget.app,
-            value: value,
+              if (widget.widgetProvider != null) {
+                return widget.widgetProvider!(value);
+              }
+
+              return HtmlWithPlatformMediumListItem(
+                app: widget.app,
+                value: value,
 //            app: accessState.app,
-            onDismissed: (direction) {
-              BlocProvider.of<HtmlWithPlatformMediumListBloc>(context)
-                  .add(DeleteHtmlWithPlatformMediumList(value: value));
-              ScaffoldMessenger.of(context).showSnackBar(DeleteSnackBar(
-                message: "HtmlWithPlatformMedium " + value.documentID,
-                onUndo: () => BlocProvider.of<HtmlWithPlatformMediumListBloc>(context)
-                    .add(AddHtmlWithPlatformMediumList(value: value)),
-              ));
-            },
-            onTap: () async {
-                                   final removedItem = await Navigator.of(context).push(
-                        pageRouteBuilder(widget.app, page: BlocProvider.value(
-                              value: BlocProvider.of<HtmlWithPlatformMediumListBloc>(context),
-                              child: getForm(value, FormAction.UpdateAction))));
-                      if (removedItem != null) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          DeleteSnackBar(
-                        message: "HtmlWithPlatformMedium " + value.documentID,
-                            onUndo: () => BlocProvider.of<HtmlWithPlatformMediumListBloc>(context)
-                                .add(AddHtmlWithPlatformMediumList(value: value)),
-                          ),
-                        );
-                      }
-
-            },
-          );
-        }
-      ));
+                onDismissed: (direction) {
+                  BlocProvider.of<HtmlWithPlatformMediumListBloc>(context)
+                      .add(DeleteHtmlWithPlatformMediumList(value: value));
+                  ScaffoldMessenger.of(context).showSnackBar(DeleteSnackBar(
+                    message: "HtmlWithPlatformMedium $value.documentID",
+                    onUndo: () =>
+                        BlocProvider.of<HtmlWithPlatformMediumListBloc>(context)
+                            .add(AddHtmlWithPlatformMediumList(value: value)),
+                  ));
+                },
+                onTap: () async {
+                  final removedItem = await Navigator.of(context).push(
+                      pageRouteBuilder(widget.app,
+                          page: BlocProvider.value(
+                              value: BlocProvider.of<
+                                  HtmlWithPlatformMediumListBloc>(context),
+                              child: getForm(value, FormAction.updateAction))));
+                  if (removedItem != null) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      DeleteSnackBar(
+                        message: "HtmlWithPlatformMedium $value.documentID",
+                        onUndo: () => BlocProvider.of<
+                                HtmlWithPlatformMediumListBloc>(context)
+                            .add(AddHtmlWithPlatformMediumList(value: value)),
+                      ),
+                    );
+                  }
+                },
+              );
+            }));
   }
-  
-  
+
   Widget? getForm(value, action) {
     if (widget.form == null) {
-      return HtmlWithPlatformMediumForm(app:widget.app, value: value, formAction: action);
+      return HtmlWithPlatformMediumForm(
+          app: widget.app, value: value, formAction: action);
     } else {
       return null;
     }
   }
-  
-  
 }
-
 
 class HtmlWithPlatformMediumListItem extends StatelessWidget {
   final AppModel app;
@@ -197,12 +238,12 @@ class HtmlWithPlatformMediumListItem extends StatelessWidget {
   final HtmlWithPlatformMediumModel value;
 
   HtmlWithPlatformMediumListItem({
-    Key? key,
+    super.key,
     required this.app,
     required this.onDismissed,
     required this.onTap,
     required this.value,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -211,9 +252,10 @@ class HtmlWithPlatformMediumListItem extends StatelessWidget {
       onDismissed: onDismissed,
       child: ListTile(
         onTap: onTap,
-        title: value.description != null ? Center(child: text(app, context, value.description!)) : value.documentID != null ? Center(child: text(app, context, value.documentID)) : Container(),
+        title: value.description != null
+            ? Center(child: text(app, context, value.description!))
+            : Center(child: text(app, context, value.documentID)),
       ),
     );
   }
 }
-

@@ -23,30 +23,35 @@ abstract class HtmlWithPlatformMediumComponentState extends Equatable {
   List<Object?> get props => [];
 }
 
-class HtmlWithPlatformMediumComponentUninitialized extends HtmlWithPlatformMediumComponentState {}
+class HtmlWithPlatformMediumComponentUninitialized
+    extends HtmlWithPlatformMediumComponentState {}
 
-class HtmlWithPlatformMediumComponentError extends HtmlWithPlatformMediumComponentState {
+class HtmlWithPlatformMediumComponentError
+    extends HtmlWithPlatformMediumComponentState {
   final String? message;
-  HtmlWithPlatformMediumComponentError({ this.message });
+  HtmlWithPlatformMediumComponentError({this.message});
 }
 
-class HtmlWithPlatformMediumComponentPermissionDenied extends HtmlWithPlatformMediumComponentState {
+class HtmlWithPlatformMediumComponentPermissionDenied
+    extends HtmlWithPlatformMediumComponentState {
   HtmlWithPlatformMediumComponentPermissionDenied();
 }
 
-class HtmlWithPlatformMediumComponentLoaded extends HtmlWithPlatformMediumComponentState {
+class HtmlWithPlatformMediumComponentLoaded
+    extends HtmlWithPlatformMediumComponentState {
   final HtmlWithPlatformMediumModel value;
 
-  const HtmlWithPlatformMediumComponentLoaded({ required this.value });
+  const HtmlWithPlatformMediumComponentLoaded({required this.value});
 
-  HtmlWithPlatformMediumComponentLoaded copyWith({ HtmlWithPlatformMediumModel? copyThis }) {
-    return HtmlWithPlatformMediumComponentLoaded(value: copyThis ?? this.value);
+  HtmlWithPlatformMediumComponentLoaded copyWith(
+      {HtmlWithPlatformMediumModel? copyThis}) {
+    return HtmlWithPlatformMediumComponentLoaded(value: copyThis ?? value);
   }
 
   @override
   List<Object?> get props => [value];
 
   @override
-  String toString() => 'HtmlWithPlatformMediumComponentLoaded { value: $value }';
+  String toString() =>
+      'HtmlWithPlatformMediumComponentLoaded { value: $value }';
 }
-

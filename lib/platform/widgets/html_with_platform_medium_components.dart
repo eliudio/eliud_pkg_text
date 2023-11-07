@@ -32,7 +32,7 @@ class HtmlWithPlatformMediumComponents extends StatefulWidget {
     await openComplexDialog(
       app,
       context,
-      app.documentID + '/html_components',
+      '${app.documentID}/html_components',
       title: 'Images and Videos',
       includeHeading: false,
       widthFraction: .9,
@@ -67,11 +67,10 @@ class HtmlWithPlatformMediumComponents extends StatefulWidget {
   final EditorFeedback editorFeedback;
 
   const HtmlWithPlatformMediumComponents._({
-    Key? key,
     required this.app,
     this.addMediaHtml,
     required this.editorFeedback,
-  }) : super(key: key);
+  });
 
   @override
   State<StatefulWidget> createState() =>
@@ -81,7 +80,7 @@ class HtmlWithPlatformMediumComponents extends StatefulWidget {
 class _HtmlWithPlatformMediumComponentsState
     extends State<HtmlWithPlatformMediumComponents> {
   double? uploadingProgress;
-  Offset? onTapPosition = null;
+  Offset? onTapPosition;
 
   @override
   Widget build(BuildContext context) {
@@ -105,7 +104,7 @@ class _HtmlWithPlatformMediumComponentsState
               },
             ),
           _images(context, htmlWithPMM.model, htmlWithPMM.model.htmlMedia,
-                  htmlWithPMM),
+              htmlWithPMM),
         ]);
       } else {
         return progressIndicator(widget.app, context);
@@ -126,7 +125,7 @@ class _HtmlWithPlatformMediumComponentsState
         if (medium != null) {
           widgets.add(GestureDetector(
               onTapDown: (TapDownDetails details) =>
-              onTapPosition = details.globalPosition,
+                  onTapPosition = details.globalPosition,
               onTap: () async {
                 var x = onTapPosition == null
                     ? fullScreenWidth(context) / 2
@@ -145,8 +144,7 @@ class _HtmlWithPlatformMediumComponentsState
                     PopupMenuItem<int>(child: const Text('Move up'), value: 2),
                     PopupMenuItem<int>(
                         child: const Text('Move down'), value: 3),
-                    PopupMenuItem<int>(
-                        child: const Text('Delete'), value: 4),
+                    PopupMenuItem<int>(child: const Text('Delete'), value: 4),
                   ],
                   elevation: 8.0,
                 );
@@ -154,13 +152,13 @@ class _HtmlWithPlatformMediumComponentsState
                 switch (value) {
                   case 0:
                     widget.editorFeedback(true, htmlWithPlatformMediumModel);
-                    if (medium.mediumType == PlatformMediumType.Photo) {
+                    if (medium.mediumType == PlatformMediumType.photo) {
                       var htmlCode = constructHtmlForImg(medium.url!,
-                          kDOCUMENT_LABEL_PLATFORM, item.htmlReference!);
+                          kDocumentLabelPlatform, item.htmlReference!);
                       widget.addMediaHtml!(htmlCode);
                     } else {
                       var htmlCode = constructHtmlForVideo(medium.url!,
-                          kDOCUMENT_LABEL_PLATFORM, item.htmlReference!);
+                          kDocumentLabelPlatform, item.htmlReference!);
                       widget.addMediaHtml!(htmlCode);
                     }
                     Navigator.of(context).pop();
@@ -173,28 +171,27 @@ class _HtmlWithPlatformMediumComponentsState
                         i);
                     break;
                   case 2:
-                    BlocProvider.of<HtmlPlatformMediumBloc>(context).add(
-                        HtmlMediaMoveEvent(
-                            isUp: true, item: item));
+                    BlocProvider.of<HtmlPlatformMediumBloc>(context)
+                        .add(HtmlMediaMoveEvent(isUp: true, item: item));
                     break;
                   case 3:
-                    BlocProvider.of<HtmlPlatformMediumBloc>(context).add(
-                        HtmlMediaMoveEvent(
-                            isUp: false, item: item));
+                    BlocProvider.of<HtmlPlatformMediumBloc>(context)
+                        .add(HtmlMediaMoveEvent(isUp: false, item: item));
                     break;
                   case 4:
                     if ((item.htmlReference == null) ||
                         ((htmlWithPMM.model.html != null) &&
-                            (!htmlWithPMM.model.html.contains(
-                                item.htmlReference)))) {
+                            (!htmlWithPMM.model.html
+                                .contains(item.htmlReference)))) {
                       BlocProvider.of<HtmlPlatformMediumBloc>(context).add(
                           DeleteItemEvent<HtmlWithPlatformMediumModel,
-                              HtmlPlatformMediumModel>(
-                              itemModel: item));
+                              HtmlPlatformMediumModel>(itemModel: item));
                     } else {
                       openErrorDialog(widget.app, context,
-                          widget.app.documentID + '/_error', title: 'Problem',
-                          errorMessage: "This medium is used in the html so I can't delete it");
+                          '${widget.app.documentID}/_error',
+                          title: 'Problem',
+                          errorMessage:
+                              "This medium is used in the html so I can't delete it");
                     }
                     break;
                 }
@@ -203,84 +200,82 @@ class _HtmlWithPlatformMediumComponentsState
                   message: _message(item),
                   child: (item == htmlWithPMM.currentEdit
                       ? Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.red, width: 1),
-                      ),
-                      child: Image.network(
-                        medium.urlThumbnail!,
-                        //            height: height,
-                      ))
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.red, width: 1),
+                          ),
+                          child: Image.network(
+                            medium.urlThumbnail!,
+                            //            height: height,
+                          ))
                       : Image.network(
-                    medium.urlThumbnail!,
-                    //            height: height,
-                  )))));
+                          medium.urlThumbnail!,
+                          //            height: height,
+                        )))));
         }
       }
     }
-      if (uploadingProgress == null) {
-        widgets.add(MediaButtons.platformMediaButtons(
-          context,
-          widget.app,
-          () => htmlWithPlatformMediumModel.conditions == null ? PrivilegeLevelRequiredSimple.NoPrivilegeRequiredSimple : htmlWithPlatformMediumModel.conditions!.privilegeLevelRequired!,
-          allowCrop: false,
-          tooltip: 'Add photo',
-          photoFeedbackFunction: (photo) {
-            if (photo != null) {
-              var newKey = newRandomKey();
-              BlocProvider.of<HtmlPlatformMediumBloc>(context).add(AddItemEvent(
-                  itemModel: HtmlPlatformMediumModel(
-                      documentID: newKey,
-                      htmlReference: newKey,
-                      medium: photo)));
-            }
-            uploadingProgress = null;
-          },
-          photoFeedbackProgress: (progress) {
-            setState(() {
-              uploadingProgress = progress;
-            });
-          },
-          videoFeedbackFunction: (video) {
-            if (video != null) {
-              var newKey = newRandomKey();
-              BlocProvider.of<HtmlPlatformMediumBloc>(context).add(AddItemEvent(
-                  itemModel: HtmlPlatformMediumModel(
-                      documentID: newKey,
-                      htmlReference: newKey,
-                      medium: video)));
-            }
-            uploadingProgress = null;
-          },
-          videoFeedbackProgress: (progress) {
-            setState(() {
-              uploadingProgress = progress;
-            });
-          },
-          icon: Icon(
-            Icons.add,
-          ),
-        ));
-      } else {
-        widgets.add(progressIndicatorWithValue(widget.app, context,
-            value: uploadingProgress!));
-      }
+    if (uploadingProgress == null) {
+      widgets.add(MediaButtons.platformMediaButtons(
+        context,
+        widget.app,
+        () => htmlWithPlatformMediumModel.conditions == null
+            ? PrivilegeLevelRequiredSimple.noPrivilegeRequiredSimple
+            : htmlWithPlatformMediumModel.conditions!.privilegeLevelRequired!,
+        allowCrop: false,
+        tooltip: 'Add photo',
+        photoFeedbackFunction: (photo) {
+          if (photo != null) {
+            var newKey = newRandomKey();
+            BlocProvider.of<HtmlPlatformMediumBloc>(context).add(AddItemEvent(
+                itemModel: HtmlPlatformMediumModel(
+                    documentID: newKey, htmlReference: newKey, medium: photo)));
+          }
+          uploadingProgress = null;
+        },
+        photoFeedbackProgress: (progress) {
+          setState(() {
+            uploadingProgress = progress;
+          });
+        },
+        videoFeedbackFunction: (video) {
+          if (video != null) {
+            var newKey = newRandomKey();
+            BlocProvider.of<HtmlPlatformMediumBloc>(context).add(AddItemEvent(
+                itemModel: HtmlPlatformMediumModel(
+                    documentID: newKey, htmlReference: newKey, medium: video)));
+          }
+          uploadingProgress = null;
+        },
+        videoFeedbackProgress: (progress) {
+          setState(() {
+            uploadingProgress = progress;
+          });
+        },
+        icon: Icon(
+          Icons.add,
+        ),
+      ));
+    } else {
+      widgets.add(progressIndicatorWithValue(widget.app, context,
+          value: uploadingProgress!));
+    }
 
-      return GridView.extent(
-          maxCrossAxisExtent: 200,
-          padding: const EdgeInsets.all(0),
-          mainAxisSpacing: 20,
-          crossAxisSpacing: 20,
-          physics: const ScrollPhysics(),
-          // to disable GridView's scrolling
-          shrinkWrap: true,
-          children: widgets);
+    return GridView.extent(
+        maxCrossAxisExtent: 200,
+        padding: const EdgeInsets.all(0),
+        mainAxisSpacing: 20,
+        crossAxisSpacing: 20,
+        physics: const ScrollPhysics(),
+        // to disable GridView's scrolling
+        shrinkWrap: true,
+        children: widgets);
   }
 
   String _message(HtmlPlatformMediumModel? item) {
     if (item == null) {
       return '?';
     } else {
-      return (((item.medium == null) || (item.medium!.base == null)) ? 'no name' : item.medium!.base!) + '.' + (((item.medium == null) || (item.medium!.ext == null)) ? 'no ext' : item.medium!.ext!);
+      return '${((item.medium == null) || (item.medium!.base == null)) ? 'no name' : item.medium!.base!}.${((item.medium == null) || (item.medium!.ext == null)) ? 'no ext' : item.medium!.ext!}';
     }
   }
 }

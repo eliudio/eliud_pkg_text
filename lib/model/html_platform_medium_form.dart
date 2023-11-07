@@ -22,9 +22,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:eliud_core/style/style_registry.dart';
 
-
-
-
 import 'package:eliud_core/model/internal_component.dart';
 
 import 'package:eliud_core/tools/enums.dart';
@@ -39,69 +36,81 @@ import 'package:eliud_pkg_text/model/html_platform_medium_form_bloc.dart';
 import 'package:eliud_pkg_text/model/html_platform_medium_form_event.dart';
 import 'package:eliud_pkg_text/model/html_platform_medium_form_state.dart';
 
-
 class HtmlPlatformMediumForm extends StatelessWidget {
   final AppModel app;
-  FormAction formAction;
-  HtmlPlatformMediumModel? value;
-  ActionModel? submitAction;
+  final FormAction formAction;
+  final HtmlPlatformMediumModel? value;
+  final ActionModel? submitAction;
 
-  HtmlPlatformMediumForm({Key? key, required this.app, required this.formAction, required this.value, this.submitAction}) : super(key: key);
+  HtmlPlatformMediumForm(
+      {super.key,
+      required this.app,
+      required this.formAction,
+      required this.value,
+      this.submitAction});
 
+  /// Build the HtmlPlatformMediumForm
   @override
   Widget build(BuildContext context) {
-    var accessState = AccessBloc.getState(context);
+    //var accessState = AccessBloc.getState(context);
     var appId = app.documentID;
-    if (formAction == FormAction.ShowData) {
-      return BlocProvider<HtmlPlatformMediumFormBloc >(
-            create: (context) => HtmlPlatformMediumFormBloc(appId,
-                                       
-                                                )..add(InitialiseHtmlPlatformMediumFormEvent(value: value)),
-  
-        child: MyHtmlPlatformMediumForm(app:app, submitAction: submitAction, formAction: formAction),
-          );
-    } if (formAction == FormAction.ShowPreloadedData) {
-      return BlocProvider<HtmlPlatformMediumFormBloc >(
-            create: (context) => HtmlPlatformMediumFormBloc(appId,
-                                       
-                                                )..add(InitialiseHtmlPlatformMediumFormNoLoadEvent(value: value)),
-  
-        child: MyHtmlPlatformMediumForm(app:app, submitAction: submitAction, formAction: formAction),
-          );
+    if (formAction == FormAction.showData) {
+      return BlocProvider<HtmlPlatformMediumFormBloc>(
+        create: (context) => HtmlPlatformMediumFormBloc(
+          appId,
+        )..add(InitialiseHtmlPlatformMediumFormEvent(value: value)),
+        child: MyHtmlPlatformMediumForm(
+            app: app, submitAction: submitAction, formAction: formAction),
+      );
+    }
+    if (formAction == FormAction.showPreloadedData) {
+      return BlocProvider<HtmlPlatformMediumFormBloc>(
+        create: (context) => HtmlPlatformMediumFormBloc(
+          appId,
+        )..add(InitialiseHtmlPlatformMediumFormNoLoadEvent(value: value)),
+        child: MyHtmlPlatformMediumForm(
+            app: app, submitAction: submitAction, formAction: formAction),
+      );
     } else {
       return Scaffold(
-        appBar: StyleRegistry.registry().styleWithApp(app).adminFormStyle().appBarWithString(app, context, title: formAction == FormAction.UpdateAction ? 'Update HtmlPlatformMedium' : 'Add HtmlPlatformMedium'),
-        body: BlocProvider<HtmlPlatformMediumFormBloc >(
-            create: (context) => HtmlPlatformMediumFormBloc(appId,
-                                       
-                                                )..add((formAction == FormAction.UpdateAction ? InitialiseHtmlPlatformMediumFormEvent(value: value) : InitialiseNewHtmlPlatformMediumFormEvent())),
-  
-        child: MyHtmlPlatformMediumForm(app: app, submitAction: submitAction, formAction: formAction),
+          appBar: StyleRegistry.registry()
+              .styleWithApp(app)
+              .adminFormStyle()
+              .appBarWithString(app, context,
+                  title: formAction == FormAction.updateAction
+                      ? 'Update HtmlPlatformMedium'
+                      : 'Add HtmlPlatformMedium'),
+          body: BlocProvider<HtmlPlatformMediumFormBloc>(
+            create: (context) => HtmlPlatformMediumFormBloc(
+              appId,
+            )..add((formAction == FormAction.updateAction
+                ? InitialiseHtmlPlatformMediumFormEvent(value: value)
+                : InitialiseNewHtmlPlatformMediumFormEvent())),
+            child: MyHtmlPlatformMediumForm(
+                app: app, submitAction: submitAction, formAction: formAction),
           ));
     }
   }
 }
-
 
 class MyHtmlPlatformMediumForm extends StatefulWidget {
   final AppModel app;
   final FormAction? formAction;
   final ActionModel? submitAction;
 
-  MyHtmlPlatformMediumForm({required this.app, this.formAction, this.submitAction});
+  MyHtmlPlatformMediumForm(
+      {required this.app, this.formAction, this.submitAction});
 
-  _MyHtmlPlatformMediumFormState createState() => _MyHtmlPlatformMediumFormState(this.formAction);
+  @override
+  State<MyHtmlPlatformMediumForm> createState() =>
+      _MyHtmlPlatformMediumFormState(formAction);
 }
-
 
 class _MyHtmlPlatformMediumFormState extends State<MyHtmlPlatformMediumForm> {
   final FormAction? formAction;
   late HtmlPlatformMediumFormBloc _myFormBloc;
 
-  final TextEditingController _documentIDController = TextEditingController();
-  final TextEditingController _htmlReferenceController = TextEditingController();
   String? _medium;
-
 
   _MyHtmlPlatformMediumFormState(this.formAction);
 
@@ -109,115 +118,137 @@ class _MyHtmlPlatformMediumFormState extends State<MyHtmlPlatformMediumForm> {
   void initState() {
     super.initState();
     _myFormBloc = BlocProvider.of<HtmlPlatformMediumFormBloc>(context);
-    _documentIDController.addListener(_onDocumentIDChanged);
-    _htmlReferenceController.addListener(_onHtmlReferenceChanged);
   }
 
   @override
   Widget build(BuildContext context) {
     var accessState = AccessBloc.getState(context);
-    return BlocBuilder<HtmlPlatformMediumFormBloc, HtmlPlatformMediumFormState>(builder: (context, state) {
-      if (state is HtmlPlatformMediumFormUninitialized) return Center(
-        child: StyleRegistry.registry().styleWithApp(widget.app).adminListStyle().progressIndicator(widget.app, context),
-      );
+    return BlocBuilder<HtmlPlatformMediumFormBloc, HtmlPlatformMediumFormState>(
+        builder: (context, state) {
+      if (state is HtmlPlatformMediumFormUninitialized) {
+        return Center(
+          child: StyleRegistry.registry()
+              .styleWithApp(widget.app)
+              .adminListStyle()
+              .progressIndicator(widget.app, context),
+        );
+      }
 
       if (state is HtmlPlatformMediumFormLoaded) {
-        if (state.value!.documentID != null)
-          _documentIDController.text = state.value!.documentID.toString();
-        else
-          _documentIDController.text = "";
-        if (state.value!.htmlReference != null)
-          _htmlReferenceController.text = state.value!.htmlReference.toString();
-        else
-          _htmlReferenceController.text = "";
-        if (state.value!.medium != null)
-          _medium= state.value!.medium!.documentID;
-        else
-          _medium= "";
+        if (state.value!.medium != null) {
+          _medium = state.value!.medium!.documentID;
+        } else {
+          _medium = "";
+        }
       }
       if (state is HtmlPlatformMediumFormInitialized) {
         List<Widget> children = [];
-         children.add(Container(
-                  alignment: Alignment.centerLeft,
-                  padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
-                  child: StyleRegistry.registry().styleWithApp(widget.app).adminFormStyle().groupTitle(widget.app, context, 'General')
-                ));
-
+        children.add(Container(
+            alignment: Alignment.centerLeft,
+            padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
+            child: StyleRegistry.registry()
+                .styleWithApp(widget.app)
+                .adminFormStyle()
+                .groupTitle(widget.app, context, 'General')));
 
         children.add(Container(height: 20.0));
-        children.add(StyleRegistry.registry().styleWithApp(widget.app).adminFormStyle().divider(widget.app, context));
+        children.add(StyleRegistry.registry()
+            .styleWithApp(widget.app)
+            .adminFormStyle()
+            .divider(widget.app, context));
 
-
-         children.add(Container(
-                  alignment: Alignment.centerLeft,
-                  padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
-                  child: StyleRegistry.registry().styleWithApp(widget.app).adminFormStyle().groupTitle(widget.app, context, 'Image')
-                ));
+        children.add(Container(
+            alignment: Alignment.centerLeft,
+            padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
+            child: StyleRegistry.registry()
+                .styleWithApp(widget.app)
+                .adminFormStyle()
+                .groupTitle(widget.app, context, 'Image')));
 
         children.add(
-
-                DropdownButtonComponentFactory().createNew(app: widget.app, id: "platformMediums", value: _medium, trigger: (value, privilegeLevel) => _onMediumSelected(value), optional: true),
-          );
-
+          DropdownButtonComponentFactory().createNew(
+              app: widget.app,
+              id: "platformMediums",
+              value: _medium,
+              trigger: (value, privilegeLevel) => _onMediumSelected(value),
+              optional: true),
+        );
 
         children.add(Container(height: 20.0));
-        children.add(StyleRegistry.registry().styleWithApp(widget.app).adminFormStyle().divider(widget.app, context));
+        children.add(StyleRegistry.registry()
+            .styleWithApp(widget.app)
+            .adminFormStyle()
+            .divider(widget.app, context));
 
+        if ((formAction != FormAction.showData) &&
+            (formAction != FormAction.showPreloadedData)) {
+          children.add(StyleRegistry.registry()
+              .styleWithApp(widget.app)
+              .adminFormStyle()
+              .button(
+                widget.app,
+                context,
+                label: 'Submit',
+                onPressed: _readOnly(accessState, state)
+                    ? null
+                    : () {
+                        if (state is HtmlPlatformMediumFormError) {
+                          return;
+                        } else {
+                          if (formAction == FormAction.updateAction) {
+                            BlocProvider.of<HtmlPlatformMediumListBloc>(context)
+                                .add(UpdateHtmlPlatformMediumList(
+                                    value: state.value!.copyWith(
+                              documentID: state.value!.documentID,
+                              htmlReference: state.value!.htmlReference,
+                              medium: state.value!.medium,
+                            )));
+                          } else {
+                            BlocProvider.of<HtmlPlatformMediumListBloc>(context)
+                                .add(AddHtmlPlatformMediumList(
+                                    value: HtmlPlatformMediumModel(
+                              documentID: state.value!.documentID,
+                              htmlReference: state.value!.htmlReference,
+                              medium: state.value!.medium,
+                            )));
+                          }
+                          if (widget.submitAction != null) {
+                            eliudrouter.Router.navigateTo(
+                                context, widget.submitAction!);
+                          } else {
+                            Navigator.pop(context);
+                          }
+                        }
+                      },
+              ));
+        }
 
-        if ((formAction != FormAction.ShowData) && (formAction != FormAction.ShowPreloadedData))
-          children.add(StyleRegistry.registry().styleWithApp(widget.app).adminFormStyle().button(widget.app, context, label: 'Submit',
-                  onPressed: _readOnly(accessState, state) ? null : () {
-                    if (state is HtmlPlatformMediumFormError) {
-                      return null;
-                    } else {
-                      if (formAction == FormAction.UpdateAction) {
-                        BlocProvider.of<HtmlPlatformMediumListBloc>(context).add(
-                          UpdateHtmlPlatformMediumList(value: state.value!.copyWith(
-                              documentID: state.value!.documentID, 
-                              htmlReference: state.value!.htmlReference, 
-                              medium: state.value!.medium, 
-                        )));
-                      } else {
-                        BlocProvider.of<HtmlPlatformMediumListBloc>(context).add(
-                          AddHtmlPlatformMediumList(value: HtmlPlatformMediumModel(
-                              documentID: state.value!.documentID, 
-                              htmlReference: state.value!.htmlReference, 
-                              medium: state.value!.medium, 
-                          )));
-                      }
-                      if (widget.submitAction != null) {
-                        eliudrouter.Router.navigateTo(context, widget.submitAction!);
-                      } else {
-                        Navigator.pop(context);
-                      }
-                    }
-                  },
-                ));
-
-        return StyleRegistry.registry().styleWithApp(widget.app).adminFormStyle().container(widget.app, context, Form(
-            child: ListView(
-              padding: const EdgeInsets.all(8),
-              physics: ((formAction == FormAction.ShowData) || (formAction == FormAction.ShowPreloadedData)) ? NeverScrollableScrollPhysics() : null,
-              shrinkWrap: ((formAction == FormAction.ShowData) || (formAction == FormAction.ShowPreloadedData)),
-              children: children
-            ),
-          ), formAction!
-        );
+        return StyleRegistry.registry()
+            .styleWithApp(widget.app)
+            .adminFormStyle()
+            .container(
+                widget.app,
+                context,
+                Form(
+                  child: ListView(
+                      padding: const EdgeInsets.all(8),
+                      physics: ((formAction == FormAction.showData) ||
+                              (formAction == FormAction.showPreloadedData))
+                          ? NeverScrollableScrollPhysics()
+                          : null,
+                      shrinkWrap: ((formAction == FormAction.showData) ||
+                          (formAction == FormAction.showPreloadedData)),
+                      children: children),
+                ),
+                formAction!);
       } else {
-        return StyleRegistry.registry().styleWithApp(widget.app).adminListStyle().progressIndicator(widget.app, context);
+        return StyleRegistry.registry()
+            .styleWithApp(widget.app)
+            .adminListStyle()
+            .progressIndicator(widget.app, context);
       }
     });
   }
-
-  void _onDocumentIDChanged() {
-    _myFormBloc.add(ChangedHtmlPlatformMediumDocumentID(value: _documentIDController.text));
-  }
-
-
-  void _onHtmlReferenceChanged() {
-    _myFormBloc.add(ChangedHtmlPlatformMediumHtmlReference(value: _htmlReferenceController.text));
-  }
-
 
   void _onMediumSelected(String? val) {
     setState(() {
@@ -226,21 +257,16 @@ class _MyHtmlPlatformMediumFormState extends State<MyHtmlPlatformMediumForm> {
     _myFormBloc.add(ChangedHtmlPlatformMediumMedium(value: val));
   }
 
-
-
   @override
   void dispose() {
-    _documentIDController.dispose();
-    _htmlReferenceController.dispose();
     super.dispose();
   }
 
-  bool _readOnly(AccessState accessState, HtmlPlatformMediumFormInitialized state) {
-    return (formAction == FormAction.ShowData) || (formAction == FormAction.ShowPreloadedData) || (!accessState.memberIsOwner(widget.app.documentID));
+  /// Is the form read-only?
+  bool _readOnly(
+      AccessState accessState, HtmlPlatformMediumFormInitialized state) {
+    return (formAction == FormAction.showData) ||
+        (formAction == FormAction.showPreloadedData) ||
+        (!accessState.memberIsOwner(widget.app.documentID));
   }
-  
-
 }
-
-
-

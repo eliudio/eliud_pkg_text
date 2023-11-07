@@ -7,8 +7,7 @@ import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:eliud_core/core/navigate/router.dart' as router;
 import 'package:url_launcher/url_launcher.dart';
 
-Widget mobileHtmlSolution(
-    BuildContext context, AppModel app, String html,
+Widget mobileHtmlSolution(BuildContext context, AppModel app, String html,
     {List<HtmlPlatformMediumModel>? htmlPlatformMedia}) {
   return HtmlWidget(
     html,
@@ -23,7 +22,7 @@ Widget mobileHtmlSolution(
             router.Router.navigateTo(
               context,
               InternalAction(app,
-                  internalActionEnum: InternalActionEnum.GoHome),
+                  internalActionEnum: InternalActionEnum.goHome),
             );
           } else {
             var rest = url.substring(homeURL.length + 1);
@@ -32,8 +31,8 @@ Widget mobileHtmlSolution(
               print("Splitting $rest didn't give 2 items");
             } else {
               var appId = split[0];
-              if (appId.toUpperCase() != '#' + app.documentID.toUpperCase()) {
-                print("appId is " + appId + " which isn't expected");
+              if (appId.toUpperCase() != '#${app.documentID.toUpperCase()}') {
+                print("appId is $appId which isn't expected");
               }
               var pageId = split[1];
               router.Router.navigateTo(
@@ -44,11 +43,12 @@ Widget mobileHtmlSolution(
           }
         } else {
           var uri = Uri.parse(url);
-          if (await canLaunchUrl(uri))
+          if (await canLaunchUrl(uri)) {
             return await launchUrl(uri);
-          else
+          } else {
             // can't launch url, there is some error
             print("Could not launch $url");
+          }
         }
         return true; // if handled
       } else {

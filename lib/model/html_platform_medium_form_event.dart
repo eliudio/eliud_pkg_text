@@ -17,7 +17,6 @@ import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:eliud_pkg_text/model/model_export.dart';
 
-
 @immutable
 abstract class HtmlPlatformMediumFormEvent extends Equatable {
   const HtmlPlatformMediumFormEvent();
@@ -26,24 +25,25 @@ abstract class HtmlPlatformMediumFormEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class InitialiseNewHtmlPlatformMediumFormEvent extends HtmlPlatformMediumFormEvent {
-}
+class InitialiseNewHtmlPlatformMediumFormEvent
+    extends HtmlPlatformMediumFormEvent {}
 
-
-class InitialiseHtmlPlatformMediumFormEvent extends HtmlPlatformMediumFormEvent {
+class InitialiseHtmlPlatformMediumFormEvent
+    extends HtmlPlatformMediumFormEvent {
   final HtmlPlatformMediumModel? value;
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   InitialiseHtmlPlatformMediumFormEvent({this.value});
 }
 
-class InitialiseHtmlPlatformMediumFormNoLoadEvent extends HtmlPlatformMediumFormEvent {
+class InitialiseHtmlPlatformMediumFormNoLoadEvent
+    extends HtmlPlatformMediumFormEvent {
   final HtmlPlatformMediumModel? value;
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   InitialiseHtmlPlatformMediumFormNoLoadEvent({this.value});
 }
@@ -54,22 +54,24 @@ class ChangedHtmlPlatformMediumDocumentID extends HtmlPlatformMediumFormEvent {
   ChangedHtmlPlatformMediumDocumentID({this.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
   String toString() => 'ChangedHtmlPlatformMediumDocumentID{ value: $value }';
 }
 
-class ChangedHtmlPlatformMediumHtmlReference extends HtmlPlatformMediumFormEvent {
+class ChangedHtmlPlatformMediumHtmlReference
+    extends HtmlPlatformMediumFormEvent {
   final String? value;
 
   ChangedHtmlPlatformMediumHtmlReference({this.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
-  String toString() => 'ChangedHtmlPlatformMediumHtmlReference{ value: $value }';
+  String toString() =>
+      'ChangedHtmlPlatformMediumHtmlReference{ value: $value }';
 }
 
 class ChangedHtmlPlatformMediumMedium extends HtmlPlatformMediumFormEvent {
@@ -78,9 +80,8 @@ class ChangedHtmlPlatformMediumMedium extends HtmlPlatformMediumFormEvent {
   ChangedHtmlPlatformMediumMedium({this.value});
 
   @override
-  List<Object?> get props => [ value ];
+  List<Object?> get props => [value];
 
   @override
   String toString() => 'ChangedHtmlPlatformMediumMedium{ value: $value }';
 }
-

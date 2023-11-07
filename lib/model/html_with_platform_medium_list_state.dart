@@ -24,27 +24,31 @@ abstract class HtmlWithPlatformMediumListState extends Equatable {
   List<Object?> get props => [];
 }
 
-class HtmlWithPlatformMediumListLoading extends HtmlWithPlatformMediumListState {}
+class HtmlWithPlatformMediumListLoading
+    extends HtmlWithPlatformMediumListState {}
 
 class HtmlWithPlatformMediumListLoaded extends HtmlWithPlatformMediumListState {
   final List<HtmlWithPlatformMediumModel?>? values;
   final bool? mightHaveMore;
 
-  const HtmlWithPlatformMediumListLoaded({this.mightHaveMore, this.values = const []});
+  const HtmlWithPlatformMediumListLoaded(
+      {this.mightHaveMore, this.values = const []});
 
   @override
-  List<Object?> get props => [ values, mightHaveMore ];
+  List<Object?> get props => [values, mightHaveMore];
 
   @override
   String toString() => 'HtmlWithPlatformMediumListLoaded { values: $values }';
 
   @override
-  bool operator ==(Object other) => 
-          other is HtmlWithPlatformMediumListLoaded &&
-              runtimeType == other.runtimeType &&
-              ListEquality().equals(values, other.values) &&
-              mightHaveMore == other.mightHaveMore;
+  bool operator ==(Object other) =>
+      other is HtmlWithPlatformMediumListLoaded &&
+      runtimeType == other.runtimeType &&
+      ListEquality().equals(values, other.values) &&
+      mightHaveMore == other.mightHaveMore;
+
+  @override
+  int get hashCode => values.hashCode ^ mightHaveMore.hashCode;
 }
 
 class HtmlWithPlatformMediumNotLoaded extends HtmlWithPlatformMediumListState {}
-

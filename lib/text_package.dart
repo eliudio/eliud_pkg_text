@@ -14,14 +14,21 @@ import 'model/component_registry.dart';
 import 'model/repository_singleton.dart';
 
 import 'package:eliud_pkg_text/text_package_stub.dart'
-if (dart.library.io) 'text_mobile_package.dart'
-if (dart.library.html) 'text_web_package.dart';
+    if (dart.library.io) 'text_mobile_package.dart'
+    if (dart.library.html) 'text_web_package.dart';
 
 abstract class TextPackage extends Package {
   TextPackage() : super('eliud_pkg_text');
 
   @override
-  Future<List<PackageConditionDetails>>? getAndSubscribe(AccessBloc accessBloc, AppModel app, MemberModel? member, bool isOwner, bool? isBlocked, PrivilegeLevel? privilegeLevel) => null;
+  Future<List<PackageConditionDetails>>? getAndSubscribe(
+          AccessBloc accessBloc,
+          AppModel app,
+          MemberModel? member,
+          bool isOwner,
+          bool? isBlocked,
+          PrivilegeLevel? privilegeLevel) =>
+      null;
 
   @override
   List<String>? retrieveAllPackageConditions() => null;
@@ -44,6 +51,7 @@ abstract class TextPackage extends Package {
   /*
    * Register depending packages
    */
+  @override
   void registerDependencies(Eliud eliud) {
     eliud.registerPackage(CorePackage.instance());
     eliud.registerPackage(MediumPackage.instance());

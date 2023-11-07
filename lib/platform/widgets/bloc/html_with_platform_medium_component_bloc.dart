@@ -20,16 +20,21 @@ class HtmlMediaMoveEvent<T, U> extends ExtEditorBaseEvent<T> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is MoveEvent &&
-              isUp == other.isUp &&
-              item == other.item;
+      other is MoveEvent && isUp == other.isUp && item == other.item;
+
+  @override
+  int get hashCode => isUp.hashCode ^ item.hashCode;
 }
 
-class HtmlPlatformMediumBloc extends ExtEditorBaseBloc<HtmlWithPlatformMediumModel, HtmlPlatformMediumModel, HtmlWithPlatformMediumEntity> {
-
+class HtmlPlatformMediumBloc extends ExtEditorBaseBloc<
+    HtmlWithPlatformMediumModel,
+    HtmlPlatformMediumModel,
+    HtmlWithPlatformMediumEntity> {
   HtmlPlatformMediumBloc(String appId)
       : super(appId, htmlWithPlatformMediumRepository(appId: appId)!, null) {
-    on<HtmlMediaMoveEvent<HtmlWithPlatformMediumModel,HtmlPlatformMediumModel>>((event, emit) async {
+    on<
+        HtmlMediaMoveEvent<HtmlWithPlatformMediumModel,
+            HtmlPlatformMediumModel>>((event, emit) async {
       var theState = state as ExtEditorBaseInitialised;
       var items = theState.model.htmlMedia!;
       var newListedItems = copyOf(items);
@@ -59,17 +64,18 @@ class HtmlPlatformMediumBloc extends ExtEditorBaseBloc<HtmlWithPlatformMediumMod
   }
 
   @override
-  HtmlWithPlatformMediumModel addItem(HtmlWithPlatformMediumModel model, HtmlPlatformMediumModel newItem) {
-    List<HtmlPlatformMediumModel> newItems = model.htmlMedia == null
-        ? []
-        : model.htmlMedia!.map((e) => e).toList();
+  HtmlWithPlatformMediumModel addItem(
+      HtmlWithPlatformMediumModel model, HtmlPlatformMediumModel newItem) {
+    List<HtmlPlatformMediumModel> newItems =
+        model.htmlMedia == null ? [] : model.htmlMedia!.map((e) => e).toList();
     newItems.add(newItem);
-    var newModel = model.copyWith(htmlMedia:  newItems);
+    var newModel = model.copyWith(htmlMedia: newItems);
     return newModel;
   }
 
   @override
-  HtmlWithPlatformMediumModel deleteItem(HtmlWithPlatformMediumModel model, HtmlPlatformMediumModel deleteItem) {
+  HtmlWithPlatformMediumModel deleteItem(
+      HtmlWithPlatformMediumModel model, HtmlPlatformMediumModel deleteItem) {
     var newItems = <HtmlPlatformMediumModel>[];
     for (var item in model.htmlMedia!) {
       if (item != deleteItem) {
@@ -86,12 +92,14 @@ class HtmlPlatformMediumBloc extends ExtEditorBaseBloc<HtmlWithPlatformMediumMod
   }
 
   @override
-  HtmlWithPlatformMediumModel setDefaultValues(HtmlWithPlatformMediumModel t, StorageConditionsModel conditions) {
+  HtmlWithPlatformMediumModel setDefaultValues(
+      HtmlWithPlatformMediumModel t, StorageConditionsModel conditions) {
     throw Exception("Not implemented");
   }
 
   @override
-  HtmlWithPlatformMediumModel updateItem(HtmlWithPlatformMediumModel model, HtmlPlatformMediumModel oldItem, HtmlPlatformMediumModel newItem) {
+  HtmlWithPlatformMediumModel updateItem(HtmlWithPlatformMediumModel model,
+      HtmlPlatformMediumModel oldItem, HtmlPlatformMediumModel newItem) {
     throw Exception("Not implemented");
   }
 
@@ -99,5 +107,4 @@ class HtmlPlatformMediumBloc extends ExtEditorBaseBloc<HtmlWithPlatformMediumMod
   List<HtmlPlatformMediumModel> copyOf(List<HtmlPlatformMediumModel> ts) {
     return ts.map((e) => e).toList();
   }
-
 }

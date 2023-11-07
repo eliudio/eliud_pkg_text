@@ -20,24 +20,28 @@ import 'package:eliud_pkg_text/model/html_with_platform_medium_component_event.d
 import 'package:eliud_pkg_text/model/html_with_platform_medium_component_state.dart';
 import 'package:eliud_pkg_text/model/html_with_platform_medium_repository.dart';
 
-class HtmlWithPlatformMediumComponentBloc extends Bloc<HtmlWithPlatformMediumComponentEvent, HtmlWithPlatformMediumComponentState> {
+class HtmlWithPlatformMediumComponentBloc extends Bloc<
+    HtmlWithPlatformMediumComponentEvent,
+    HtmlWithPlatformMediumComponentState> {
   final HtmlWithPlatformMediumRepository? htmlWithPlatformMediumRepository;
   StreamSubscription? _htmlWithPlatformMediumSubscription;
 
   void _mapLoadHtmlWithPlatformMediumComponentUpdateToState(String documentId) {
     _htmlWithPlatformMediumSubscription?.cancel();
-    _htmlWithPlatformMediumSubscription = htmlWithPlatformMediumRepository!.listenTo(documentId, (value) {
+    _htmlWithPlatformMediumSubscription =
+        htmlWithPlatformMediumRepository!.listenTo(documentId, (value) {
       if (value != null) {
         add(HtmlWithPlatformMediumComponentUpdated(value: value));
       }
     });
   }
 
-  HtmlWithPlatformMediumComponentBloc({ this.htmlWithPlatformMediumRepository }): super(HtmlWithPlatformMediumComponentUninitialized()) {
-    on <FetchHtmlWithPlatformMediumComponent> ((event, emit) {
+  HtmlWithPlatformMediumComponentBloc({this.htmlWithPlatformMediumRepository})
+      : super(HtmlWithPlatformMediumComponentUninitialized()) {
+    on<FetchHtmlWithPlatformMediumComponent>((event, emit) {
       _mapLoadHtmlWithPlatformMediumComponentUpdateToState(event.id!);
     });
-    on <HtmlWithPlatformMediumComponentUpdated> ((event, emit) {
+    on<HtmlWithPlatformMediumComponentUpdated>((event, emit) {
       emit(HtmlWithPlatformMediumComponentLoaded(value: event.value));
     });
   }
@@ -47,6 +51,4 @@ class HtmlWithPlatformMediumComponentBloc extends Bloc<HtmlWithPlatformMediumCom
     _htmlWithPlatformMediumSubscription?.cancel();
     return super.close();
   }
-
 }
-

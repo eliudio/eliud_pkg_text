@@ -1,5 +1,5 @@
 import 'package:eliud_core/core/wizards/builders/dialog_builder.dart';
-import 'package:eliud_core/core/wizards/tools/documentIdentifier.dart';
+import 'package:eliud_core/core/wizards/tools/document_identifier.dart';
 import 'package:eliud_core/model/abstract_repository_singleton.dart'
     as corerepo;
 import 'package:eliud_core/model/member_dashboard_component.dart';
@@ -32,7 +32,8 @@ Sorry to see you go. Your account has been destroyed.
 """;
 
 class MemberDashboardDialogBuilder extends DialogBuilder {
-  MemberDashboardDialogBuilder(String uniqueId, AppModel app, String dialogDocumentId): super(uniqueId, app, dialogDocumentId);
+  MemberDashboardDialogBuilder(
+      super.uniqueId, super.app, super.dialogDocumentId);
 
   Future<DialogModel> _setupDialog() async {
     return await corerepo.AbstractRepositorySingleton.singleton
@@ -45,31 +46,34 @@ class MemberDashboardDialogBuilder extends DialogBuilder {
     components.add(BodyComponentModel(
         documentID: "1",
         componentName: AbstractMemberDashboardComponent.componentName,
-        componentId: constructDocumentId(uniqueId: uniqueId, documentId: dialogDocumentId)));
+        componentId: constructDocumentId(
+            uniqueId: uniqueId, documentId: dialogDocumentId)));
 
     return DialogModel(
-        documentID: constructDocumentId(uniqueId: uniqueId, documentId: dialogDocumentId),
+        documentID: constructDocumentId(
+            uniqueId: uniqueId, documentId: dialogDocumentId),
         appId: app.documentID,
         title: "Member dashboard",
         description: "Member dashboard",
-        layout: DialogLayout.ListView,
+        layout: DialogLayout.listView,
         bodyComponents: components);
   }
 
   MemberDashboardModel _dashboardModel() {
     return MemberDashboardModel(
-        documentID: constructDocumentId(uniqueId: uniqueId, documentId: dialogDocumentId),
-        appId: app.documentID,
-        description: "Member dashboard",
-        updateProfileText: updateProfileText,
-        retrieveDataText: retrieveDataText,
-        deleteDataText: deleteDataText,
-        retrieveDataEmailSubject: retrieveDataEmailSubject,
-        deleteDataEmailSubject: deleteDataEmailSubject,
-        deleteDataEmailMessage: deleteDataEmailMessage,
-        conditions: StorageConditionsModel(
-            privilegeLevelRequired: PrivilegeLevelRequiredSimple.NoPrivilegeRequiredSimple
-        ),
+      documentID:
+          constructDocumentId(uniqueId: uniqueId, documentId: dialogDocumentId),
+      appId: app.documentID,
+      description: "Member dashboard",
+      updateProfileText: updateProfileText,
+      retrieveDataText: retrieveDataText,
+      deleteDataText: deleteDataText,
+      retrieveDataEmailSubject: retrieveDataEmailSubject,
+      deleteDataEmailSubject: deleteDataEmailSubject,
+      deleteDataEmailMessage: deleteDataEmailMessage,
+      conditions: StorageConditionsModel(
+          privilegeLevelRequired:
+              PrivilegeLevelRequiredSimple.noPrivilegeRequiredSimple),
     );
   }
 

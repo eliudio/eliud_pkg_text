@@ -13,14 +13,13 @@ class TextMobilePackage extends TextPackage {
   }
 
   @override
-  List<Object?> get props => [
-  ];
+  List<Object?> get props => [];
 
   @override
-  bool operator == (Object other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
-          other is TextMobilePackage &&
-              runtimeType == other.runtimeType;
+      other is TextMobilePackage && runtimeType == other.runtimeType;
 
-
+  @override
+  int get hashCode => 0;
 }

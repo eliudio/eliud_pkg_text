@@ -1,5 +1,5 @@
 import 'package:eliud_core/core/wizards/builders/page_builder.dart';
-import 'package:eliud_core/core/wizards/tools/documentIdentifier.dart';
+import 'package:eliud_core/core/wizards/tools/document_identifier.dart';
 import 'package:eliud_core/model/abstract_repository_singleton.dart';
 import 'package:eliud_core/model/app_bar_model.dart';
 import 'package:eliud_core/model/app_model.dart';
@@ -18,31 +18,40 @@ class PageWithTextBuilder extends PageBuilder {
   final String description;
 
   PageWithTextBuilder(
-      String uniqueId,
-      this.title,
-      this.description,
-      this.text,
-      String pageId,
-      AppModel app,
-      String memberId,
-      HomeMenuModel theHomeMenu,
-      AppBarModel theAppBar,
-      DrawerModel leftDrawer,
-      DrawerModel rightDrawer,
-      )
-      : super(uniqueId, pageId, app, memberId, theHomeMenu, theAppBar, leftDrawer,
-            rightDrawer, );
+    String uniqueId,
+    this.title,
+    this.description,
+    this.text,
+    String pageId,
+    AppModel app,
+    String memberId,
+    HomeMenuModel theHomeMenu,
+    AppBarModel theAppBar,
+    DrawerModel leftDrawer,
+    DrawerModel rightDrawer,
+  ) : super(
+          uniqueId,
+          pageId,
+          app,
+          memberId,
+          theHomeMenu,
+          theAppBar,
+          leftDrawer,
+          rightDrawer,
+        );
 
   Future<PageModel> create() async {
-    var htmlComponentId = constructDocumentId(uniqueId: uniqueId, documentId: pageId);
-    await htmlWithPlatformMediumRepository(appId: app.documentID)!.add(HtmlWithPlatformMediumModel(
+    var htmlComponentId =
+        constructDocumentId(uniqueId: uniqueId, documentId: pageId);
+    await htmlWithPlatformMediumRepository(appId: app.documentID)!
+        .add(HtmlWithPlatformMediumModel(
       documentID: htmlComponentId,
       appId: app.documentID,
       description: 'html 1',
       html: '<html><p>$text</p></html>',
       conditions: StorageConditionsModel(
-          privilegeLevelRequired: PrivilegeLevelRequiredSimple.NoPrivilegeRequiredSimple
-      ),
+          privilegeLevelRequired:
+              PrivilegeLevelRequiredSimple.noPrivilegeRequiredSimple),
     ));
 
     var page = PageModel(
@@ -53,16 +62,18 @@ class PageWithTextBuilder extends PageBuilder {
       bodyComponents: [
         BodyComponentModel(
             documentID: "1",
-            componentName: AbstractHtmlWithPlatformMediumComponent.componentName,
+            componentName:
+                AbstractHtmlWithPlatformMediumComponent.componentName,
             componentId: htmlComponentId)
       ],
-      layout: PageLayout.ListView,
+      layout: PageLayout.listView,
       appBar: theAppBar,
       homeMenu: theHomeMenu,
       drawer: leftDrawer,
       endDrawer: rightDrawer,
       conditions: StorageConditionsModel(
-          privilegeLevelRequired: PrivilegeLevelRequiredSimple.NoPrivilegeRequiredSimple),
+          privilegeLevelRequired:
+              PrivilegeLevelRequiredSimple.noPrivilegeRequiredSimple),
     );
     await pageRepository(appId: app.documentID)!.add(page);
     return page;

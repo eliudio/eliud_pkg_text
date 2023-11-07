@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 //import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:eliud_pkg_text/model/html_platform_medium_model.dart';
 
-typedef UpdatedHtml(String value);
+typedef UpdatedHtml = Function(String value);
 
 abstract class AbstractTextPlatform {
   static AbstractTextPlatform? platform;
@@ -73,16 +73,28 @@ abstract class AbstractTextPlatform {
       String title,
       bool isWeb,
       {List<Widget>? extraIcons}) {
-    HtmlTextDialog.open(context, app, ownerId, title, (value) {
-      htmlModel.html = value;
-      updatedHtml(value);
-    }, htmlModel.html ?? '', isWeb,
+    HtmlTextDialog.open(
+        context,
+        app,
+        ownerId,
+        title,
+        (value) {
+          htmlModel.html = value;
+          updatedHtml(value);
+        },
+        htmlModel.html ?? '',
+        isWeb,
         extraIcons: extraIcons,
         mediaAction: (AddMediaHtml addMediaHtml, String html) async {
-          var tempModel = HtmlWithPlatformMediumModel(documentID: newRandomKey(), appId: app.documentID, html: html, htmlMedia: htmlModel.htmlMedia, conditions: htmlModel.conditions);
+          var tempModel = HtmlWithPlatformMediumModel(
+              documentID: newRandomKey(),
+              appId: app.documentID,
+              html: html,
+              htmlMedia: htmlModel.htmlMedia,
+              conditions: htmlModel.conditions);
           // the HtmlWithPlatformMediumComponents uses (unfortunately) a HtmlWithPlatformMediumModel, so we create one, just to be able to function, and to capture htmlMedia
-          await HtmlWithPlatformMediumComponents.openIt(
-              app, context, tempModel, (accepted, model) {
+          await HtmlWithPlatformMediumComponents.openIt(app, context, tempModel,
+              (accepted, model) {
             if (accepted) {
               htmlModel.htmlMedia = model.htmlMedia;
             }
@@ -91,14 +103,12 @@ abstract class AbstractTextPlatform {
   }
 
   Widget htmlWidget(
-      BuildContext context,
-      AppModel app,
-      String html,
-      );
+    BuildContext context,
+    AppModel app,
+    String html,
+  );
 
   Widget htmlWidgetWithPlatformMedia(
       BuildContext context, AppModel app, String html,
       {List<HtmlPlatformMediumModel>? htmlPlatformMedia});
-
-
 }

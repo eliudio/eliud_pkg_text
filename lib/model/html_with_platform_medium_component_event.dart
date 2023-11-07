@@ -21,16 +21,16 @@ abstract class HtmlWithPlatformMediumComponentEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class FetchHtmlWithPlatformMediumComponent extends HtmlWithPlatformMediumComponentEvent {
+class FetchHtmlWithPlatformMediumComponent
+    extends HtmlWithPlatformMediumComponentEvent {
   final String? id;
 
-  FetchHtmlWithPlatformMediumComponent({ this.id });
+  FetchHtmlWithPlatformMediumComponent({this.id});
 }
 
-class HtmlWithPlatformMediumComponentUpdated extends HtmlWithPlatformMediumComponentEvent {
+class HtmlWithPlatformMediumComponentUpdated
+    extends HtmlWithPlatformMediumComponentEvent {
   final HtmlWithPlatformMediumModel value;
 
-  HtmlWithPlatformMediumComponentUpdated({ required this.value });
+  HtmlWithPlatformMediumComponentUpdated({required this.value});
 }
-
-
