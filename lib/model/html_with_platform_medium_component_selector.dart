@@ -31,7 +31,13 @@ import 'html_with_platform_medium_list_event.dart';
 import 'html_with_platform_medium_list_state.dart';
 import 'html_with_platform_medium_model.dart';
 
+/* 
+ * HtmlWithPlatformMediumComponentSelector is a component selector for HtmlWithPlatformMedium, allowing to select a HtmlWithPlatformMedium component
+ */
 class HtmlWithPlatformMediumComponentSelector extends ComponentSelector {
+  /* 
+   * createSelectWidget creates the widget
+   */
   @override
   Widget createSelectWidget(BuildContext context, AppModel app,
       int privilegeLevel, double height, SelectComponent selected, editor) {
@@ -42,7 +48,7 @@ class HtmlWithPlatformMediumComponentSelector extends ComponentSelector {
         htmlWithPlatformMediumRepository:
             htmlWithPlatformMediumRepository(appId: appId)!,
       )..add(LoadHtmlWithPlatformMediumList()),
-      child: SelectHtmlWithPlatformMediumWidget(
+      child: _SelectHtmlWithPlatformMediumWidget(
           app: app,
           height: height,
           containerPrivilege: privilegeLevel,
@@ -52,29 +58,31 @@ class HtmlWithPlatformMediumComponentSelector extends ComponentSelector {
   }
 }
 
-class SelectHtmlWithPlatformMediumWidget extends StatefulWidget {
+/* 
+ * _SelectHtmlWithPlatformMediumWidget 
+ */
+class _SelectHtmlWithPlatformMediumWidget extends StatefulWidget {
   final AppModel app;
   final double height;
   final SelectComponent selected;
   final int containerPrivilege;
   final ComponentEditorConstructor editorConstructor;
 
-  const SelectHtmlWithPlatformMediumWidget(
-      {super.key,
-      required this.app,
+  const _SelectHtmlWithPlatformMediumWidget(
+      {required this.app,
       required this.containerPrivilege,
       required this.height,
       required this.selected,
       required this.editorConstructor});
 
   @override
-  State<SelectHtmlWithPlatformMediumWidget> createState() {
+  State<_SelectHtmlWithPlatformMediumWidget> createState() {
     return _SelectHtmlWithPlatformMediumWidgetState();
   }
 }
 
 class _SelectHtmlWithPlatformMediumWidgetState
-    extends State<SelectHtmlWithPlatformMediumWidget>
+    extends State<_SelectHtmlWithPlatformMediumWidget>
     with TickerProviderStateMixin {
   TabController? _privilegeTabController;
   final List<String> _privilegeItems = ['No', 'L1', 'L2', 'Owner'];

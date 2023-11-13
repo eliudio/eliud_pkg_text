@@ -36,6 +36,9 @@ class HtmlWithPlatformMediumComponentBloc extends Bloc<
     });
   }
 
+  /*
+   * Construct HtmlWithPlatformMediumComponentBloc
+   */
   HtmlWithPlatformMediumComponentBloc({this.htmlWithPlatformMediumRepository})
       : super(HtmlWithPlatformMediumComponentUninitialized()) {
     on<FetchHtmlWithPlatformMediumComponent>((event, emit) {
@@ -46,6 +49,9 @@ class HtmlWithPlatformMediumComponentBloc extends Bloc<
     });
   }
 
+  /*
+   * Close the HtmlWithPlatformMediumComponentBloc
+   */
   @override
   Future<void> close() {
     _htmlWithPlatformMediumSubscription?.cancel();

@@ -33,6 +33,9 @@ typedef HtmlWithPlatformMediumChanged = Function(
   int? privilegeLevel,
 );
 
+/* 
+ * HtmlWithPlatformMediumDropdownButtonWidget is the drop down widget to allow to select an instance of HtmlWithPlatformMedium
+ */
 class HtmlWithPlatformMediumDropdownButtonWidget extends StatefulWidget {
   final AppModel app;
   final int? privilegeLevel;
@@ -40,6 +43,9 @@ class HtmlWithPlatformMediumDropdownButtonWidget extends StatefulWidget {
   final HtmlWithPlatformMediumChanged? trigger;
   final bool? optional;
 
+  /* 
+   * construct a HtmlWithPlatformMediumDropdownButtonWidget
+   */
   HtmlWithPlatformMediumDropdownButtonWidget(
       {required this.app,
       this.privilegeLevel,
@@ -48,18 +54,21 @@ class HtmlWithPlatformMediumDropdownButtonWidget extends StatefulWidget {
       this.optional,
       super.key});
 
+  /* 
+   * create state of HtmlWithPlatformMediumDropdownButtonWidget
+   */
   @override
   State<StatefulWidget> createState() {
-    return HtmlWithPlatformMediumDropdownButtonWidgetState(value);
+    return _HtmlWithPlatformMediumDropdownButtonWidgetState(value);
   }
 }
 
-class HtmlWithPlatformMediumDropdownButtonWidgetState
+class _HtmlWithPlatformMediumDropdownButtonWidgetState
     extends State<HtmlWithPlatformMediumDropdownButtonWidget> {
   HtmlWithPlatformMediumListBloc? bloc;
   String? value;
 
-  HtmlWithPlatformMediumDropdownButtonWidgetState(this.value);
+  _HtmlWithPlatformMediumDropdownButtonWidgetState(this.value);
 
   @override
   void didChangeDependencies() {
@@ -73,7 +82,7 @@ class HtmlWithPlatformMediumDropdownButtonWidgetState
     super.dispose();
   }
 
-  List<Widget> widgets(HtmlWithPlatformMediumModel value) {
+  List<Widget> _widgets(HtmlWithPlatformMediumModel value) {
     var app = widget.app;
     var widgets = <Widget>[];
     widgets.add(value.description != null
@@ -130,7 +139,7 @@ class HtmlWithPlatformMediumDropdownButtonWidgetState
                   height: 100.0,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: widgets(element),
+                    children: _widgets(element),
                   ),
                 )));
           }

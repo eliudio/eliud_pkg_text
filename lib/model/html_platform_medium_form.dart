@@ -59,7 +59,7 @@ class HtmlPlatformMediumForm extends StatelessWidget {
         create: (context) => HtmlPlatformMediumFormBloc(
           appId,
         )..add(InitialiseHtmlPlatformMediumFormEvent(value: value)),
-        child: MyHtmlPlatformMediumForm(
+        child: _MyHtmlPlatformMediumForm(
             app: app, submitAction: submitAction, formAction: formAction),
       );
     }
@@ -68,7 +68,7 @@ class HtmlPlatformMediumForm extends StatelessWidget {
         create: (context) => HtmlPlatformMediumFormBloc(
           appId,
         )..add(InitialiseHtmlPlatformMediumFormNoLoadEvent(value: value)),
-        child: MyHtmlPlatformMediumForm(
+        child: _MyHtmlPlatformMediumForm(
             app: app, submitAction: submitAction, formAction: formAction),
       );
     } else {
@@ -86,27 +86,27 @@ class HtmlPlatformMediumForm extends StatelessWidget {
             )..add((formAction == FormAction.updateAction
                 ? InitialiseHtmlPlatformMediumFormEvent(value: value)
                 : InitialiseNewHtmlPlatformMediumFormEvent())),
-            child: MyHtmlPlatformMediumForm(
+            child: _MyHtmlPlatformMediumForm(
                 app: app, submitAction: submitAction, formAction: formAction),
           ));
     }
   }
 }
 
-class MyHtmlPlatformMediumForm extends StatefulWidget {
+class _MyHtmlPlatformMediumForm extends StatefulWidget {
   final AppModel app;
   final FormAction? formAction;
   final ActionModel? submitAction;
 
-  MyHtmlPlatformMediumForm(
+  _MyHtmlPlatformMediumForm(
       {required this.app, this.formAction, this.submitAction});
 
   @override
-  State<MyHtmlPlatformMediumForm> createState() =>
+  State<_MyHtmlPlatformMediumForm> createState() =>
       _MyHtmlPlatformMediumFormState(formAction);
 }
 
-class _MyHtmlPlatformMediumFormState extends State<MyHtmlPlatformMediumForm> {
+class _MyHtmlPlatformMediumFormState extends State<_MyHtmlPlatformMediumForm> {
   final FormAction? formAction;
   late HtmlPlatformMediumFormBloc _myFormBloc;
 

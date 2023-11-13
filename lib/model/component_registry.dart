@@ -22,7 +22,13 @@ import '../extensions/html_with_platform_medium_component.dart';
 import '../editors/html_with_platform_medium_component_editor.dart';
 import 'html_with_platform_medium_component_selector.dart';
 
+/* 
+ * Component registry contains a list of components
+ */
 class ComponentRegistry {
+  /* 
+   * Initialise the component registry
+   */
   void init() {
     Registry.registry()!.addInternalComponents('eliud_pkg_text', [
       "htmlWithPlatformMediums",

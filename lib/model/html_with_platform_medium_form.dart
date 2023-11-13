@@ -61,7 +61,7 @@ class HtmlWithPlatformMediumForm extends StatelessWidget {
           appId,
           formAction: formAction,
         )..add(InitialiseHtmlWithPlatformMediumFormEvent(value: value)),
-        child: MyHtmlWithPlatformMediumForm(
+        child: _MyHtmlWithPlatformMediumForm(
             app: app, submitAction: submitAction, formAction: formAction),
       );
     }
@@ -71,7 +71,7 @@ class HtmlWithPlatformMediumForm extends StatelessWidget {
           appId,
           formAction: formAction,
         )..add(InitialiseHtmlWithPlatformMediumFormNoLoadEvent(value: value)),
-        child: MyHtmlWithPlatformMediumForm(
+        child: _MyHtmlWithPlatformMediumForm(
             app: app, submitAction: submitAction, formAction: formAction),
       );
     } else {
@@ -90,28 +90,28 @@ class HtmlWithPlatformMediumForm extends StatelessWidget {
             )..add((formAction == FormAction.updateAction
                 ? InitialiseHtmlWithPlatformMediumFormEvent(value: value)
                 : InitialiseNewHtmlWithPlatformMediumFormEvent())),
-            child: MyHtmlWithPlatformMediumForm(
+            child: _MyHtmlWithPlatformMediumForm(
                 app: app, submitAction: submitAction, formAction: formAction),
           ));
     }
   }
 }
 
-class MyHtmlWithPlatformMediumForm extends StatefulWidget {
+class _MyHtmlWithPlatformMediumForm extends StatefulWidget {
   final AppModel app;
   final FormAction? formAction;
   final ActionModel? submitAction;
 
-  MyHtmlWithPlatformMediumForm(
+  _MyHtmlWithPlatformMediumForm(
       {required this.app, this.formAction, this.submitAction});
 
   @override
-  State<MyHtmlWithPlatformMediumForm> createState() =>
+  State<_MyHtmlWithPlatformMediumForm> createState() =>
       _MyHtmlWithPlatformMediumFormState(formAction);
 }
 
 class _MyHtmlWithPlatformMediumFormState
-    extends State<MyHtmlWithPlatformMediumForm> {
+    extends State<_MyHtmlWithPlatformMediumForm> {
   final FormAction? formAction;
   late HtmlWithPlatformMediumFormBloc _myFormBloc;
 

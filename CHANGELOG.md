@@ -1,8 +1,13 @@
 # Change Log
 All notable changes to this project will be documented in this file.
  
-The format is based on [Keep a Changelog](http://keepachangelog.com/)
-and this project adheres to [Semantic Versioning](http://semver.org/).
+# [1.1.5] - 2023-11-10
+
+Upgrade flutter, update dependencies, cleanup to improve pub.dev points
+ 
+# [1.1.1] - 2023-11-08
+
+Updates for improved pub.dev points. Fixing warnings, formatting, provide better documentation, etc...
 
 # [1.0.0+1] - 2023-08-05
 

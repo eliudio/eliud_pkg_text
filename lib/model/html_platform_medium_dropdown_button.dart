@@ -33,6 +33,9 @@ typedef HtmlPlatformMediumChanged = Function(
   int? privilegeLevel,
 );
 
+/* 
+ * HtmlPlatformMediumDropdownButtonWidget is the drop down widget to allow to select an instance of HtmlPlatformMedium
+ */
 class HtmlPlatformMediumDropdownButtonWidget extends StatefulWidget {
   final AppModel app;
   final int? privilegeLevel;
@@ -40,6 +43,9 @@ class HtmlPlatformMediumDropdownButtonWidget extends StatefulWidget {
   final HtmlPlatformMediumChanged? trigger;
   final bool? optional;
 
+  /* 
+   * construct a HtmlPlatformMediumDropdownButtonWidget
+   */
   HtmlPlatformMediumDropdownButtonWidget(
       {required this.app,
       this.privilegeLevel,
@@ -48,18 +54,21 @@ class HtmlPlatformMediumDropdownButtonWidget extends StatefulWidget {
       this.optional,
       super.key});
 
+  /* 
+   * create state of HtmlPlatformMediumDropdownButtonWidget
+   */
   @override
   State<StatefulWidget> createState() {
-    return HtmlPlatformMediumDropdownButtonWidgetState(value);
+    return _HtmlPlatformMediumDropdownButtonWidgetState(value);
   }
 }
 
-class HtmlPlatformMediumDropdownButtonWidgetState
+class _HtmlPlatformMediumDropdownButtonWidgetState
     extends State<HtmlPlatformMediumDropdownButtonWidget> {
   HtmlPlatformMediumListBloc? bloc;
   String? value;
 
-  HtmlPlatformMediumDropdownButtonWidgetState(this.value);
+  _HtmlPlatformMediumDropdownButtonWidgetState(this.value);
 
   @override
   void didChangeDependencies() {
@@ -73,7 +82,7 @@ class HtmlPlatformMediumDropdownButtonWidgetState
     super.dispose();
   }
 
-  List<Widget> widgets(HtmlPlatformMediumModel value) {
+  List<Widget> _widgets(HtmlPlatformMediumModel value) {
     var app = widget.app;
     var widgets = <Widget>[];
     widgets.add(Center(
@@ -126,7 +135,7 @@ class HtmlPlatformMediumDropdownButtonWidgetState
                   height: 100.0,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: widgets(element),
+                    children: _widgets(element),
                   ),
                 )));
           }

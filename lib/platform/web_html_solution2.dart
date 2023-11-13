@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:eliud_core/tools/screen_size.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:html_editor_enhanced/utils/utils.dart';
-import 'dart:html' as html;
+import 'package:universal_html/html.dart' as html;
 import 'dart:ui' as ui;
 
 /*

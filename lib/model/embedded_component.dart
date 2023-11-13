@@ -38,6 +38,9 @@ htmlPlatformMediumsList(app, context, value, trigger) =>
         app, context, value, trigger);
 
 class EmbeddedComponentFactory {
+/* 
+ * htmlPlatformMediumsList function to construct a list of HtmlPlatformMediumModel
+ */
   static Widget htmlPlatformMediumsList(
       AppModel app,
       BuildContext context,
@@ -61,12 +64,18 @@ class EmbeddedComponentFactory {
   }
 }
 
+/* 
+ * HtmlPlatformMediumInMemoryRepository is an in memory implementation of HtmlPlatformMediumRepository
+ */
 class HtmlPlatformMediumInMemoryRepository
     implements HtmlPlatformMediumRepository {
   final List<HtmlPlatformMediumModel> items;
   final HtmlPlatformMediumListChanged trigger;
   Stream<List<HtmlPlatformMediumModel>>? theValues;
 
+  /* 
+     * Construct the HtmlPlatformMediumInMemoryRepository
+     */
   HtmlPlatformMediumInMemoryRepository(this.trigger, this.items) {
     List<List<HtmlPlatformMediumModel>> myList =
         <List<HtmlPlatformMediumModel>>[];
@@ -85,18 +94,27 @@ class HtmlPlatformMediumInMemoryRepository
     return -1;
   }
 
+  /* 
+     * Add an entity
+     */
   @override
   Future<HtmlPlatformMediumEntity> addEntity(
       String documentID, HtmlPlatformMediumEntity value) {
     throw Exception('Not implemented');
   }
 
+  /* 
+     * Update an entity
+     */
   @override
   Future<HtmlPlatformMediumEntity> updateEntity(
       String documentID, HtmlPlatformMediumEntity value) {
     throw Exception('Not implemented');
   }
 
+  /* 
+     * Update a model
+     */
   @override
   Future<HtmlPlatformMediumModel> add(HtmlPlatformMediumModel value) {
     items.add(value.copyWith(documentID: newRandomKey()));
@@ -104,6 +122,9 @@ class HtmlPlatformMediumInMemoryRepository
     return Future.value(value);
   }
 
+  /* 
+     * Delete a model
+     */
   @override
   Future<void> delete(HtmlPlatformMediumModel value) {
     int index = _index(value.documentID);
@@ -112,6 +133,9 @@ class HtmlPlatformMediumInMemoryRepository
     return Future.value();
   }
 
+  /* 
+     * Update a model
+     */
   @override
   Future<HtmlPlatformMediumModel> update(HtmlPlatformMediumModel value) {
     int index = _index(value.documentID);
@@ -122,6 +146,9 @@ class HtmlPlatformMediumInMemoryRepository
     return Future.value(value);
   }
 
+  /* 
+     * Get a model
+     */
   @override
   Future<HtmlPlatformMediumModel> get(String? id,
       {Function(Exception)? onError}) {
@@ -131,6 +158,9 @@ class HtmlPlatformMediumInMemoryRepository
     return completer.future;
   }
 
+  /* 
+     * Retrieve to a list of HtmlPlatformMediumModel base on a query
+     */
   @override
   Stream<List<HtmlPlatformMediumModel>> values(
       {String? orderBy,
@@ -143,6 +173,9 @@ class HtmlPlatformMediumInMemoryRepository
     return theValues!;
   }
 
+  /* 
+     * Retrieve to a list of HtmlPlatformMediumModel, including linked models base on a query
+     */
   @override
   Stream<List<HtmlPlatformMediumModel>> valuesWithDetails(
       {String? orderBy,
@@ -155,6 +188,9 @@ class HtmlPlatformMediumInMemoryRepository
     return theValues!;
   }
 
+  /* 
+     * Subscribe to a list of HtmlPlatformMediumModel base on a query
+     */
   @override
   StreamSubscription<List<HtmlPlatformMediumModel>> listen(trigger,
       {String? orderBy,
@@ -166,6 +202,9 @@ class HtmlPlatformMediumInMemoryRepository
     return theValues!.listen((theList) => trigger(theList));
   }
 
+  /* 
+     * Subscribe to a list of HtmlPlatformMediumModel, including linked models, base on a query
+     */
   @override
   StreamSubscription<List<HtmlPlatformMediumModel>> listenWithDetails(trigger,
       {String? orderBy,
@@ -177,9 +216,15 @@ class HtmlPlatformMediumInMemoryRepository
     return theValues!.listen((theList) => trigger(theList));
   }
 
+  /* 
+     * Flush the repository
+     */
   @override
   void flush() {}
 
+  /* 
+     * Retrieve the list of models
+     */
   @override
   Future<List<HtmlPlatformMediumModel>> valuesList(
       {String? orderBy,
@@ -204,16 +249,25 @@ class HtmlPlatformMediumInMemoryRepository
     return Future.value(items);
   }
 
+  /* 
+     * Retrieve a subcollection of this collection
+     */
   @override
   getSubCollection(String documentId, String name) {
     throw UnimplementedError();
   }
 
+  /* 
+   * Retrieve a timestamp
+   */
   @override
   String timeStampToString(timeStamp) {
     throw UnimplementedError();
   }
 
+  /* 
+   * Subscribe to 1 document / 1 model
+   */
   @override
   StreamSubscription<HtmlPlatformMediumModel> listenTo(
       String documentId, HtmlPlatformMediumChanged changed,
