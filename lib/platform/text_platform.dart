@@ -1,9 +1,9 @@
-import 'package:eliud_core/tools/random.dart';
+import 'package:eliud_core_model/tools/etc/random.dart';
 import 'package:eliud_pkg_text/model/html_with_platform_medium_model.dart';
 import 'package:eliud_pkg_text/platform/widgets/html_text_dialog.dart';
 import 'package:eliud_pkg_text/platform/widgets/html_with_platform_medium_components.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:eliud_core/model/app_model.dart';
+import 'package:eliud_core_model/model/app_model.dart';
 import 'package:flutter/material.dart';
 //import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:eliud_pkg_text/model/html_platform_medium_model.dart';

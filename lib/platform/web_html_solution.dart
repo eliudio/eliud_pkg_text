@@ -1,5 +1,5 @@
 import 'package:eliud_core/core/registry.dart';
-import 'package:eliud_core/model/app_model.dart';
+import 'package:eliud_core_model/model/app_model.dart';
 import 'package:eliud_core/tools/action/action_model.dart';
 import 'package:eliud_pkg_text/model/html_platform_medium_model.dart';
 import 'package:flutter/cupertino.dart';
@@ -84,11 +84,11 @@ Widget webHtmlSolution(BuildContext context, AppModel app, String html,
         }
       }
       if (index == -1) {
-        Registry.registry()!
+        Apis.apis()
             .getMediumApi()
             .showPhotosUrls(context, app, photos, 0);
       } else {
-        Registry.registry()!.getMediumApi().showPhotosPlatform(context, app,
+        Apis.apis().getMediumApi().showPhotosPlatform(context, app,
             htmlPlatformMedia!.map((e) => e.medium!).toList(), index);
       }
     },

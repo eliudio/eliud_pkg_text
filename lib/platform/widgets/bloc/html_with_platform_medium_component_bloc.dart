@@ -1,7 +1,7 @@
 import 'package:eliud_core/core/editor/ext_editor_base_bloc/ext_editor_base_bloc.dart';
 import 'package:eliud_core/core/editor/ext_editor_base_bloc/ext_editor_base_event.dart';
 import 'package:eliud_core/core/editor/ext_editor_base_bloc/ext_editor_base_state.dart';
-import 'package:eliud_core/model/storage_conditions_model.dart';
+import 'package:eliud_core_model/model/storage_conditions_model.dart';
 
 import '../../../model/abstract_repository_singleton.dart';
 import '../../../model/html_platform_medium_model.dart';

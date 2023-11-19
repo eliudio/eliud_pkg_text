@@ -13,7 +13,7 @@
 
 */
 
-import 'package:eliud_core/tools/query/query_tools.dart';
+import 'package:eliud_core_model/tools/query/query_tools.dart';
 import 'package:equatable/equatable.dart';
 import 'package:eliud_pkg_text/model/html_with_platform_medium_model.dart';
 
