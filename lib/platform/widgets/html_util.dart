@@ -1,13 +1,12 @@
-import 'package:eliud_core/model/abstract_repository_singleton.dart';
-import 'package:eliud_core_model/model/app_model.dart';
-import 'package:eliud_core/model/platform_medium_model.dart';
-import 'package:eliud_core_model/model/member_medium_model.dart';
+import 'package:eliud_core_main/model/abstract_repository_singleton.dart';
+import 'package:eliud_core_main/model/app_model.dart';
+import 'package:eliud_core_main/model/member_medium_model.dart';
 import 'package:eliud_core/tools/tool_set.dart';
+import 'package:eliud_core_main/model/platform_medium_model.dart';
+import 'package:eliud_pkg_text_model/model/html_with_platform_medium_entity.dart';
 import 'package:html/parser.dart' show parse;
 
 import 'package:html/dom.dart';
-
-import '../../model/html_with_platform_medium_entity.dart';
 
 Future<HtmlWithPlatformMediumEntity> reviewLinksForHtmlWithPlatformMediumEntity(
     AppModel app,

@@ -1,12 +1,12 @@
-import 'package:eliud_core/core/blocs/access/access_bloc.dart';
-import 'package:eliud_core_model/model/app_model.dart';
-import 'package:eliud_core_model/style/frontend/has_text.dart';
-import 'package:eliud_core/tools/component/component_constructor.dart';
-import 'package:eliud_core/tools/etc.dart';
-import 'package:eliud_pkg_text/model/abstract_repository_singleton.dart';
-import 'package:eliud_pkg_text/model/html_with_platform_medium_component.dart';
-import 'package:eliud_pkg_text/model/html_with_platform_medium_model.dart';
+import 'package:eliud_core/access/access_bloc.dart';
+import 'package:eliud_core/tools/etc/etc.dart';
+import 'package:eliud_core_main/model/app_model.dart';
+import 'package:eliud_core_main/apis/style/frontend/has_text.dart';
+import 'package:eliud_pkg_text_model/model/abstract_repository_singleton.dart';
+import 'package:eliud_pkg_text_model/model/html_with_platform_medium_component.dart';
+import 'package:eliud_pkg_text_model/model/html_with_platform_medium_model.dart';
 import 'package:eliud_pkg_text/platform/text_platform.dart';
+import 'package:eliud_core_main/apis/registryapi/component/component_constructor.dart';
 import 'package:flutter/material.dart';
 
 class HtmlWithPlatformMediumComponentConstructorDefault

@@ -1,11 +1,11 @@
-import 'package:eliud_core_model/model/app_model.dart';
-import 'package:eliud_pkg_text/model/html_with_platform_medium_model.dart';
+import 'package:eliud_core_main/model/app_model.dart';
+import 'package:eliud_pkg_text_model/model/html_platform_medium_model.dart';
+import 'package:eliud_pkg_text_model/model/html_with_platform_medium_model.dart';
 import 'package:eliud_pkg_text/platform/text_platform.dart';
 import 'package:eliud_pkg_text/platform/widgets/html_text_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import '../model/html_platform_medium_model.dart';
 import 'mobile_html_solution.dart';
 
 class MobileTextPlatform extends AbstractTextPlatform {

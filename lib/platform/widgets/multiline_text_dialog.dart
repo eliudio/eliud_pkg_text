@@ -1,8 +1,8 @@
-import 'package:eliud_core_model/model/app_model.dart';
-import 'package:eliud_core_model/style/_default/frontend/helper/dialog/dialog_helper.dart';
-import 'package:eliud_core_model/style/frontend/has_button.dart';
-import 'package:eliud_core_model/style/frontend/has_dialog.dart';
-import 'package:eliud_core_model/style/frontend/has_dialog_widget.dart';
+import 'package:eliud_core_main/model/app_model.dart';
+import 'package:eliud_core_main/apis/style/_default/frontend/helper/dialog/dialog_helper.dart';
+import 'package:eliud_core_main/apis/style/frontend/has_button.dart';
+import 'package:eliud_core_main/apis/style/frontend/has_dialog.dart';
+import 'package:eliud_core_main/apis/style/frontend/has_dialog_widget.dart';
 import 'package:flutter/material.dart';
 
 import '../text_platform.dart';

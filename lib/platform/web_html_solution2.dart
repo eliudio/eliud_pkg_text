@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:eliud_core/tools/screen_size.dart';
+import 'package:eliud_core_helpers/etc/screen_size.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:html_editor_enhanced/utils/utils.dart';
 import 'package:universal_html/html.dart' as html;

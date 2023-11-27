@@ -1,9 +1,12 @@
-import 'package:eliud_core/core/wizards/builders/dialog_builder.dart';
-import 'package:eliud_core/core/wizards/tools/document_identifier.dart';
-import 'package:eliud_core/model/abstract_repository_singleton.dart'
-    as corerepo;
-import 'package:eliud_core/model/member_dashboard_component.dart';
-import 'package:eliud_core/model/model_export.dart';
+import 'package:eliud_core_main/wizards/builders/dialog_builder.dart';
+import 'package:eliud_core_main/wizards/tools/document_identifier.dart';
+import 'package:eliud_core_main/model/abstract_repository_singleton.dart'
+    as mainrepo;
+import 'package:eliud_core_model/model/abstract_repository_singleton.dart'
+    as modelrepo;
+import 'package:eliud_core_main/model/model_export.dart';
+import 'package:eliud_core_model/model/member_dashboard_component.dart';
+import 'package:eliud_core_model/model/member_dashboard_model.dart';
 
 String updateProfileText = '''
 Maintain your personal details here
@@ -36,7 +39,7 @@ class MemberDashboardDialogBuilder extends DialogBuilder {
       super.uniqueId, super.app, super.dialogDocumentId);
 
   Future<DialogModel> _setupDialog() async {
-    return await corerepo.AbstractRepositorySingleton.singleton
+    return await mainrepo.AbstractRepositorySingleton.singleton
         .dialogRepository(app.documentID)!
         .add(_dialog());
   }
@@ -78,7 +81,7 @@ class MemberDashboardDialogBuilder extends DialogBuilder {
   }
 
   Future<MemberDashboardModel> _setupDashboard() async {
-    return await corerepo.AbstractRepositorySingleton.singleton
+    return await modelrepo.AbstractRepositorySingleton.singleton
         .memberDashboardRepository(app.documentID)!
         .add(_dashboardModel());
   }

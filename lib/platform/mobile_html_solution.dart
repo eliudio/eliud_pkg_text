@@ -1,10 +1,11 @@
-import 'package:eliud_core/core/registry.dart';
-import 'package:eliud_core_model/model/app_model.dart';
-import 'package:eliud_core/tools/action/action_model.dart';
-import 'package:eliud_pkg_text/model/html_platform_medium_model.dart';
+import 'package:eliud_core_main/model/app_model.dart';
+import 'package:eliud_pkg_text_model/model/html_platform_medium_model.dart';
+import 'package:eliud_core_main/apis/action_api/actions/internal_action.dart';
+import 'package:eliud_core_main/apis/action_api/actions/goto_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:eliud_core/core/navigate/router.dart' as router;
+import 'package:eliud_core_main/apis/apis.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 Widget mobileHtmlSolution(BuildContext context, AppModel app, String html,
@@ -72,9 +73,7 @@ Widget mobileHtmlSolution(BuildContext context, AppModel app, String html,
         }
       }
       if (index == -1) {
-        Apis.apis()
-            .getMediumApi()
-            .showPhotosUrls(context, app, photos, 0);
+        Apis.apis().getMediumApi().showPhotosUrls(context, app, photos, 0);
       } else {
         Apis.apis().getMediumApi().showPhotosPlatform(context, app,
             htmlPlatformMedia!.map((e) => e.medium!).toList(), index);
