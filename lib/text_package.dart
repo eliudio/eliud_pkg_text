@@ -1,5 +1,6 @@
 import 'package:eliud_core/access/access_bloc.dart';
 import 'package:eliud_core_main/apis/wizard_api/new_app_wizard_info.dart';
+import 'package:eliud_core_main/apis/apis.dart';
 import 'package:eliud_core/core_package.dart';
 import 'package:eliud_core/eliud.dart';
 import 'package:eliud_core_main/model/app_model.dart';
@@ -46,7 +47,7 @@ abstract class TextPackage extends Package {
     );
 
     // Wizard
-    NewAppWizardRegistry.registry().register(WelcomePageWizard());
+    Apis.apis().getWizardApi().register(WelcomePageWizard());
 
     AbstractRepositorySingleton.singleton = RepositorySingleton();
   }
