@@ -35,14 +35,14 @@ The "text" package.
 <!-- dependencies -->
 
 ### Direct dependencies
+- [eliud_core_helpers](https://pub.dev/packages/eliud_core_helpers)
 - [eliud_pkg_text_model](https://pub.dev/packages/eliud_pkg_text_model)
 - [eliud_core_main](https://pub.dev/packages/eliud_core_main)
 - [eliud_pkg_medium](https://pub.dev/packages/eliud_pkg_medium)
-- [eliud_core](https://pub.dev/packages/eliud_core)
 - [eliud_core_model](https://pub.dev/packages/eliud_core_model)
+- [eliud_core](https://pub.dev/packages/eliud_core)
 
 ### Transitive dependencies
-- [eliud_core_helpers](https://pub.dev/packages/eliud_core_helpers)
 - [eliud_pkg_medium_model](https://pub.dev/packages/eliud_pkg_medium_model)
 
 ### Dev dependencies
